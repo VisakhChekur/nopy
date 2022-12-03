@@ -1,0 +1,5 @@
+[flake8]
+max-doc-length = 80
+# Based on Django
+max-line-length = 119
+extend-exclude = __init__.py,trial.py

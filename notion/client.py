@@ -1,11 +1,16 @@
 import os
-from pprint import pprint
-from typing import Any, Callable
+from typing import Any
+from typing import Callable
 
 import requests
 
-from notion.exceptions import AuthenticationError, NotFoundError
-from notion.constants import API_VERSION, DB_ENDPOINT, PAGE_ENDPOINT, BLOCK_ENDPOINT
+from notion.constants import API_VERSION
+from notion.constants import BLOCK_ENDPOINT
+from notion.constants import DB_ENDPOINT
+from notion.constants import PAGE_ENDPOINT
+from notion.exceptions import AuthenticationError
+from notion.exceptions import NotFoundError
+
 
 def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to handle HTTPErrors."""
@@ -18,10 +23,13 @@ def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
             if e.response.status_code == 401:
                 raise AuthenticationError("Invalid Notion token")
             if e.response.status_code == 404:
-                raise NotFoundError("Invalid 'id' for the requested resource or this integration hasn't been given access.")
+                raise NotFoundError(
+                    "Invalid 'id' for the requested resource or this integration hasn't been given access."
+                )
             raise e
-    
+
     return wrapper
+
 
 class NotionClient:
     """A client to connect with Notion using the official Notion API."""
@@ -34,7 +42,7 @@ class NotionClient:
                 The Notion token from the Notion integration. If it's not
                 provided, then the value must be present in the environment
                 variables with the name `NOTION_TOKEN`. Refer the following:
-                https://developers.notion.com/docs/create-a-notion-integration 
+                https://developers.notion.com/docs/create-a-notion-integration
 
         Raises:
             AuthenticationError: Token not found.
@@ -51,20 +59,20 @@ class NotionClient:
         # Notion.
         self._headers = {
             "Authorization": f"Bearer {self._token}",
-            "Notion-Version": API_VERSION
+            "Notion-Version": API_VERSION,
         }
 
     # ----- DATABASE RELATED METHODS ------
     def retrieve_db(self, db_id: str):
         """Retrives the database from Notion.
-        
+
         Args:
             db_id:
                 The id of the database.
-        
+
         Returns:
             The database.
-        
+
         Raises:
             AuthenticationError:
                 Invalid Notion token
@@ -80,14 +88,14 @@ class NotionClient:
     # ------ PAGE RELATED METHODS -----
     def retrieve_page(self, page_id: str):
         """Retrieves the page from Notion.
-        
+
         Args:
             page_id:
                 The id of the page.
-        
+
         Returns:
             The page.
-        
+
         Raises:
             AuthenticationError:
                 Invalid Notion token
@@ -95,23 +103,23 @@ class NotionClient:
                 Database not found.
             HTTPError:
                 Any error that took place when making requests to Notion.
-        
+
         """
 
         page_dict = self._get_request(PAGE_ENDPOINT + page_id)
         return page_dict
-    
+
     # ----- BLOCK RELATED METHODS -----
     def retrieve_bloc(self, block_id: str):
         """Retrieves the page from Notion.
-        
+
         Args:
             block_id:
                 The id of the block.
-        
+
         Returns:
             The block.
-        
+
         Raises:
             AuthenticationError:
                 Invalid Notion token
@@ -119,12 +127,11 @@ class NotionClient:
                 Database not found.
             HTTPError:
                 Any error that took place when making requests to Notion.
-        
+
         """
 
         block_dict = self._get_request(BLOCK_ENDPOINT + block_id)
         return block_dict
-
 
     # ------ PRIVATE METHODS ------
 
@@ -134,4 +141,3 @@ class NotionClient:
         response = requests.get(endpoint, headers=self._headers)
         response.raise_for_status()
         return response.json()
-

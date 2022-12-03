@@ -10,6 +10,8 @@ class AuthenticationError(NotionError):
 
     pass
 
+
 class NotFoundError(NotionError):
     """Requested resource wasn't found."""
+
     pass
