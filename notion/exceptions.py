@@ -3,6 +3,7 @@ class NotionError(Exception):
 
     pass
 
+
 class AuthenticationError(NotionError):
     """Authentication issue when connecting to Notion API."""
 
@@ -14,11 +15,14 @@ class NotFoundError(NotionError):
 
     pass
 
+
 class ValidationError(NotionError):
     """Invalid format."""
 
     pass
 
+
 class UnsupportedError(NotionError):
     """Unsupported by Notion or by this library."""
+
     pass

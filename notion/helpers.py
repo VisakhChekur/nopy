@@ -1,18 +1,9 @@
-from notion.properties.common import RichText
-from notion.properties.db_props import DBProp
-from notion.objects.properties import Properties
+from typing import Iterable
 
-def get_plain_text(rich_texts: list[RichText]) -> str:
+from notion.properties.common_properties import RichText
+
+
+def get_plain_text(rich_texts: Iterable[RichText]) -> str:
+    """Returns the combined plain text from a list of rich text objects."""
 
     return " ".join((txt.plain_text for txt in rich_texts))
-
-def get_properties_dict(properties: list[DBProp]) -> Properties:
-
-    props = Properties()
-    print(properties)
-    for prop in properties:
-        if prop == "Person":
-            continue
-        print(prop)
-        props.set(prop.name, prop)
-    return props

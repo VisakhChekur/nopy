@@ -1,8 +1,8 @@
-
 from enum import Enum
+from enum import StrEnum
+
 
 class PropTypes(Enum):
-    """Enums for the property types of pages and databases."""
 
     TITLE = "title"
     RICH_TEXT = "rich_text"
@@ -10,33 +10,25 @@ class PropTypes(Enum):
     SELECT = "select"
     MULTI_SELECT = "multi_select"
     DATE = "date"
-    PEOPLE = "people"
+    # PEOPLE = "people"
     FILES = "files"
     CHECKBOX = "checkbox"
     URL = "url"
     EMAIL = "email"
     PHONE_NUMBER = "phone_number"
+    FORMULA = "formula"
+    # RELATION = "relation"
+    # ROLLUP = "rollup"
     CREATED_TIME = "created_time"
     CREATED_BY = "created_by"
     LAST_EDITED_TIME = "last_edited_time"
     LAST_EDITED_BY = "last_edited_by"
     STATUS = "status"
-    FORMULA = "formula"
     UNSUPPORTED = "unsupported"
 
-PROP_TYPES_REVERSE_MAP = {prop.value: prop for prop in PropTypes}
 
-class RichTextTypes(Enum):
-    """Enums for the rich text types."""
+class NumberFormat(Enum):
 
-    TEXT = "text"
-    UNSUPPORTED = "unsupported"
-
-RICH_TEXT_TYPES_REVERSE_MAP = {prop.value: prop for prop in RichTextTypes}
-
-class NumberFormats(Enum):
-    """Enums for the number format."""
-    
     NUMBER = "number"
     NUMBER_WITH_COMMAS = "number_with_commas"
     PERCENT = "percent"
@@ -77,13 +69,11 @@ class NumberFormats(Enum):
     URUGUAYAN_PESO = "uruguayan_peso"
     SINGAPORE_DOLLAR = "singapore_dollar"
 
-NUMBER_FORMAT_REVERSE_MAP = {prop.value: prop for prop in NumberFormats}
 
 class Colors(Enum):
 
     DEFAULT = "default"
     GRAY = "gray"
-    GREY = "gray"
     BROWN = "brown"
     ORANGE = "orange"
     YELLOW = "yellow"
@@ -93,15 +83,27 @@ class Colors(Enum):
     PINK = "pink"
     RED = "red"
 
-COLORS_REVERSE_MAP = {prop.value: prop for prop in Colors}
+
+class RichTextTypes(Enum):
+
+    TEXT = "text"
+    UNSUPPORTED = "unsupported"
+
 
 class FileTypes(Enum):
 
-    EXTERNAL = "external"
     FILE = "file"
+    EXTERNAL = "external"
 
-FILE_TYPES_REVERSE_MAP = {prop.value: prop for prop in FileTypes}
 
 class EmojiTypes(Enum):
 
     EMOJI = "emoji"
+
+
+class ParentTypes(StrEnum):
+
+    DATABASE = "database_id"
+    PAGE = "page_id"
+    WORKSPACE = "workspace"
+    BLOCK = "block_id"
