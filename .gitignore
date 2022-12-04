@@ -2,6 +2,7 @@
 trial.py
 trial/
 sample/
+benchmarks/
 
 # VSCode settings
 .vscode/

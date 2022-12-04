@@ -1,6 +1,7 @@
 from dataclasses import InitVar
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
+from typing import Any
 from typing import Iterable
 from typing import Optional
 from typing import Union
@@ -14,11 +15,12 @@ from notion.objects.notion_object import NotionObject
 from notion.properties.common_properties import Emoji
 from notion.properties.common_properties import File
 from notion.properties.common_properties import Text
-from notion.properties.properties import Properties
+from notion.objects.properties import Properties
 from notion.typings import Parents
 
 if TYPE_CHECKING:
     from notion.client import NotionClient
+
 
 @dataclass
 class Database(NotionObject):
@@ -36,6 +38,7 @@ class Database(NotionObject):
     url: Optional[AnyHttpUrl] = None
     archived: bool = False
     is_inline: bool = False
+
     def __post_init_post_parse__(
         self,
         client: Optional["NotionClient"],
@@ -60,7 +63,7 @@ class Database(NotionObject):
         # when serializing the properties.
         self._og_props = self.properties._ids  # type: ignore
 
-    def refresh(self, in_place:bool=False):
+    def refresh(self, in_place: bool = False):
         pass
 
     def update(self):

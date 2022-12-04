@@ -3,7 +3,10 @@ import pytest
 
 def pytest_addoption(parser: pytest.Parser):
     parser.addoption(
-        "--runapi", action="store_true", default=False, help="run tests that call the Notion API"
+        "--runapi",
+        action="store_true",
+        default=False,
+        help="run tests that call the Notion API",
     )
 
 
