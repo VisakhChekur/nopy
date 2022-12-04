@@ -1,4 +1,6 @@
+import json
 import os
+from pathlib import Path
 from typing import Any
 from typing import Callable
 
@@ -10,7 +12,7 @@ from notion.constants import DB_ENDPOINT
 from notion.constants import PAGE_ENDPOINT
 from notion.exceptions import AuthenticationError
 from notion.exceptions import NotFoundError
-
+from notion.exceptions import ValidationError
 
 def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to handle HTTPErrors."""
@@ -26,7 +28,7 @@ def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
                 raise NotFoundError(
                     "Invalid 'id' for the requested resource or this integration hasn't been given access."
                 )
-            raise e
+            raise ValidationError(e.response.json())
 
     return wrapper
 
@@ -63,12 +65,16 @@ class NotionClient:
         }
 
     # ----- DATABASE RELATED METHODS ------
-    def retrieve_db(self, db_id: str):
+    def retrieve_db(self, db_id: str, *, save_to_fp: str | Path=""):
         """Retrives the database from Notion.
 
         Args:
             db_id:
                 The id of the database.
+            
+            save_to_fp:
+                If provided, saves the returned response JSON from Notion
+                to the provided file path.
 
         Returns:
             The database.
@@ -83,10 +89,17 @@ class NotionClient:
         """
 
         db_dict = self._get_request(DB_ENDPOINT + db_id)
+        if save_to_fp:
+            self._save_to_fp(db_dict, Path(save_to_fp))
+
         return db_dict
+    
+    def create_db(self, db_dict: dict[str, Any]):
+
+        self._post_request(DB_ENDPOINT[:-1], db_dict)
 
     # ------ PAGE RELATED METHODS -----
-    def retrieve_page(self, page_id: str):
+    def retrieve_page(self, page_id: str, *, save_to_fp: str | Path=""):
         """Retrieves the page from Notion.
 
         Args:
@@ -107,10 +120,13 @@ class NotionClient:
         """
 
         page_dict = self._get_request(PAGE_ENDPOINT + page_id)
+        if save_to_fp:
+            self._save_to_fp(page_dict, Path(save_to_fp))
+
         return page_dict
 
     # ----- BLOCK RELATED METHODS -----
-    def retrieve_bloc(self, block_id: str):
+    def retrieve_bloc(self, block_id: str, *, save_to_fp: str | Path=""):
         """Retrieves the page from Notion.
 
         Args:
@@ -131,13 +147,31 @@ class NotionClient:
         """
 
         block_dict = self._get_request(BLOCK_ENDPOINT + block_id)
+        if save_to_fp:
+            self._save_to_fp(block_dict, Path(save_to_fp))
+
         return block_dict
 
     # ------ PRIVATE METHODS ------
+
+    @staticmethod
+    def _save_to_fp(data: dict[str, Any], fp: Path):
+        """Saves the given data as JSON to the given file."""
+
+        with open(fp, "w+") as f:
+            json.dump(data, f, indent=4)
+
 
     @_handle_http_error
     def _get_request(self, endpoint: str):
 
         response = requests.get(endpoint, headers=self._headers)
+        response.raise_for_status()
+        return response.json()
+
+    @_handle_http_error
+    def _post_request(self, endpoint: str, data: dict[str, Any]):
+
+        response = requests.post(endpoint, json=data, headers=self._headers)
         response.raise_for_status()
         return response.json()

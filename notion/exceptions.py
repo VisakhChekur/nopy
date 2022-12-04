@@ -1,9 +1,7 @@
 class NotionError(Exception):
     """Base class for all Notion exceptions."""
 
-    def __init__(self, message: str):
-        super().__init__(message)
-
+    pass
 
 class AuthenticationError(NotionError):
     """Authentication issue when connecting to Notion API."""
@@ -14,4 +12,13 @@ class AuthenticationError(NotionError):
 class NotFoundError(NotionError):
     """Requested resource wasn't found."""
 
+    pass
+
+class ValidationError(NotionError):
+    """Invalid format."""
+
+    pass
+
+class UnsupportedError(NotionError):
+    """Unsupported by Notion or by this library."""
     pass
