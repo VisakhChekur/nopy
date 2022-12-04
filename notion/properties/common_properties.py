@@ -1,26 +1,24 @@
-from dataclasses import InitVar
-from typing import TYPE_CHECKING
+from __future__ import annotations
+
+from dataclasses import dataclass
+from dataclasses import field
+from datetime import datetime
 from typing import Any
 from typing import Optional
+from typing import Type
 
 from dateutil import parser as date_parser
-from pydantic import AnyUrl
-from pydantic import Field
-from pydantic import validator
-from pydantic.dataclasses import dataclass
 
+from notion.properties.base import BaseProperty
 from notion.properties.prop_enums import Colors
 from notion.properties.prop_enums import EmojiTypes
 from notion.properties.prop_enums import FileTypes
 from notion.properties.prop_enums import ParentTypes
 from notion.properties.prop_enums import RichTextTypes
 
-if TYPE_CHECKING:
-    from notion.typings import OptionalDict
-
 
 @dataclass
-class Option:
+class Option(BaseProperty):
     """A representation of an Option.
 
     This can be used in the options for Select, Mutli-select
@@ -36,15 +34,14 @@ class Option:
     id: str = ""
     color: Colors = Colors.DEFAULT
 
-    @validator("name")
-    def _check_name(cls, v: str):
-        if "," in v:
-            raise ValueError("',' is not allowed in option names")
-        return v
+    @classmethod
+    def from_dict(cls: Type[Option], args: dict[str, str]) -> Option:
+        args["color"] = Colors[args["color"].upper()]  # type: ignore
+        return Option(**args)
 
 
 @dataclass
-class StatusGroup:
+class StatusGroup(BaseProperty):
     """A representation of a Status Group.
 
     Args:
@@ -57,11 +54,18 @@ class StatusGroup:
     name: str
     id: str = ""
     color: Colors = Colors.DEFAULT
-    option_ids: list[str] = Field(default_factory=list)
+    option_ids: list[str] = field(default_factory=list)
+
+    @classmethod
+    def from_dict(cls: Type[StatusGroup], args: dict[str, str]) -> StatusGroup:
+
+        args["color"] = Colors[args["color"].upper()]  # type: ignore
+
+        return StatusGroup(**args)
 
 
 @dataclass
-class Annotations:
+class Annotations(BaseProperty):
     """A representation of the annotations.
 
     Args:
@@ -80,20 +84,31 @@ class Annotations:
     code: bool = False
     color: Colors = Colors.DEFAULT
 
+    @classmethod
+    def from_dict(cls: Type[Annotations], args: dict[str, Any]) -> Annotations:
+        if isinstance(args.get("color", None), str):
+            args["color"] = Colors[args["color"].upper()]
 
-@dataclass
-class Link:
+        return Annotations(**args)
+
+
+class Link(BaseProperty):
     """A representation of a 'Link' object.
 
     Args:
         url:
     """
 
-    url: Optional[AnyUrl] = None
+    def __init__(self, url: str):
+        self.url = url
+
+    @classmethod
+    def from_dict(cls: Type[Link], args: dict[str, Any]) -> Link:
+        return Link(args["url"])
 
 
 @dataclass
-class RichText:
+class RichText(BaseProperty):
     """Base class of Rich Text.
 
     Args:
@@ -105,12 +120,22 @@ class RichText:
 
     plain_text: str
     href: Optional[str] = None
-    annotations: Annotations = Field(default_factory=Annotations)
+    annotations: Annotations = field(default_factory=Annotations)
 
     def __post_init__(self):
 
         self.type = RichTextTypes.UNSUPPORTED
         self.plain_text = self.plain_text.strip()
+
+    @classmethod
+    def from_dict(cls: Type[RichText], args: dict[str, Any]) -> RichText:
+
+        new_args: dict[str, Any] = {
+            "annotations": Annotations.from_dict(args["annotations"]),
+            "plain_text": args["plain_text"],
+            "href": args["href"],
+        }
+        return RichText(**new_args)
 
 
 @dataclass
@@ -125,19 +150,27 @@ class Text(RichText):
         link: Any inline link within the text.
     """
 
-    text: InitVar["OptionalDict"] = None
     link: Optional[Link] = None
 
-    def __post_init__(self, text: Optional[dict[str, Any]]):  # type: ignore
-
-        if text:
-            self.link = Link(**text)
+    def __post_init__(self):
 
         self.type = RichTextTypes.TEXT
 
+    @classmethod
+    def from_dict(cls: Type[Text], args: dict[str, Any]) -> Text:
+
+        new_args: dict[str, Any] = {
+            "plain_text": args["plain_text"],
+            "href": args["href"],
+            "link": args["text"]["link"],
+            "annotations": Annotations.from_dict(args["annotations"]),
+        }
+
+        return Text(**new_args)
+
 
 @dataclass
-class File:
+class File(BaseProperty):
     """A representation of a File object.
 
     Args:
@@ -149,27 +182,27 @@ class File:
             That is, the `type` should be `FileType.FILE`.
     """
 
-    url: Optional[AnyUrl] = None
-    file: InitVar["OptionalDict"] = None
-    external: InitVar["OptionalDict"] = None
+    url: str = ""
+    expiry_time: Optional[datetime] = None
     type: FileTypes = FileTypes.EXTERNAL
 
-    def __post_init__(self, file: "OptionalDict", external: "OptionalDict"):
+    @classmethod
+    def from_dict(cls: Type[File], args: dict[str, Any]) -> File:
 
-        if not self.url and not file and not external:
-            raise TypeError("provide 'url', and one of 'file', or 'external'")
-        if file:
-            self.url = file["url"]
-            self.type = FileTypes.FILE
-            self.expiry_time = date_parser.parse(file["expiry_time"])
-        else:
-            self.url = external["url"]  # type: ignore
-            self.type = FileTypes.EXTERNAL
-            self.expiry_time = None
+        file_type = args["type"]
+        expiry = args[file_type].get("expiry_time", None)
+        expiry_time = date_parser.parse(expiry) if expiry else None
+        new_args: dict[str, Any] = {
+            "type": FileTypes[file_type.upper()],
+            "url": args[file_type]["url"],
+            "expiry_time": expiry_time,
+        }
+
+        return File(**new_args)
 
 
 @dataclass
-class Emoji:
+class Emoji(BaseProperty):
     """A representation of the Emoji object.
 
     Args:
@@ -183,32 +216,59 @@ class Emoji:
 
         self.type = EmojiTypes.EMOJI
 
+    @classmethod
+    def from_dict(cls: Type[Emoji], args: dict[str, Any]) -> Emoji:
+        return Emoji(args["emoji"])
+
 
 @dataclass
-class Parent:
+class Parent(BaseProperty):
 
-    type: ParentTypes
+    id: str
+    type: ParentTypes = ParentTypes.DATABASE
 
 
 @dataclass
 class DatabaseParent(Parent):
+    def __post_init__(self):
+        self.type = ParentTypes.DATABASE
 
-    database_id: str
+    @classmethod
+    def from_dict(cls: Type[DatabaseParent], args: dict[str, Any]) -> DatabaseParent:
+        return DatabaseParent(args["database_id"])
 
 
 @dataclass
 class PageParent(Parent):
+    def __post_init__(self):
+        self.type = ParentTypes.PAGE
 
-    page_id: str
+    @classmethod
+    def from_dict(cls: Type[PageParent], args: dict[str, Any]) -> PageParent:
+        return PageParent(args["page_id"])
 
 
 @dataclass
 class WorkspaceParent(Parent):
 
-    workspace: str
+    id: str = ""
+
+    def __post_init__(self):
+        self.type = ParentTypes.WORKSPACE
+        # For workspace parents, the id is marked as `True`
+        # by the Notion API whereas all the otther parents IDs are strings.
+        self.id = True  # type:ignore
+
+    @classmethod
+    def from_dict(cls: Type[WorkspaceParent], args: dict[str, Any]) -> WorkspaceParent:
+        return WorkspaceParent()
 
 
 @dataclass
 class BlockParent(Parent):
+    def __post_init__(self):
+        self.type = ParentTypes.BLOCK
 
-    block_id: str
+    @classmethod
+    def from_dict(cls: Type[BlockParent], args: dict[str, Any]) -> BlockParent:
+        return BlockParent(args["block_id"])
