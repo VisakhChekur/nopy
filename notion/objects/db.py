@@ -1,6 +1,6 @@
 from dataclasses import InitVar
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from typing import Iterable
 from typing import Optional
 from typing import Union
@@ -10,6 +10,7 @@ from pydantic import Field
 from pydantic.dataclasses import dataclass
 
 from notion.helpers import get_plain_text
+from notion.objects.notion_object import NotionObject
 from notion.properties.common_properties import Emoji
 from notion.properties.common_properties import File
 from notion.properties.common_properties import Text
@@ -19,9 +20,8 @@ from notion.typings import Parents
 if TYPE_CHECKING:
     from notion.client import NotionClient
 
-
 @dataclass
-class Database:
+class Database(NotionObject):
 
     db_title: InitVar[Optional[Iterable[Text]]] = None
     plain_title: str = ""
@@ -36,14 +36,13 @@ class Database:
     url: Optional[AnyHttpUrl] = None
     archived: bool = False
     is_inline: bool = False
-    _client: Optional["NotionClient"] = None
-
     def __post_init_post_parse__(
         self,
+        client: Optional["NotionClient"],
         db_title: Optional[Iterable[Text]],
         db_description: Optional[Iterable[Text]],
     ):
-
+        super().__post_init_parse__(client)
         if not db_title:
             self.title = [Text(plain_text=self.plain_title)]
         else:
@@ -60,3 +59,12 @@ class Database:
         # be used later to determine whether to use the ID or the name
         # when serializing the properties.
         self._og_props = self.properties._ids  # type: ignore
+
+    def refresh(self, in_place:bool=False):
+        pass
+
+    def update(self):
+        pass
+
+    def serialize(self) -> dict[str, Any]:
+        return {}

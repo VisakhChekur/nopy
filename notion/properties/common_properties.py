@@ -130,8 +130,6 @@ class Text(RichText):
 
     def __post_init__(self, text: Optional[dict[str, Any]]):  # type: ignore
 
-        if not text and not self.link:
-            raise TypeError("provide 'link' or 'text'")
         if text:
             self.link = Link(**text)
 

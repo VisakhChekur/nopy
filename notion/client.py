@@ -94,7 +94,7 @@ class NotionClient:
         if save_to_fp:
             self._save_to_fp(db_dict, Path(save_to_fp))
 
-        return db_dict
+        return self._mapper.map_to_db(db_dict)
 
     def create_db(self, db_dict: dict[str, Any]):
 

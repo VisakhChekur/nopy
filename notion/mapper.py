@@ -72,5 +72,5 @@ class Mapper:
         # Getting title and description
         db_dict["db_title"] = [Text(**t) for t in db_dict["title"]]
         db_dict["db_description"] = [Text(**t) for t in db_dict["description"]]
-        db_dict["_client"] = self._client
+        db_dict["client"] = self._client
         return Database(**db_dict)
