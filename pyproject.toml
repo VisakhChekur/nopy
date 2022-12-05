@@ -20,6 +20,7 @@ mkdocstrings-python = "^0.8.2"
 pytest = "^7.2.0"
 flake8 = "^6.0.0"
 autoflake = "^2.0.0"
+pre-commit = "^2.20.0"
 
 [tool.isort]
 profile = "black"

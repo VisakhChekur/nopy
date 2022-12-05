@@ -1,22 +1,5 @@
-from notion.properties.common_properties import Option
-from notion.properties.common_properties import StatusGroup
-from notion.properties.db_properties import DBCheckbox
-from notion.properties.db_properties import DBCreatedBy
-from notion.properties.db_properties import DBCreatedTime
-from notion.properties.db_properties import DBDate
-from notion.properties.db_properties import DBEmail
-from notion.properties.db_properties import DBFiles
-from notion.properties.db_properties import DBFormula
-from notion.properties.db_properties import DBLastEditedBy
-from notion.properties.db_properties import DBLastEditedTime
-from notion.properties.db_properties import DBMultiSelect
-from notion.properties.db_properties import DBNumber
-from notion.properties.db_properties import DBPhoneNumber
-from notion.properties.db_properties import DBSelect
-from notion.properties.db_properties import DBStatus
-from notion.properties.db_properties import DBText
-from notion.properties.db_properties import DBTitle
-from notion.properties.db_properties import DBUrl
+import notion.properties.common_properties as cp
+import notion.properties.db_properties as dbp
 from notion.properties.prop_enums import NumberFormat
 from notion.properties.prop_enums import PropTypes
 
@@ -24,7 +7,7 @@ from notion.properties.prop_enums import PropTypes
 def test_title_from_dict():
 
     title_dict = {"id": "title", "name": "Name", "type": "title", "title": {}}
-    title = DBTitle.from_dict(title_dict)
+    title = dbp.DBTitle.from_dict(title_dict)
 
     assert title.id == title_dict["id"]
     assert title.name == title_dict["name"]
@@ -34,7 +17,7 @@ def test_title_from_dict():
 def test_text_from_dict():
 
     text_dict = {"id": "hTKU", "name": "Text", "type": "rich_text", "rich_text": {}}
-    text = DBText.from_dict(text_dict)
+    text = dbp.DBText.from_dict(text_dict)
 
     assert text.id == text_dict["id"]
     assert text.name == text_dict["name"]
@@ -44,7 +27,7 @@ def test_text_from_dict():
 def test_date_from_dict():
 
     date_dict = {"id": "wx%3Ax", "name": "Date", "type": "date", "date": {}}
-    date = DBDate.from_dict(date_dict)
+    date = dbp.DBDate.from_dict(date_dict)
 
     assert date.id == date_dict["id"]
     assert date.name == date_dict["name"]
@@ -54,7 +37,7 @@ def test_date_from_dict():
 def test_files_from_dict():
 
     files_dict = {"id": "l%5Bht", "name": "Files & media", "type": "files", "files": {}}
-    files = DBFiles.from_dict(files_dict)
+    files = dbp.DBFiles.from_dict(files_dict)
 
     assert files.id == files_dict["id"]
     assert files.name == files_dict["name"]
@@ -69,7 +52,7 @@ def test_checkbox_from_dict():
         "type": "checkbox",
         "checkbox": {},
     }
-    checkbox = DBCheckbox.from_dict(checkbox_dict)
+    checkbox = dbp.DBCheckbox.from_dict(checkbox_dict)
 
     assert checkbox.id == checkbox_dict["id"]
     assert checkbox.name == checkbox_dict["name"]
@@ -79,7 +62,7 @@ def test_checkbox_from_dict():
 def test_url_from_dict():
 
     url_dict = {"id": "gafc", "name": "URL", "type": "url", "url": {}}
-    url = DBUrl.from_dict(url_dict)
+    url = dbp.DBUrl.from_dict(url_dict)
 
     assert url.id == url_dict["id"]
     assert url.name == url_dict["name"]
@@ -89,7 +72,7 @@ def test_url_from_dict():
 def test_email_from_dict():
 
     email_dict = {"id": "BxjB", "name": "Email", "type": "email", "email": {}}
-    email = DBEmail.from_dict(email_dict)
+    email = dbp.DBEmail.from_dict(email_dict)
 
     assert email.id == email_dict["id"]
     assert email.name == email_dict["name"]
@@ -104,7 +87,7 @@ def test_phone_number_from_dict():
         "type": "phone_number",
         "phone_number": {},
     }
-    phone_number = DBPhoneNumber.from_dict(phone_number_dict)
+    phone_number = dbp.DBPhoneNumber.from_dict(phone_number_dict)
 
     assert phone_number.id == phone_number_dict["id"]
     assert phone_number.name == phone_number_dict["name"]
@@ -119,7 +102,7 @@ def test_created_time_from_dict():
         "type": "created_time",
         "created_time": {},
     }
-    created_time = DBCreatedTime.from_dict(created_time_dict)
+    created_time = dbp.DBCreatedTime.from_dict(created_time_dict)
 
     assert created_time.id == created_time_dict["id"]
     assert created_time.name == created_time_dict["name"]
@@ -134,7 +117,7 @@ def test_created_by_from_dict():
         "type": "created_by",
         "created_by": {},
     }
-    created_by = DBCreatedBy.from_dict(created_by_dict)
+    created_by = dbp.DBCreatedBy.from_dict(created_by_dict)
 
     assert created_by.id == created_by_dict["id"]
     assert created_by.name == created_by_dict["name"]
@@ -149,7 +132,7 @@ def test_last_edited_time_from_dict():
         "type": "last_edited_time",
         "last_edited_time": {},
     }
-    last_edited_time = DBLastEditedTime.from_dict(last_edited_time_dict)
+    last_edited_time = dbp.DBLastEditedTime.from_dict(last_edited_time_dict)
 
     assert last_edited_time.id == last_edited_time_dict["id"]
     assert last_edited_time.name == last_edited_time_dict["name"]
@@ -164,7 +147,7 @@ def test_last_edited_by_from_dict():
         "type": "last_edited_by",
         "last_edited_by": {},
     }
-    last_edited_by = DBLastEditedBy.from_dict(last_edited_by_dict)
+    last_edited_by = dbp.DBLastEditedBy.from_dict(last_edited_by_dict)
 
     assert last_edited_by.id == last_edited_by_dict["id"]
     assert last_edited_by.name == last_edited_by_dict["name"]
@@ -179,7 +162,7 @@ def test_number_from_dict():
         "type": "number",
         "number": {"format": "number"},
     }
-    number = DBNumber.from_dict(number_dict)
+    number = dbp.DBNumber.from_dict(number_dict)
 
     assert number.id == number_dict["id"]
     assert number.name == number_dict["name"]
@@ -200,13 +183,13 @@ def test_select_from_dict():
             ]
         },
     }
-    select = DBSelect.from_dict(select_dict)
+    select = dbp.DBSelect.from_dict(select_dict)
 
     assert select.id == select_dict["id"]
     assert select.name == select_dict["name"]
     assert select.type == PropTypes.SELECT
     assert len(select.options) == 2
-    assert all((isinstance(opt, Option) for opt in select.options))
+    assert all((isinstance(opt, cp.Option) for opt in select.options))
 
 
 def test_multi_select_from_dict():
@@ -230,13 +213,13 @@ def test_multi_select_from_dict():
             ]
         },
     }
-    multi_select = DBMultiSelect.from_dict(multi_select_dict)
+    multi_select = dbp.DBMultiSelect.from_dict(multi_select_dict)
 
     assert multi_select.id == multi_select_dict["id"]
     assert multi_select.name == multi_select_dict["name"]
     assert multi_select.type == PropTypes.MULTI_SELECT
     assert len(multi_select.options) == 2
-    assert all((isinstance(opt, Option) for opt in multi_select.options))
+    assert all((isinstance(opt, cp.Option) for opt in multi_select.options))
 
 
 def test_status_from_dict():
@@ -285,15 +268,15 @@ def test_status_from_dict():
             ],
         },
     }
-    status = DBStatus.from_dict(status_dict)
+    status = dbp.DBStatus.from_dict(status_dict)
 
     assert status.id == status_dict["id"]
     assert status.name == status_dict["name"]
     assert status.type == PropTypes.STATUS
     assert len(status.options) == 3
-    assert all((isinstance(opt, Option) for opt in status.options))
+    assert all((isinstance(opt, cp.Option) for opt in status.options))
     assert len(status.groups) == 3
-    assert all((isinstance(grp, StatusGroup) for grp in status.groups))
+    assert all((isinstance(grp, cp.StatusGroup) for grp in status.groups))
 
 
 def test_formula_from_dict():
@@ -304,7 +287,7 @@ def test_formula_from_dict():
         "type": "formula",
         "formula": {"expression": 'prop("Created time")'},
     }
-    formula = DBFormula.from_dict(formula_dict)
+    formula = dbp.DBFormula.from_dict(formula_dict)
 
     assert formula.id == formula_dict["id"]
     assert formula.name == formula_dict["name"]

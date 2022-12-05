@@ -7,31 +7,8 @@ import dateutil.parser as date_parser
 
 from notion.objects.db import Database
 from notion.objects.properties import Properties
-from notion.properties.common_properties import BlockParent
-from notion.properties.common_properties import DatabaseParent
-from notion.properties.common_properties import Emoji
-from notion.properties.common_properties import File
-from notion.properties.common_properties import PageParent
-from notion.properties.common_properties import Text
-from notion.properties.common_properties import WorkspaceParent
-from notion.properties.db_properties import DBCheckbox
-from notion.properties.db_properties import DBCreatedBy
-from notion.properties.db_properties import DBCreatedTime
-from notion.properties.db_properties import DBDate
-from notion.properties.db_properties import DBEmail
-from notion.properties.db_properties import DBFiles
-from notion.properties.db_properties import DBFormula
-from notion.properties.db_properties import DBLastEditedBy
-from notion.properties.db_properties import DBLastEditedTime
-from notion.properties.db_properties import DBMultiSelect
-from notion.properties.db_properties import DBNumber
-from notion.properties.db_properties import DBPhoneNumber
-from notion.properties.db_properties import DBProp
-from notion.properties.db_properties import DBSelect
-from notion.properties.db_properties import DBStatus
-from notion.properties.db_properties import DBText
-from notion.properties.db_properties import DBTitle
-from notion.properties.db_properties import DBUrl
+import notion.properties.common_properties as cp
+import notion.properties.db_properties as dbp
 from notion.typings import DBProps
 from notion.typings import Parents
 
@@ -39,33 +16,33 @@ if TYPE_CHECKING:
     from notion.client import NotionClient
 
 DB_PROPS_REVERSE_MAP: dict[str, type[DBProps]] = {
-    "title": DBTitle,
-    "rich_text": DBText,
-    "number": DBNumber,
-    "select": DBSelect,
-    "multi_select": DBMultiSelect,
-    "date": DBDate,
-    "files": DBFiles,
-    "checkbox": DBCheckbox,
-    "url": DBUrl,
-    "email": DBEmail,
-    "phone_number": DBPhoneNumber,
-    "formula": DBFormula,
-    "created_time": DBCreatedTime,
-    "created_by": DBCreatedBy,
-    "last_edited_time": DBLastEditedTime,
-    "last_edited_by": DBLastEditedBy,
-    "status": DBStatus,
-    "unsupported": DBProp,
+    "title": dbp.DBTitle,
+    "rich_text": dbp.DBText,
+    "number": dbp.DBNumber,
+    "select": dbp.DBSelect,
+    "multi_select": dbp.DBMultiSelect,
+    "date": dbp.DBDate,
+    "files": dbp.DBFiles,
+    "checkbox": dbp.DBCheckbox,
+    "url": dbp.DBUrl,
+    "email": dbp.DBEmail,
+    "phone_number": dbp.DBPhoneNumber,
+    "formula": dbp.DBFormula,
+    "created_time": dbp.DBCreatedTime,
+    "created_by": dbp.DBCreatedBy,
+    "last_edited_time": dbp.DBLastEditedTime,
+    "last_edited_by": dbp.DBLastEditedBy,
+    "status": dbp.DBStatus,
+    "unsupported": dbp.DBProp,
 }
 
 PAGE_PROPS_REVERSE_MAP: dict[str, Any] = {}
 
 PARENT_REVERSE_MAP: dict[str, type[Parents]] = {
-    "database_id": DatabaseParent,
-    "page_id": PageParent,
-    "block_id": BlockParent,
-    "workspace": WorkspaceParent,
+    "database_id": cp.DatabaseParent,
+    "page_id": cp.PageParent,
+    "block_id": cp.BlockParent,
+    "workspace": cp.WorkspaceParent,
 }
 
 
@@ -91,11 +68,11 @@ class Mapper:
         if no_mutate:
             db = db.copy()
 
-        db["cover"] = File.from_dict(db["cover"])
+        db["cover"] = cp.File.from_dict(db["cover"])
         db["created_time"] = date_parser.parse(db["created_time"])
         db["last_edited_time"] = date_parser.parse(db["last_edited_time"])
-        db["rich_title"] = [Text.from_dict(t) for t in db["title"]]
-        db["rich_description"] = [Text.from_dict(t) for t in db["description"]]
+        db["rich_title"] = [cp.Text.from_dict(t) for t in db["title"]]
+        db["rich_description"] = [cp.Text.from_dict(t) for t in db["description"]]
         db["icon"] = self._get_icon(db["icon"])
         db["properties"] = self._get_props(db["properties"], DB_PROPS_REVERSE_MAP)
         db["client"] = self._client
@@ -111,12 +88,12 @@ class Mapper:
 
         return Database(**db)
 
-    def _get_icon(self, icon_dict: dict[str, Any]) -> Union[File, Emoji]:
+    def _get_icon(self, icon_dict: dict[str, Any]) -> Union[cp.File, cp.Emoji]:
         """Gets the corresponding object of the Icon based on it's type."""
 
         if icon_dict["type"] == "emoji":
-            return Emoji.from_dict(icon_dict)
-        return File.from_dict(icon_dict)
+            return cp.Emoji.from_dict(icon_dict)
+        return cp.File.from_dict(icon_dict)
 
     def _get_props(
         self, prop_dict: dict[str, Any], map: dict[str, type[DBProps]]

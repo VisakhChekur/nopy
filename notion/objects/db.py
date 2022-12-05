@@ -11,9 +11,7 @@ from typing import Union
 from notion.helpers import get_plain_text
 from notion.objects.notion_object import NotionObject
 from notion.objects.properties import Properties
-from notion.properties.common_properties import Emoji
-from notion.properties.common_properties import File
-from notion.properties.common_properties import Text
+import notion.properties.common_properties as cp
 from notion.typings import Parents
 
 if TYPE_CHECKING:
@@ -28,14 +26,14 @@ class Database(NotionObject):
     """
 
     title: str = ""
-    rich_title: Iterable[Text] = field(default_factory=list)
+    rich_title: Iterable[cp.Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
     created_time: Optional[datetime] = None
     last_edited_time: Optional[datetime] = None
     description: str = ""
-    rich_description: Iterable[Text] = field(default_factory=list)
-    icon: Optional[Union[File, Emoji]] = None
-    cover: Optional[File] = None
+    rich_description: Iterable[cp.Text] = field(default_factory=list)
+    icon: Optional[Union[cp.File, cp.Emoji]] = None
+    cover: Optional[cp.File] = None
     parent: Optional[Parents] = None
     url: str = ""
     archived: bool = False
