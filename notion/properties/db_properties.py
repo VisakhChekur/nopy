@@ -13,6 +13,7 @@ from notion.properties.common_properties import StatusGroup
 from notion.properties.prop_enums import NumberFormat
 from notion.properties.prop_enums import PropTypes
 
+# Unsupported = people,
 
 @dataclass
 class DBProp(BaseProperty):

@@ -71,7 +71,7 @@ def test_rich_text_from_dict():
 
     rich_text_dict = {
         "type": "text",
-        "text": {"content": "Test Database", "link": None},
+        "text": {"content": "Test Database  ", "link": None},
         "annotations": {
             "bold": False,
             "italic": False,
@@ -80,7 +80,7 @@ def test_rich_text_from_dict():
             "code": False,
             "color": "default",
         },
-        "plain_text": "Test Database",
+        "plain_text": "Test Database  ",  # don't remove whitespace
         "href": "sample href",
     }
     rich_text = RichText.from_dict(rich_text_dict)
@@ -91,7 +91,7 @@ def test_rich_text_from_dict():
     assert isinstance(rich_text.annotations, Annotations) == True  # noqa
 
 
-def test_text_from_dict(db):
+def test_text_from_dict():
 
     rich_text_dict = {
         "type": "text",
@@ -104,7 +104,7 @@ def test_text_from_dict(db):
             "code": False,
             "color": "default",
         },
-        "plain_text": "Test Database",
+        "plain_text": "Test Database  ", # don't remove whitespace
         "href": "sample href",
     }
     rich_text = Text.from_dict(rich_text_dict)
@@ -146,7 +146,7 @@ def test_file_from_dict():
     assert isinstance(file_obj.expiry_time, datetime)
 
 
-def test_emoji_from_dict(db):
+def test_emoji_from_dict():
 
     emoji_dict = {"type": "emoji", "emoji": "\ud83c\udf0e"}
     emoji = Emoji.from_dict(emoji_dict)
@@ -155,7 +155,7 @@ def test_emoji_from_dict(db):
     assert emoji.type == EmojiTypes.EMOJI
 
 
-def test_db_parent_from_dict(db):
+def test_db_parent_from_dict():
 
     db_parent_dict = {
         "type": "database_id",
@@ -167,7 +167,7 @@ def test_db_parent_from_dict(db):
     assert db_parent.type == ParentTypes.DATABASE
 
 
-def test_page_parent_from_dict(db):
+def test_page_parent_from_dict():
 
     page_parent_dict = {
         "type": "page_id",
@@ -188,7 +188,7 @@ def test_workspace_parent_from_dict():
     assert workspace_parent.type == ParentTypes.WORKSPACE
 
 
-def test_block_parent_from_dict(db):
+def test_block_parent_from_dict():
 
     block_parent_dict = {
         "type": "block_id",

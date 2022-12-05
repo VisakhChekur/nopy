@@ -12,7 +12,7 @@ class NotionObject(metaclass=abc.ABCMeta):
 
     client: InitVar[Optional["NotionClient"]] = None
 
-    def __post_init_parse__(self, client: Optional["NotionClient"]):
+    def __post_init__(self, client: Optional["NotionClient"]):
         self._client = client
 
     @abc.abstractmethod

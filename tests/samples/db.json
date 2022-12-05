@@ -1,10 +1,10 @@
 {
     "object": "database",
-    "id": "22cfe672-c782-4cc9-b2bd-0dc9e9beed06",
+    "id": "test_db_id",
     "cover": {
         "type": "external",
         "external": {
-            "url": "https://www.notion.so/images/page-cover/met_william_morris_1875.jpg"
+            "url": "cover_url"
         }
     },
     "icon": {
@@ -263,8 +263,8 @@
     },
     "parent": {
         "type": "page_id",
-        "page_id": "781cdbee-f77a-45b5-b5ee-d5386296a551"
+        "page_id": "test_page_id"
     },
-    "url": "https://www.notion.so/22cfe672c7824cc9b2bd0dc9e9beed06",
+    "url": "https://www.notion.so/test_db",
     "archived": false
 }
