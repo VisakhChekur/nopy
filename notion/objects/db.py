@@ -8,10 +8,10 @@ from typing import Iterable
 from typing import Optional
 from typing import Union
 
+import notion.properties.common_properties as cp
 from notion.helpers import get_plain_text
 from notion.objects.notion_object import NotionObject
 from notion.objects.properties import Properties
-import notion.properties.common_properties as cp
 from notion.typings import Parents
 
 if TYPE_CHECKING:

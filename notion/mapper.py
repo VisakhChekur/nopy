@@ -5,10 +5,10 @@ from typing import Union
 
 import dateutil.parser as date_parser
 
-from notion.objects.db import Database
-from notion.objects.properties import Properties
 import notion.properties.common_properties as cp
 import notion.properties.db_properties as dbp
+from notion.objects.db import Database
+from notion.objects.properties import Properties
 from notion.typings import DBProps
 from notion.typings import Parents
 
@@ -47,7 +47,7 @@ PARENT_REVERSE_MAP: dict[str, type[Parents]] = {
 
 
 class Mapper:
-    """Handles mapping response from the Notion API to the correspoding 
+    """Handles mapping response from the Notion API to the correspoding
     object."""
 
     # Also includes unsupported keys as well.

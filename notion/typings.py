@@ -12,7 +12,9 @@ OptionalDict = Optional[dict[str, Any]]
 # Type to properly parse properties, title, description.
 IterableInitVars = InitVar[Optional[Iterable[dict[str, Any]]]]
 
-Parents = Union[cp.DatabaseParent, cp.PageParent, cp.BlockParent, cp.WorkspaceParent, cp.Parent]
+Parents = Union[
+    cp.DatabaseParent, cp.PageParent, cp.BlockParent, cp.WorkspaceParent, cp.Parent
+]
 DBProps = Union[
     dbp.DBTitle,
     dbp.DBText,
