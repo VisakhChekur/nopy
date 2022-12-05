@@ -15,6 +15,7 @@ from notion.properties.prop_enums import PropTypes
 
 # Unsupported = people,
 
+
 @dataclass
 class DBProp(BaseProperty):
 

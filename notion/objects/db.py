@@ -1,26 +1,29 @@
-from dataclasses import InitVar, field
+from dataclasses import InitVar
+from dataclasses import dataclass
+from dataclasses import field
 from datetime import datetime
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Iterable
 from typing import Optional
 from typing import Union
-from dataclasses import dataclass
+
 from notion.helpers import get_plain_text
 from notion.objects.notion_object import NotionObject
+from notion.objects.properties import Properties
 from notion.properties.common_properties import Emoji
 from notion.properties.common_properties import File
 from notion.properties.common_properties import Text
-from notion.objects.properties import Properties
 from notion.typings import Parents
 
 if TYPE_CHECKING:
     from notion.client import NotionClient
 
+
 @dataclass
 class Database(NotionObject):
     """A representation of a Notion database.
-    
+
     NOTE: rich_* has priority over their corresponding parts
     """
 
@@ -39,7 +42,7 @@ class Database(NotionObject):
     is_inline: bool = False
     id: str = ""
     client: InitVar[Optional["NotionClient"]] = None
-    
+
     def __post_init__(self, client: Optional["NotionClient"]):
         super().__post_init__(client)
 

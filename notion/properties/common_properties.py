@@ -240,7 +240,7 @@ class DatabaseParent(Parent):
 
 
 @dataclass
-class PageParent    (Parent):
+class PageParent(Parent):
     def __post_init__(self):
         self.type = ParentTypes.PAGE
 

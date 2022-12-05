@@ -104,7 +104,7 @@ def test_text_from_dict():
             "code": False,
             "color": "default",
         },
-        "plain_text": "Test Database  ", # don't remove whitespace
+        "plain_text": "Test Database  ",  # don't remove whitespace
         "href": "sample href",
     }
     rich_text = Text.from_dict(rich_text_dict)
