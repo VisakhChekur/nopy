@@ -9,6 +9,7 @@ from typing import Type
 
 from dateutil import parser as date_parser
 
+from notion.exceptions import UnsupportedError
 from notion.properties.base import BaseProperty
 from notion.properties.prop_enums import Colors
 from notion.properties.prop_enums import EmojiTypes
@@ -34,12 +35,25 @@ class Option(BaseProperty):
     id: str = ""
     color: Colors = Colors.DEFAULT
 
+    def serialize_create(self) -> dict[str, Any]:
+
+        return {"name": self.name, "color": self.color.value}
+
+    def serialize_update(self) -> dict[str, Any]:
+
+        # If a new database/page is being created or the property
+        # is a new one on an existing database (implies 'id' is empty.)
+        if not self.id:
+            return self.serialize_create()
+        return {"id": self.id, "color": self.color.value}
+
     @classmethod
     def from_dict(cls: Type[Option], args: dict[str, str]) -> Option:
         args["color"] = Colors[args["color"].upper()]  # type: ignore
         return Option(**args)
 
 
+# TODO: Implement serialization.
 @dataclass
 class StatusGroup(BaseProperty):
     """A representation of a Status Group.
@@ -91,7 +105,21 @@ class Annotations(BaseProperty):
 
         return Annotations(**args)
 
+    def serialize_create(self) -> dict[str, Any]:
+        return {
+            "bold": self.bold,
+            "italic": self.italic,
+            "strikethrough": self.strikethrough,
+            "underline": self.underline,
+            "code": self.code,
+            "color": self.color.value,
+        }
 
+    def serialize_update(self) -> dict[str, Any]:
+        return self.serialize_create()
+
+
+# TODO: Implement serialization.
 class Link(BaseProperty):
     """A representation of a 'Link' object.
 
@@ -105,6 +133,12 @@ class Link(BaseProperty):
     @classmethod
     def from_dict(cls: Type[Link], args: dict[str, Any]) -> Link:
         return Link(args["url"])
+
+    def serialize_create(self) -> dict[str, Any]:
+        return {"type": "url", "url": self.url}
+
+    def serialize_update(self) -> dict[str, Any]:
+        return self.serialize_create()
 
 
 @dataclass
@@ -127,6 +161,12 @@ class RichText(BaseProperty):
         self.type = RichTextTypes.UNSUPPORTED
         self.plain_text = self.plain_text.strip()
 
+    def serialize_create(self) -> dict[str, Any]:
+        raise UnsupportedError("'mention' and 'equation' are not supported yet")
+
+    def serialize_update(self) -> dict[str, Any]:
+        raise UnsupportedError("'mention' and 'equation' are not supported yet")
+
     @classmethod
     def from_dict(cls: Type[RichText], args: dict[str, Any]) -> RichText:
 
@@ -147,7 +187,10 @@ class Text(RichText):
         annotations: The annotations applied on the text.
         href: The link, if any, within the text.
         type: The 'type' of the Rich Text.
-        link: Any inline link within the text.
+        link:
+            Any inline link within the text. This should be the one used
+            by the user when creating a new property or updating an
+            existing property instead of `href`.
     """
 
     link: Optional[Link] = None
@@ -156,6 +199,22 @@ class Text(RichText):
 
         self.plain_text = self.plain_text.strip()
         self.type = RichTextTypes.TEXT
+
+    def serialize_create(self) -> dict[str, Any]:
+
+        if self.link:
+            text = {"content": self.plain_text, "link": self.link.serialize_create()}
+        else:
+            text = {"content": self.plain_text}
+        serialized = {
+            "type": "text",
+            "text": text,
+            "annotations": self.annotations.serialize_create(),
+        }
+        return serialized
+
+    def serialize_update(self) -> dict[str, Any]:
+        return self.serialize_create()
 
     @classmethod
     def from_dict(cls: Type[Text], args: dict[str, Any]) -> Text:
@@ -187,6 +246,12 @@ class File(BaseProperty):
     expiry_time: Optional[datetime] = None
     type: FileTypes = FileTypes.EXTERNAL
 
+    def serialize_create(self) -> dict[str, Any]:
+        return {"type": self.type.value, self.type.value: {"url": self.url}}
+
+    def serialize_update(self) -> dict[str, Any]:
+        return self.serialize_create()
+
     @classmethod
     def from_dict(cls: Type[File], args: dict[str, Any]) -> File:
 
@@ -217,6 +282,12 @@ class Emoji(BaseProperty):
 
         self.type = EmojiTypes.EMOJI
 
+    def serialize_create(self) -> dict[str, Any]:
+        return {"emoji": self.emoji}
+
+    def serialize_update(self) -> dict[str, Any]:
+        return self.serialize_create()
+
     @classmethod
     def from_dict(cls: Type[Emoji], args: dict[str, Any]) -> Emoji:
         return Emoji(args["emoji"])
@@ -227,6 +298,12 @@ class Parent(BaseProperty):
 
     id: str
     type: ParentTypes = ParentTypes.DATABASE
+
+    def serialize_create(self) -> dict[str, Any]:
+        return {self.type.value: self.id, "type": self.type.value}
+
+    def serialize_update(self) -> dict[str, Any]:
+        return self.serialize_create()
 
 
 @dataclass

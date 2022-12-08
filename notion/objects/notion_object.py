@@ -1,7 +1,6 @@
 import abc
 from dataclasses import InitVar
 from typing import TYPE_CHECKING
-from typing import Any
 from typing import Optional
 
 if TYPE_CHECKING:
@@ -15,9 +14,9 @@ class NotionObject(metaclass=abc.ABCMeta):
     def __post_init__(self, client: Optional["NotionClient"]):
         self._client = client
 
-    @abc.abstractmethod
-    def serialize(self) -> dict[str, Any]:
-        """Serializes the instance according to the Notion spec."""
+    # @abc.abstractmethod
+    # def serialize(self, create: bool=False) -> dict[str, Any]:
+    #     """Serializes the instance according to the Notion spec."""
 
     @abc.abstractmethod
     def update(self):

@@ -13,7 +13,15 @@ class BaseProperty:
         the Notion API spec."""
         raise NotImplementedError("to be implemented by subclass")
 
-    def serialize(self) -> dict[str, Any]:
+    def serialize_create(self) -> dict[str, Any]:
+        """Serializes the property as per the Notion spec for creation of the
+        datbase/page."""
+
+        raise NotImplementedError("to be implemented by subclass")
+
+    def serialize_update(self) -> dict[str, Any]:
+        """Serializes the property as per the Notion spec for updation of the
+        database/page."""
         raise NotImplementedError("to be implemented by subclass")
 
 

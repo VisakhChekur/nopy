@@ -231,6 +231,7 @@ class DBMultiSelect(DBProp):
         return DBMultiSelect(**new_args)
 
 
+# TODO: How to create a status property on a DB being created?
 @dataclass
 class DBStatus(DBProp):
 

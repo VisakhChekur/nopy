@@ -16,6 +16,7 @@ from notion.exceptions import ValidationError
 from notion.mapper import Mapper
 
 
+# TODO: Try 'faster-than-requests' instead of 'requests'
 def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to handle HTTPErrors."""
 
@@ -98,7 +99,7 @@ class NotionClient:
 
     def create_db(self, db_dict: dict[str, Any]):
 
-        self._post_request(DB_ENDPOINT[:-1], db_dict)
+        self._post_request(DB_ENDPOINT, db_dict)
 
     # ------ PAGE RELATED METHODS -----
     def retrieve_page(self, page_id: str, *, save_to_fp: str | Path = ""):

@@ -26,6 +26,14 @@ class Properties(MutableMapping[str, DBProps]):
             self._names[key] = prop
             self._ids[key] = prop
 
+    def id_exists(self, key: str) -> bool:
+
+        return key in self._ids
+
+    def name_exists(self, key: str) -> bool:
+
+        return key in self._names
+
     def _set_trusted(self, key: str, prop: DBProps):
         """Used when setting the properties after getting the values from a
         trusted source i.e. the Notion API. No need for extra checks provided
@@ -64,3 +72,6 @@ class Properties(MutableMapping[str, DBProps]):
 
     def __repr__(self):
         return repr(self._names)
+
+    def __contains__(self, key: str) -> bool:  # type: ignore
+        return key in self._ids or key in self._names

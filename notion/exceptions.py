@@ -26,3 +26,9 @@ class UnsupportedError(NotionError):
     """Unsupported by Notion or by this library."""
 
     pass
+
+
+class SerializationError(NotionError):
+    """Error that took place during serialization."""
+
+    pass
