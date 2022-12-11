@@ -23,6 +23,6 @@ class NotionObject(metaclass=abc.ABCMeta):
         """Updates the instance to the Notion server and refreshes."""
 
     @abc.abstractmethod
-    def refresh(self, in_place: bool = True):
+    def refresh(self, in_place: bool = True) -> "NotionObject":
         """Refreshes the instance with the latest version in the Notion
         server."""

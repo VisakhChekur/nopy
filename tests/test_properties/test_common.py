@@ -23,34 +23,23 @@ def annotation():
 
 # ----- 'serialization' Tests -----
 @pytest.mark.serialize
-def test_option_serialize_create(option):
+def test_option_serialize(option):
 
-    assert option.serialize_create() == {
+    assert option.serialize() == {
         "name": "option",
         "color": "default",
     }
 
 
 @pytest.mark.serialize
-def test_option_serialize_update(option):
-
-    assert option.serialize_update() == {"id": "1", "color": "default"}
-
-
-@pytest.mark.serialize
-def test_status_group_serialize_create(option):
-    pass
-
-
-@pytest.mark.serialize
-def test_status_group_serialize_update(option):
+def test_status_group_serialize(option):
     pass
 
 
 @pytest.mark.serialize
 def test_annotations_serialize(annotation):
 
-    annot = annotation.serialize_create()
+    annot = annotation.serialize()
 
     assert annot == {
         "italic": True,
@@ -68,13 +57,13 @@ def test_text_serialize_with_link(annotation):
     link = cp.Link("a url")
     text = cp.Text("Example text", annotations=annotation, link=link)
 
-    assert text.serialize_create() == {
+    assert text.serialize() == {
         "type": "text",
         "text": {
             "content": "Example text",
             "link": {"type": "url", "url": "a url"},
-            "annotations": annotation.serialize_create(),
         },
+        "annotations": annotation.serialize(),
     }
 
 
@@ -83,12 +72,12 @@ def test_text_serialize_without_link(annotation):
 
     text = cp.Text("Example text", annotations=annotation)
 
-    assert text.serialize_create() == {
+    assert text.serialize() == {
         "type": "text",
         "text": {
             "content": "Example text",
         },
-        "annotations": annotation.serialize_create(),
+        "annotations": annotation.serialize(),
     }
 
 
@@ -97,7 +86,7 @@ def test_file_serialize():
 
     file = cp.File("file url")
 
-    assert file.serialize_create() == {
+    assert file.serialize() == {
         "type": "external",
         "external": {"url": "file url"},
     }
@@ -108,7 +97,7 @@ def test_db_parent_serialize():
 
     parent = cp.DatabaseParent("db id")
 
-    assert parent.serialize_create() == {"type": "database_id", "database_id": "db id"}
+    assert parent.serialize() == {"type": "database_id", "database_id": "db id"}
 
 
 @pytest.mark.serialize
@@ -116,7 +105,7 @@ def test_page_parent_serialize():
 
     parent = cp.PageParent("page id")
 
-    assert parent.serialize_create() == {"type": "page_id", "page_id": "page id"}
+    assert parent.serialize() == {"type": "page_id", "page_id": "page id"}
 
 
 @pytest.mark.serialize
@@ -124,7 +113,7 @@ def test_block_parent_serialize():
 
     parent = cp.BlockParent("block id")
 
-    assert parent.serialize_create() == {"type": "block_id", "block_id": "block id"}
+    assert parent.serialize() == {"type": "block_id", "block_id": "block id"}
 
 
 @pytest.mark.serialize
@@ -132,7 +121,7 @@ def test_workspace_parent_serialize():
 
     parent = cp.WorkspaceParent()
 
-    assert parent.serialize_create() == {"type": "workspace", "workspace": True}
+    assert parent.serialize() == {"type": "workspace", "workspace": True}
 
 
 # ----- `from_dict` Tests -----

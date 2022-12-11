@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+from pprint import pprint
 from typing import Any
 from typing import Callable
 
@@ -101,6 +102,12 @@ class NotionClient:
 
         self._post_request(DB_ENDPOINT, db_dict)
 
+    def update_db(self, db_id: str, db_dict: dict[str, Any]):
+
+        endpoint = DB_ENDPOINT + db_id
+        resp = self._patch_request(endpoint, db_dict)
+        pprint(resp)
+
     # ------ PAGE RELATED METHODS -----
     def retrieve_page(self, page_id: str, *, save_to_fp: str | Path = ""):
         """Retrieves the page from Notion.
@@ -175,5 +182,12 @@ class NotionClient:
     def _post_request(self, endpoint: str, data: dict[str, Any]):
 
         response = requests.post(endpoint, json=data, headers=self._headers)
+        response.raise_for_status()
+        return response.json()
+
+    @_handle_http_error
+    def _patch_request(self, endpoint: str, data: dict[str, Any]):
+
+        response = requests.patch(endpoint, json=data, headers=self._headers)
         response.raise_for_status()
         return response.json()

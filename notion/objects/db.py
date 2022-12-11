@@ -4,7 +4,9 @@ from dataclasses import field
 from datetime import datetime
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import ClassVar
 from typing import Optional
+from typing import Set
 from typing import Union
 
 import notion.properties.common_properties as cp
@@ -12,6 +14,7 @@ from notion.helpers import get_plain_text
 from notion.objects.notion_object import NotionObject
 from notion.objects.properties import Properties
 from notion.properties.base import BaseProperty
+from notion.properties.prop_enums import PropTypes
 from notion.typings import Parents
 
 if TYPE_CHECKING:
@@ -23,9 +26,20 @@ class Database(NotionObject):
     """A representation of a Notion database.
 
 
-
     NOTE: rich_* has priority over their corresponding parts
     """
+
+    # Properties to skip in serialization since they can't be updated
+    # nor created by the user. TITLE is an exception since it's a MUST
+    # in every request, that will be handled by the serialization logic
+    # separately to ensure it's present.
+    _SKIP_SERIALIZE: ClassVar[Set[PropTypes]] = {
+        PropTypes.CREATED_BY,
+        PropTypes.CREATED_TIME,
+        PropTypes.LAST_EDITED_BY,
+        PropTypes.LAST_EDITED_TIME,
+        PropTypes.TITLE,
+    }
 
     title: str = ""
     rich_title: list[cp.Text] = field(default_factory=list)
@@ -57,31 +71,48 @@ class Database(NotionObject):
         # Keep track of the original properties if present so they can
         # be used later to determine whether to use the ID or the name
         # when serializing the properties.
-        self._og_props = self.properties._ids  # type: ignore
+        self._og_props: Set[str] = set(self.properties._ids.keys())  # type: ignore
 
-    def refresh(self, in_place: bool = False):
-        pass
+    def set_client(self, client: "NotionClient"):
+        self._client = client
+
+    def refresh(self, in_place: bool = False) -> "Database":
+
+        db = self._client.retrieve_db(self.id)
+        if in_place:
+            self.__dict__.clear()
+            self.__dict__ = db.__dict__
+            return self
+        return db
 
     def update(self):
-        # TODO: Checks to see if the required values are provided.
-        pass
 
-    def serialize_create(self) -> dict[str, Any]:
+        if not self.id:
+            raise ValueError("'id' must be provided")
+        if not self._client:
+            raise ValueError("'client' must be provided")
+
+        serialized = self.serialize()
+        # 'parent' is not allowed when updating databases
+        serialized.pop("parent")
+        self._client.update_db(self.id, serialized)
+        self._og_props = set(self.properties.get_ids())
+
+    def serialize(self) -> dict[str, Any]:
 
         serialized: dict[str, Any] = {
             "is_inline": self.is_inline,
+            "archived": self.archived,
             "properties": self._serialize_props(),
         }
 
         for key in ("parent", "icon", "cover"):
             attr: Optional[BaseProperty] = getattr(self, key)
             if attr:
-                serialized[key] = attr.serialize_create()
+                serialized[key] = attr.serialize()
 
-        serialized["title"] = [t.serialize_create() for t in self.rich_title]
-        serialized["description"] = [
-            t.serialize_create() for t in self.rich_description
-        ]
+        serialized["title"] = [t.serialize() for t in self.rich_title]
+        serialized["description"] = [t.serialize() for t in self.rich_description]
 
         return serialized
 
@@ -89,8 +120,37 @@ class Database(NotionObject):
 
         serialized_props: dict[str, Any] = {self.title: {"title": {}}}
 
+        for name, prop in self.properties.items():
+            if prop.type in Database._SKIP_SERIALIZE:
+                continue
+            serialized_props[name] = prop.serialize()
+
         return serialized_props
 
-    # If the id of the prop existed in the original props, use the id.
-    # If not, use the name instead.
-    # All properties to prioritize IDs over names where applicable.
+    def _serialize_props_update(self) -> dict[str, None]:
+
+        serialized_props: dict[str, Any] = {self.title: {"title": {}}}
+
+        for name, prop in self.properties.items():
+
+            if prop.type in Database._SKIP_SERIALIZE:
+                continue
+            # Changing an existing property
+            if prop.id in self._og_props:
+                serialized_props[prop.id] = prop.serialize()
+            # Newly added property
+            else:
+                serialized_props[name] = prop.serialize()
+
+        deleted_props = self._serialize_deleted_props()
+        serialized_props.update(deleted_props)
+
+        return serialized_props
+
+    def _serialize_deleted_props(self) -> dict[str, None]:
+
+        # Finding the properties that were deleted so that their values
+        # can be correspondingly set
+        curr_prop_ids = set(self.properties.get_ids())
+        deleted_prop_ids = self._og_props.difference(curr_prop_ids)
+        return {prop_id: None for prop_id in deleted_prop_ids}

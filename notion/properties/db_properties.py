@@ -7,6 +7,7 @@ from typing import Any
 from typing import Iterable
 from typing import Type
 
+from notion.exceptions import UnsupportedError
 from notion.properties.base import BaseProperty
 from notion.properties.common_properties import Option
 from notion.properties.common_properties import StatusGroup
@@ -31,6 +32,16 @@ class DBProp(BaseProperty):
     def from_dict(cls: Type[DBProp], args: dict[str, Any]) -> DBProp:
 
         return DBProp(name=args["name"], id=args["id"])
+
+    def serialize(self) -> dict[str, Any]:
+
+        # This single implementation is enough for all the properties
+        # that require no configuration data regarding the property.
+        if self.type == PropTypes.UNSUPPORTED:
+            raise UnsupportedError(
+                "this is an unsupported or invalid database property"
+            )
+        return {self.type.value: {}, "name": self.name}
 
 
 @dataclass
@@ -131,6 +142,9 @@ class DBCreatedTime(DBProp):
 
         return DBCreatedTime(name=args["name"], id=args["id"])
 
+    def serialize(self) -> dict[str, Any]:
+        raise UnsupportedError("'created_time' is not supported by the Notion API")
+
 
 @dataclass
 class DBCreatedBy(DBProp):
@@ -141,6 +155,9 @@ class DBCreatedBy(DBProp):
     def from_dict(cls: Type[DBCreatedBy], args: dict[str, Any]) -> DBCreatedBy:
 
         return DBCreatedBy(name=args["name"], id=args["id"])
+
+    def serialize(self) -> dict[str, Any]:
+        raise UnsupportedError("'created_by' is not supported by the Notion API")
 
 
 @dataclass
@@ -155,6 +172,9 @@ class DBLastEditedTime(DBProp):
 
         return DBLastEditedTime(name=args["name"], id=args["id"])
 
+    def serialize(self) -> dict[str, Any]:
+        raise UnsupportedError("'last_edited_time' is not supported by the Notion API")
+
 
 @dataclass
 class DBLastEditedBy(DBProp):
@@ -166,11 +186,14 @@ class DBLastEditedBy(DBProp):
 
         return DBLastEditedBy(name=args["name"], id=args["id"])
 
+    def serialize(self) -> dict[str, Any]:
+        raise UnsupportedError("'last_edited_by' is not supported by the Notion API")
+
 
 @dataclass
 class DBNumber(DBProp):
 
-    format: NumberFormat
+    format: NumberFormat = NumberFormat.NUMBER
 
     def __post_init__(self):
 
@@ -186,6 +209,9 @@ class DBNumber(DBProp):
         }
 
         return DBNumber(**new_args)
+
+    def serialize(self) -> dict[str, Any]:
+        return {self.type.value: {"format": self.format.value}, "name": self.name}
 
 
 @dataclass
@@ -209,6 +235,10 @@ class DBSelect(DBProp):
 
         return DBSelect(**new_args)
 
+    def serialize(self) -> dict[str, Any]:
+        serialized_options = [opt.serialize() for opt in self.options]
+        return {self.type.value: {"options": serialized_options}, "name": self.name}
+
 
 @dataclass
 class DBMultiSelect(DBProp):
@@ -229,6 +259,10 @@ class DBMultiSelect(DBProp):
             "options": options,
         }
         return DBMultiSelect(**new_args)
+
+    def serialize(self) -> dict[str, Any]:
+        serialized_options = [opt.serialize() for opt in self.options]
+        return {self.type.value: {"options": serialized_options}, "name": self.name}
 
 
 # TODO: How to create a status property on a DB being created?
@@ -256,6 +290,10 @@ class DBStatus(DBProp):
 
         return DBStatus(**new_args)
 
+    def serialize(self) -> dict[str, Any]:
+        # TODO: Confirm with Notion.
+        raise UnsupportedError("'status' types are not supported by the Notion API")
+
 
 @dataclass
 class DBFormula(DBProp):
@@ -272,3 +310,6 @@ class DBFormula(DBProp):
         return DBFormula(
             name=args["name"], id=args["id"], expression=args["formula"]["expression"]
         )
+
+    def serialize(self) -> dict[str, Any]:
+        return {self.type.value: {"expression": self.expression}, "name": self.name}

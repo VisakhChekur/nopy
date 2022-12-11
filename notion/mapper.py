@@ -74,7 +74,7 @@ class Mapper:
         db["rich_title"] = [cp.Text.from_dict(t) for t in db["title"]]
         db["rich_description"] = [cp.Text.from_dict(t) for t in db["description"]]
         db["icon"] = self._get_icon(db["icon"])
-        db["properties"] = self._get_props(db["properties"], DB_PROPS_REVERSE_MAP)
+        db["properties"] = self._get_db_props(db["properties"], DB_PROPS_REVERSE_MAP)
         db["client"] = self._client
 
         # Getting parent
@@ -95,7 +95,7 @@ class Mapper:
             return cp.Emoji.from_dict(icon_dict)
         return cp.File.from_dict(icon_dict)
 
-    def _get_props(
+    def _get_db_props(
         self, prop_dict: dict[str, Any], map: dict[str, type[DBProps]]
     ) -> Properties:
         # TODO: Change type hints once page and block properties are set as well
@@ -108,6 +108,6 @@ class Mapper:
                 prop_class = map["unsupported"]
             prop_instance = prop_class.from_dict(prop)
 
-            props._set_trusted(prop_instance.id, prop_instance)  # type: ignore
+            props._add_trusted(prop_instance)  # type: ignore
 
         return props
