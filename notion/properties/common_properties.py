@@ -6,8 +6,9 @@ from datetime import datetime
 from typing import Any
 from typing import Optional
 from typing import Type
+from zoneinfo import ZoneInfo
 
-from dateutil import parser as date_parser
+import dateutil.parser as date_parser
 
 from notion.exceptions import UnsupportedError
 from notion.properties.base import BaseProperty
@@ -225,6 +226,7 @@ class File(BaseProperty):
     url: str = ""
     expiry_time: Optional[datetime] = None
     type: FileTypes = FileTypes.EXTERNAL
+    name: str = ""
 
     def serialize(self) -> dict[str, Any]:
         return {"type": self.type.value, self.type.value: {"url": self.url}}
@@ -239,6 +241,7 @@ class File(BaseProperty):
             "type": FileTypes[file_type.upper()],
             "url": args[file_type]["url"],
             "expiry_time": expiry_time,
+            "name": args.get("name", ""),
         }
 
         return File(**new_args)
@@ -265,6 +268,25 @@ class Emoji(BaseProperty):
     @classmethod
     def from_dict(cls: Type[Emoji], args: dict[str, Any]) -> Emoji:
         return Emoji(args["emoji"])
+
+
+@dataclass
+class Date(BaseProperty):
+
+    start: datetime
+    end: Optional[datetime] = None
+    time_zone: Optional[ZoneInfo] = None
+
+    @classmethod
+    def from_dict(cls: Type[Date], args: dict[str, Any]) -> Date:
+
+        new_args: dict[str, Any] = {"start": date_parser.parse(args["start"])}
+        if args["end"]:
+            new_args["end"] = date_parser.parse(args["end"])
+        if args["time_zone"]:
+            new_args["time_zone"] = ZoneInfo(args["time_zone"])
+
+        return Date(**new_args)
 
 
 @dataclass

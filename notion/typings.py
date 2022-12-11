@@ -6,6 +6,7 @@ from typing import Union
 
 import notion.properties.common_properties as cp
 import notion.properties.db_properties as dbp
+import notion.properties.page_properties as pgp
 
 OptionalDict = Optional[dict[str, Any]]
 
@@ -35,3 +36,22 @@ DBProps = Union[
     dbp.DBStatus,
     dbp.DBProp,
 ]
+
+PageProps = Union[
+    pgp.PProp,
+    pgp.PTitle,
+    pgp.PText,
+    pgp.PPhoneNumber,
+    pgp.PMultiSelect,
+    pgp.PSelect,
+    pgp.PDate,
+    pgp.PFormula,
+    pgp.PFile,
+    pgp.PCheckbox,
+    pgp.PUrl,
+    pgp.PEmail,
+    pgp.PCreatedTime,
+    pgp.PLastEditedTime,
+]
+
+Props = Union[DBProps, PageProps]

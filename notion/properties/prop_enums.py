@@ -1,5 +1,4 @@
 from enum import Enum
-from enum import StrEnum
 
 
 class PropTypes(Enum):
@@ -101,9 +100,17 @@ class EmojiTypes(Enum):
     EMOJI = "emoji"
 
 
-class ParentTypes(StrEnum):
+class ParentTypes(Enum):
 
     DATABASE = "database_id"
     PAGE = "page_id"
     WORKSPACE = "workspace"
     BLOCK = "block_id"
+
+
+class FormulaTypes(Enum):
+
+    NUMBER = "number"
+    STRING = "string"
+    BOOLEAN = "boolean"
+    DATE = "date"

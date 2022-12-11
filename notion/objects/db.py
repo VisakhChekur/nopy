@@ -78,7 +78,7 @@ class Database(NotionObject):
 
     def refresh(self, in_place: bool = False) -> "Database":
 
-        db = self._client.retrieve_db(self.id)
+        db = self._client.retrieve_db(self.id, use_cached=True)
         if in_place:
             self.__dict__.clear()
             self.__dict__ = db.__dict__
@@ -93,6 +93,8 @@ class Database(NotionObject):
             raise ValueError("'client' must be provided")
 
         serialized = self.serialize()
+        deleted_props = self._serialize_deleted_props()
+        serialized["properties"].update(deleted_props)
         # 'parent' is not allowed when updating databases
         serialized.pop("parent")
         self._client.update_db(self.id, serialized)
@@ -120,30 +122,13 @@ class Database(NotionObject):
 
         serialized_props: dict[str, Any] = {self.title: {"title": {}}}
 
-        for name, prop in self.properties.items():
+        for name, prop in self.properties.iter_names():
             if prop.type in Database._SKIP_SERIALIZE:
                 continue
-            serialized_props[name] = prop.serialize()
-
-        return serialized_props
-
-    def _serialize_props_update(self) -> dict[str, None]:
-
-        serialized_props: dict[str, Any] = {self.title: {"title": {}}}
-
-        for name, prop in self.properties.items():
-
-            if prop.type in Database._SKIP_SERIALIZE:
-                continue
-            # Changing an existing property
-            if prop.id in self._og_props:
-                serialized_props[prop.id] = prop.serialize()
-            # Newly added property
+            if prop.id:
+                serialized_props[prop.name] = prop.serialize()
             else:
                 serialized_props[name] = prop.serialize()
-
-        deleted_props = self._serialize_deleted_props()
-        serialized_props.update(deleted_props)
 
         return serialized_props
 

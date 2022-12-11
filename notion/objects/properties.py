@@ -1,19 +1,19 @@
 from typing import MutableMapping
 
-from notion.typings import DBProps
+from notion.typings import Props
 
 
-class Properties(MutableMapping[str, DBProps]):
+class Properties(MutableMapping[str, Props]):
     def __init__(self):
 
-        self._names: dict[str, DBProps] = {}
-        self._ids: dict[str, DBProps] = {}
+        self._names: dict[str, Props] = {}
+        self._ids: dict[str, Props] = {}
 
     def get(self, key: str):
 
         return self.__getitem__(key)
 
-    def pop(self, key: str) -> DBProps:
+    def pop(self, key: str) -> Props:
 
         try:
             prop = self._names.pop(key)
@@ -24,13 +24,14 @@ class Properties(MutableMapping[str, DBProps]):
             self._names.pop(prop.name, None)
             return prop
 
-    def add_prop(self, prop: DBProps):
+    def add_prop(self, prop: Props):
 
         if prop.id:
             self._ids[prop.id] = prop
-        self._names[prop.name] = prop
+        if prop.name:
+            self._names[prop.name] = prop
 
-    def update_prop(self, key: str, prop: DBProps):
+    def update_prop(self, key: str, prop: Props):
         """Updates the property based on the given key.
 
         This will delete the existing property with the given key
@@ -62,28 +63,24 @@ class Properties(MutableMapping[str, DBProps]):
 
         return self._names.keys()
 
-    def _add_trusted(self, prop: DBProps):
-        """Used when setting the properties after getting the values from a
-        trusted source i.e. the Notion API. No need for extra checks provided
-        in `set()`. The `key` is assumed to be the `id` of the property."""
+    def iter_names(self):
 
-        self._ids[prop.id] = prop
-        self._names[prop.name] = prop
+        return self._names.items()
+
+    def iter_ids(self):
+
+        return self._ids.items()
 
     # ----- MUST Methods -----
-    def __getitem__(self, key: str) -> DBProps:
+    def __getitem__(self, key: str) -> Props:
 
         try:
             return self._names[key]
         except KeyError:
             return self._ids[key]
 
-    def __setitem__(self, key: str, value: DBProps) -> None:
+    def __setitem__(self, key: str, value: Props) -> None:
         raise NotImplementedError("use the 'set()' method instead")
-
-    def __iter__(self):
-
-        return self._names.__iter__()
 
     def __len__(self):
         return len(self._names)
@@ -95,10 +92,17 @@ class Properties(MutableMapping[str, DBProps]):
             self._ids.pop(prop.id, None)
         except KeyError:
             prop = self._ids.pop(key)
-            self._names.pop(prop.name)
+            self._names.pop(prop.name, None)
+
+    def __iter__(self):
+
+        return self._names.__iter__()
 
     def __str__(self):
-        return str(self._names)
+
+        if self._names:
+            return str(self._names)
+        return str(self._ids)
 
     def __repr__(self):
         return repr(self._names)

@@ -4,6 +4,7 @@ from pathlib import Path
 from pprint import pprint
 from typing import Any
 from typing import Callable
+from typing import Optional
 
 import requests
 
@@ -15,6 +16,7 @@ from notion.exceptions import AuthenticationError
 from notion.exceptions import NotFoundError
 from notion.exceptions import ValidationError
 from notion.mapper import Mapper
+from notion.objects.db import Database
 
 
 # TODO: Try 'faster-than-requests' instead of 'requests'
@@ -67,9 +69,12 @@ class NotionClient:
             "Authorization": f"Bearer {self._token}",
             "Notion-Version": API_VERSION,
         }
+        self._db_cache: dict[str, Database] = {}
 
     # ----- DATABASE RELATED METHODS ------
-    def retrieve_db(self, db_id: str, *, save_to_fp: str | Path = ""):
+    def retrieve_db(
+        self, db_id: str, use_cached: bool = True, *, save_to_fp: str | Path = ""
+    ) -> Database:
         """Retrives the database from Notion.
 
         Args:
@@ -92,11 +97,19 @@ class NotionClient:
                 Any error that took place when making requests to Notion.
         """
 
+        cached_db: Optional[Database] = self._db_cache.get(db_id, None)
+
+        if use_cached and cached_db:
+            return cached_db
+        print("coming here")
         db_dict = self._get_request(DB_ENDPOINT + db_id)
         if save_to_fp:
             self._save_to_fp(db_dict, Path(save_to_fp))
 
-        return self._mapper.map_to_db(db_dict)
+        db = self._mapper.map_to_db(db_dict)
+        self._db_cache[db.id] = db
+
+        return db
 
     def create_db(self, db_dict: dict[str, Any]):
 
@@ -133,10 +146,17 @@ class NotionClient:
         if save_to_fp:
             self._save_to_fp(page_dict, Path(save_to_fp))
 
-        return page_dict
+        # This is required to find the property names of a page if the
+        # page's parent is a dictionary. Pages that are not children of
+        # databases, have no properties except 'title'.
+        db: Optional[Database] = None
+        if page_dict["parent"]["type"] == "database_id":
+            db = self.retrieve_db(page_dict["parent"]["database_id"])
+
+        return self._mapper.map_to_page(page_dict, db)
 
     # ----- BLOCK RELATED METHODS -----
-    def retrieve_bloc(self, block_id: str, *, save_to_fp: str | Path = ""):
+    def retrieve_block(self, block_id: str, *, save_to_fp: str | Path = ""):
         """Retrieves the page from Notion.
 
         Args:
