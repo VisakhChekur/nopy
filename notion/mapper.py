@@ -68,7 +68,7 @@ class Mapper:
         if no_mutate:
             db = db.copy()
 
-        db["cover"] = cp.File.from_dict(db["cover"])
+        db["cover"] = self._get_cover(db["cover"])
         db["created_time"] = date_parser.parse(db["created_time"])
         db["last_edited_time"] = date_parser.parse(db["last_edited_time"])
         db["rich_title"] = [cp.Text.from_dict(t) for t in db["title"]]
@@ -88,8 +88,18 @@ class Mapper:
 
         return Database(**db)
 
-    def _get_icon(self, icon_dict: dict[str, Any]) -> Union[cp.File, cp.Emoji]:
+    def _get_cover(self, cover_dict: Optional[dict[str, Any]]) -> Optional[cp.File]:
+        if not cover_dict:
+            return None
+        return cp.File.from_dict(cover_dict)
+
+    def _get_icon(
+        self, icon_dict: dict[str, Any]
+    ) -> Optional[Union[cp.File, cp.Emoji]]:
         """Gets the corresponding object of the Icon based on it's type."""
+
+        if not icon_dict:
+            return None
 
         if icon_dict["type"] == "emoji":
             return cp.Emoji.from_dict(icon_dict)
