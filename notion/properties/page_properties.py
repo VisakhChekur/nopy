@@ -30,7 +30,11 @@ class PProp(BaseProperty):
 
     def __post_init__(self):
 
-        self.type = PropTypes.UNSUPPORTED
+        self._type = PropTypes.UNSUPPORTED
+
+    @property
+    def type(self) -> PropTypes:
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -49,7 +53,7 @@ class PTitle(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.TITLE
+        self._type = PropTypes.TITLE
         self.title = get_plain_text(self.rich_title)
 
     @classmethod
@@ -72,7 +76,7 @@ class PText(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.RICH_TEXT
+        self._type = PropTypes.RICH_TEXT
         self.text = get_plain_text(self.rich_text)
 
     @classmethod
@@ -94,7 +98,7 @@ class PNumber(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.NUMBER
+        self._type = PropTypes.NUMBER
 
     @classmethod
     def from_dict(cls: Type[PNumber], args: dict[str, Any]) -> PNumber:
@@ -114,7 +118,7 @@ class PSelect(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.SELECT
+        self._type = PropTypes.SELECT
 
     @classmethod
     def from_dict(cls: Type[PSelect], args: dict[str, Any]) -> PSelect:
@@ -135,7 +139,7 @@ class PMultiSelect(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.MULTI_SELECT
+        self._type = PropTypes.MULTI_SELECT
 
     @classmethod
     def from_dict(cls: Type[PMultiSelect], args: dict[str, Any]) -> PMultiSelect:
@@ -159,7 +163,7 @@ class PDate(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.DATE
+        self._type = PropTypes.DATE
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -180,7 +184,7 @@ class PFormula(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.FORMULA
+        self._type = PropTypes.FORMULA
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -211,7 +215,7 @@ class PFile(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.FILES
+        self._type = PropTypes.FILES
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -232,7 +236,7 @@ class PCheckbox(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.CHECKBOX
+        self._type = PropTypes.CHECKBOX
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -252,7 +256,7 @@ class PUrl(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.URL
+        self._type = PropTypes.URL
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -272,7 +276,7 @@ class PEmail(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.CHECKBOX
+        self._type = PropTypes.CHECKBOX
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -292,7 +296,7 @@ class PPhoneNumber(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.PHONE_NUMBER
+        self._type = PropTypes.PHONE_NUMBER
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -312,7 +316,7 @@ class PCreatedTime(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.CREATED_TIME
+        self._type = PropTypes.CREATED_TIME
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -332,7 +336,7 @@ class PLastEditedTime(PProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.LAST_EDITED_TIME
+        self._type = PropTypes.LAST_EDITED_TIME
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:

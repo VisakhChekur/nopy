@@ -26,7 +26,12 @@ class DBProp(BaseProperty):
 
     def __post_init__(self):
 
-        self.type = PropTypes.UNSUPPORTED
+        self._type = PropTypes.UNSUPPORTED
+
+    @property
+    def type(self) -> PropTypes:
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[DBProp], args: dict[str, Any]) -> DBProp:
@@ -37,17 +42,17 @@ class DBProp(BaseProperty):
 
         # This single implementation is enough for all the properties
         # that require no configuration data regarding the property.
-        if self.type == PropTypes.UNSUPPORTED:
+        if self._type == PropTypes.UNSUPPORTED:
             raise UnsupportedError(
                 "this is an unsupported or invalid database property"
             )
-        return {self.type.value: {}, "name": self.name}
+        return {self._type.value: {}, "name": self.name}
 
 
 @dataclass
 class DBTitle(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.TITLE
+        self._type = PropTypes.TITLE
 
     @classmethod
     def from_dict(cls: Type[DBTitle], args: dict[str, Any]) -> DBTitle:
@@ -58,7 +63,7 @@ class DBTitle(DBProp):
 @dataclass
 class DBText(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.RICH_TEXT
+        self._type = PropTypes.RICH_TEXT
 
     @classmethod
     def from_dict(cls: Type[DBText], args: dict[str, Any]) -> DBText:
@@ -69,7 +74,7 @@ class DBText(DBProp):
 @dataclass
 class DBDate(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.DATE
+        self._type = PropTypes.DATE
 
     @classmethod
     def from_dict(cls: Type[DBDate], args: dict[str, Any]) -> DBDate:
@@ -80,7 +85,7 @@ class DBDate(DBProp):
 @dataclass
 class DBFiles(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.FILES
+        self._type = PropTypes.FILES
 
     @classmethod
     def from_dict(cls: Type[DBFiles], args: dict[str, Any]) -> DBFiles:
@@ -91,7 +96,7 @@ class DBFiles(DBProp):
 @dataclass
 class DBCheckbox(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.CHECKBOX
+        self._type = PropTypes.CHECKBOX
 
     @classmethod
     def from_dict(cls: Type[DBCheckbox], args: dict[str, Any]) -> DBCheckbox:
@@ -102,7 +107,7 @@ class DBCheckbox(DBProp):
 @dataclass
 class DBUrl(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.URL
+        self._type = PropTypes.URL
 
     @classmethod
     def from_dict(cls: Type[DBUrl], args: dict[str, Any]) -> DBUrl:
@@ -113,7 +118,7 @@ class DBUrl(DBProp):
 @dataclass
 class DBEmail(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.EMAIL
+        self._type = PropTypes.EMAIL
 
     @classmethod
     def from_dict(cls: Type[DBEmail], args: dict[str, Any]) -> DBEmail:
@@ -124,7 +129,7 @@ class DBEmail(DBProp):
 @dataclass
 class DBPhoneNumber(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.PHONE_NUMBER
+        self._type = PropTypes.PHONE_NUMBER
 
     @classmethod
     def from_dict(cls: Type[DBPhoneNumber], args: dict[str, Any]) -> DBPhoneNumber:
@@ -135,7 +140,7 @@ class DBPhoneNumber(DBProp):
 @dataclass
 class DBCreatedTime(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.CREATED_TIME
+        self._type = PropTypes.CREATED_TIME
 
     @classmethod
     def from_dict(cls: Type[DBCreatedTime], args: dict[str, Any]) -> DBCreatedTime:
@@ -149,7 +154,7 @@ class DBCreatedTime(DBProp):
 @dataclass
 class DBCreatedBy(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.CREATED_BY
+        self._type = PropTypes.CREATED_BY
 
     @classmethod
     def from_dict(cls: Type[DBCreatedBy], args: dict[str, Any]) -> DBCreatedBy:
@@ -163,7 +168,7 @@ class DBCreatedBy(DBProp):
 @dataclass
 class DBLastEditedTime(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.LAST_EDITED_TIME
+        self._type = PropTypes.LAST_EDITED_TIME
 
     @classmethod
     def from_dict(
@@ -179,7 +184,7 @@ class DBLastEditedTime(DBProp):
 @dataclass
 class DBLastEditedBy(DBProp):
     def __post_init__(self):
-        self.type = PropTypes.LAST_EDITED_BY
+        self._type = PropTypes.LAST_EDITED_BY
 
     @classmethod
     def from_dict(cls: Type[DBLastEditedBy], args: dict[str, Any]) -> DBLastEditedBy:
@@ -197,7 +202,7 @@ class DBNumber(DBProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.NUMBER
+        self._type = PropTypes.NUMBER
 
     @classmethod
     def from_dict(cls: Type[DBNumber], args: dict[str, Any]) -> DBNumber:
@@ -211,7 +216,7 @@ class DBNumber(DBProp):
         return DBNumber(**new_args)
 
     def serialize(self) -> dict[str, Any]:
-        return {self.type.value: {"format": self.format.value}, "name": self.name}
+        return {self._type.value: {"format": self.format.value}, "name": self.name}
 
 
 @dataclass
@@ -221,7 +226,7 @@ class DBSelect(DBProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.SELECT
+        self._type = PropTypes.SELECT
 
     @classmethod
     def from_dict(cls: Type[DBSelect], args: dict[str, Any]) -> DBSelect:
@@ -237,7 +242,7 @@ class DBSelect(DBProp):
 
     def serialize(self) -> dict[str, Any]:
         serialized_options = [opt.serialize() for opt in self.options]
-        return {self.type.value: {"options": serialized_options}, "name": self.name}
+        return {self._type.value: {"options": serialized_options}, "name": self.name}
 
 
 @dataclass
@@ -247,7 +252,7 @@ class DBMultiSelect(DBProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.MULTI_SELECT
+        self._type = PropTypes.MULTI_SELECT
 
     @classmethod
     def from_dict(cls: Type[DBMultiSelect], args: dict[str, Any]) -> DBMultiSelect:
@@ -262,7 +267,7 @@ class DBMultiSelect(DBProp):
 
     def serialize(self) -> dict[str, Any]:
         serialized_options = [opt.serialize() for opt in self.options]
-        return {self.type.value: {"options": serialized_options}, "name": self.name}
+        return {self._type.value: {"options": serialized_options}, "name": self.name}
 
 
 # TODO: How to create a status property on a DB being created?
@@ -274,7 +279,7 @@ class DBStatus(DBProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.STATUS
+        self._type = PropTypes.STATUS
 
     @classmethod
     def from_dict(cls: Type[DBStatus], args: dict[str, Any]) -> DBStatus:
@@ -302,7 +307,7 @@ class DBFormula(DBProp):
 
     def __post_init__(self):
 
-        self.type = PropTypes.FORMULA
+        self._type = PropTypes.FORMULA
 
     @classmethod
     def from_dict(cls: Type[DBFormula], args: dict[str, Any]) -> DBFormula:
@@ -312,4 +317,4 @@ class DBFormula(DBProp):
         )
 
     def serialize(self) -> dict[str, Any]:
-        return {self.type.value: {"expression": self.expression}, "name": self.name}
+        return {self._type.value: {"expression": self.expression}, "name": self.name}
