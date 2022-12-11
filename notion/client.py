@@ -12,11 +12,13 @@ from notion.constants import API_VERSION
 from notion.constants import BLOCK_ENDPOINT
 from notion.constants import DB_ENDPOINT
 from notion.constants import PAGE_ENDPOINT
+from notion.constants import QUERY_ENDPOINT
 from notion.exceptions import AuthenticationError
 from notion.exceptions import NotFoundError
 from notion.exceptions import ValidationError
 from notion.mapper import Mapper
 from notion.objects.db import Database
+from notion.objects.page import Page
 
 
 # TODO: Try 'faster-than-requests' instead of 'requests'
@@ -110,6 +112,10 @@ class NotionClient:
 
         return db
 
+    def retrieve_db_raw(self, db_id: str) -> dict[str, Any]:
+
+        return self._get_request(DB_ENDPOINT + db_id)
+
     def create_db(self, db_dict: dict[str, Any]):
 
         self._post_request(DB_ENDPOINT, db_dict)
@@ -119,6 +125,19 @@ class NotionClient:
         endpoint = DB_ENDPOINT + db_id
         resp = self._patch_request(endpoint, db_dict)
         pprint(resp)
+
+    def query_db(self, db_id: str, query_dict: dict[str, Any]) -> list[Page]:
+
+        endpoint = QUERY_ENDPOINT.format(db_id)
+        resp = self._post_request(endpoint, query_dict)
+
+        db = self.retrieve_db(db_id)
+        return [self._mapper.map_to_page(p, db) for p in resp["results"]]
+
+    def query_db_raw(self, db_id: str, query_dict: dict[str, Any]) -> dict[str, Any]:
+
+        endpoint = QUERY_ENDPOINT.format(db_id)
+        return self._post_request(endpoint, query_dict)
 
     # ------ PAGE RELATED METHODS -----
     def retrieve_page(self, page_id: str, *, save_to_fp: str | Path = ""):
@@ -153,6 +172,10 @@ class NotionClient:
             db = self.retrieve_db(page_dict["parent"]["database_id"])
 
         return self._mapper.map_to_page(page_dict, db)
+
+    def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
+
+        return self._get_request(PAGE_ENDPOINT + page_id)
 
     # ----- BLOCK RELATED METHODS -----
     def retrieve_block(self, block_id: str, *, save_to_fp: str | Path = ""):

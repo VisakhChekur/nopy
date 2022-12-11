@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
+from typing import Generator
 from typing import Optional
 from typing import Set
 from typing import Union
@@ -19,6 +20,7 @@ from notion.typings import Parents
 
 if TYPE_CHECKING:
     from notion.client import NotionClient
+    from notion.objects.page import Page
 
 
 @dataclass
@@ -72,6 +74,22 @@ class Database(NotionObject):
         # be used later to determine whether to use the ID or the name
         # when serializing the properties.
         self._og_props: Set[str] = set(self.properties._ids.keys())  # type: ignore
+
+    def get_pages(self, page_size: int = 100) -> Generator["Page", None, None]:
+        """Returns a generator that yields a single page at a time.
+
+        Args:
+            page_size: The number of pages that's received from each API call.
+        """
+
+        query = {"page_size": page_size}
+        while True:
+            query_results = self._client.query_db_raw(self.id, query)
+            for page in query_results["results"]:
+                yield self._client._mapper.map_to_page(page, self)  # type: ignore
+            if not query_results["has_more"]:
+                break
+            query["start_cursor"] = query_results["next_cursor"]
 
     def set_client(self, client: "NotionClient"):
         self._client = client
