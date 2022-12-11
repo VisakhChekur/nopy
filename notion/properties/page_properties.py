@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from dataclasses import field
 from datetime import datetime
 from typing import Any
+from typing import Optional
 from typing import Type
 from typing import Union
 
@@ -109,7 +110,7 @@ class PNumber(PProp):
 @dataclass
 class PSelect(PProp):
 
-    option: Option
+    option: Optional[Option] = None
 
     def __post_init__(self):
 
@@ -118,10 +119,11 @@ class PSelect(PProp):
     @classmethod
     def from_dict(cls: Type[PSelect], args: dict[str, Any]) -> PSelect:
 
+        option = Option.from_dict(args["select"]) if args["select"] else None
         new_args: dict[str, Any] = {
             "name": args.get("name", ""),
             "id": args["id"],
-            "option": Option.from_dict(args["select"]),
+            "option": option,
         }
         return PSelect(**new_args)
 
@@ -138,7 +140,10 @@ class PMultiSelect(PProp):
     @classmethod
     def from_dict(cls: Type[PMultiSelect], args: dict[str, Any]) -> PMultiSelect:
 
-        options = [Option.from_dict(opt) for opt in args["multi_select"]]
+        if args["multi_select"]:
+            options = [Option.from_dict(opt) for opt in args["multi_select"]]
+        else:
+            options = []
         new_args: dict[str, Any] = {
             "name": args.get("name", ""),
             "id": args["id"],

@@ -101,7 +101,6 @@ class NotionClient:
 
         if use_cached and cached_db:
             return cached_db
-        print("coming here")
         db_dict = self._get_request(DB_ENDPOINT + db_id)
         if save_to_fp:
             self._save_to_fp(db_dict, Path(save_to_fp))
