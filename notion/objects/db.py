@@ -16,6 +16,7 @@ from notion.objects.notion_object import NotionObject
 from notion.objects.properties import Properties
 from notion.properties.base import BaseProperty
 from notion.properties.prop_enums import PropTypes
+from notion.query.query import Query
 from notion.typings import Parents
 
 if TYPE_CHECKING:
@@ -75,6 +76,14 @@ class Database(NotionObject):
         # when serializing the properties.
         self._og_props: Set[str] = set(self.properties._ids.keys())  # type: ignore
 
+    def query(self, query: Optional[Query] = None) -> Generator["Page", None, None]:
+
+        if not self._client:
+            raise ValueError("'client' must be provided")
+
+        query_dict: dict[str, Any] = {} if query is None else query.serialize()
+        return self._query(query_dict)
+
     def get_pages(self, page_size: int = 100) -> Generator["Page", None, None]:
         """Returns a generator that yields a single page at a time.
 
@@ -83,13 +92,7 @@ class Database(NotionObject):
         """
 
         query = {"page_size": page_size}
-        while True:
-            query_results = self._client.query_db_raw(self.id, query)
-            for page in query_results["results"]:
-                yield self._client._mapper.map_to_page(page, self)  # type: ignore
-            if not query_results["has_more"]:
-                break
-            query["start_cursor"] = query_results["next_cursor"]
+        return self._query(query)
 
     def set_client(self, client: "NotionClient"):
         self._client = client
@@ -157,3 +160,13 @@ class Database(NotionObject):
         curr_prop_ids = set(self.properties.get_ids())
         deleted_prop_ids = self._og_props.difference(curr_prop_ids)
         return {prop_id: None for prop_id in deleted_prop_ids}
+
+    def _query(self, query_dict: dict[str, Any]) -> Generator["Page", None, None]:
+
+        while True:
+            query_results = self._client.query_db_raw(self.id, query_dict)
+            for page in query_results["results"]:
+                yield self._client._mapper.map_to_page(page, self)  # type: ignore
+            if not query_results["has_more"]:
+                break
+            query_dict["start_cursor"] = query_results["next_cursor"]
