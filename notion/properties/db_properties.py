@@ -62,6 +62,15 @@ class DBTitle(DBProp):
 
 @dataclass
 class DBText(DBProp):
+    """A representation of a 'Text' property in a database.
+
+    Args:
+        name (str): The name of the property.
+        id (str): The id of the property.
+        type (str): The type of the property which will always be
+        `PropTypes.RICH_TEXT`.
+    """
+
     def __post_init__(self):
         self._type = PropTypes.RICH_TEXT
 

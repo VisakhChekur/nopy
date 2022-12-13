@@ -1,5 +1,6 @@
 import json
 import os
+from functools import wraps
 from pathlib import Path
 from pprint import pprint
 from typing import Any
@@ -25,6 +26,7 @@ from notion.objects.page import Page
 def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to handle HTTPErrors."""
 
+    @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
 
         try:
@@ -36,7 +38,9 @@ def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
                 raise NotFoundError(
                     "Invalid 'id' for the requested resource or this integration hasn't been given access."
                 )
-            raise ValidationError(e.response.json())
+            if e.response.status_code == 400:
+                raise ValidationError(e.response.json())
+            raise e
 
     return wrapper
 
@@ -77,11 +81,13 @@ class NotionClient:
     def retrieve_db(
         self, db_id: str, use_cached: bool = True, *, save_to_fp: str | Path = ""
     ) -> Database:
-        """Retrives the database from Notion.
+        """Retrives the database from Notion
+
+        Returns an instance of `Database`.
 
         Args:
             db_id:
-                The id of the database.
+                The id of the database to retrieve.
 
             save_to_fp:
                 If provided, saves the returned response JSON from Notion
@@ -113,21 +119,89 @@ class NotionClient:
         return db
 
     def retrieve_db_raw(self, db_id: str) -> dict[str, Any]:
+        """Retrieves a database from Notion.
 
+        Returns the database as the raw dictionary as returned by Notion.
+
+        Args:
+            db_id (str): The id of the database to retrieve.
+
+        Returns:
+            The raw dictionary as returned by Notion.
+
+        Raises:
+            AuthenticationError:
+                Invalid Notion token
+            NotFoundError:
+                Database not found.
+            HTTPError:
+                Any error that took place when making requests to Notion.
+
+        """
         return self._get_request(DB_ENDPOINT + db_id)
 
-    def create_db(self, db_dict: dict[str, Any]):
+    def create_db(self, db_dict: dict[str, Any]) -> None:
+        """Creates a database.
 
+        Args:
+            db_dict (dict[str, Any]):
+                The details of the database to be created in a format that
+                adheres to the Notion specifications.
+
+        Raises:
+            AuthenticationError:
+                Invalid Notion token
+            ValidationError:
+                Invalid format for `db_dict`.
+            HTTPError:
+                Any error that took place when making requests to Notion.
+
+        """
         self._post_request(DB_ENDPOINT, db_dict)
 
-    def update_db(self, db_id: str, db_dict: dict[str, Any]):
+    def update_db(self, db_id: str, db_dict: dict[str, Any]) -> None:
+        """Updates the database.
 
+        Args:
+            db_dict (dict[str, Any]):
+                The details of the database to be updated in a format that
+                adheres to the Notion specifications.
+
+        Raises:
+            AuthenticationError:
+                Invalid Notion token
+            ValidationError:
+                Invalid format for `db_dict`.
+            HTTPError:
+                Any error that took place when making requests to Notion.
+        """
         endpoint = DB_ENDPOINT + db_id
         resp = self._patch_request(endpoint, db_dict)
         pprint(resp)
 
     def query_db(self, db_id: str, query_dict: dict[str, Any]) -> list[Page]:
+        """Qeuries the database.
 
+        Args:
+            db_id (str): The id of the database to query.
+            query_dict (dict[str, Any]):
+                The filters and the sort conditions in a format that
+                adheres to the Notion specifications.
+
+        Returns:
+            A list of `Page` instances that satisfy the query conditions.
+
+        Raises:
+            AuthenticationError:
+                Invalid Notion token
+            NotFoundError:
+                Database not found.
+            ValidationError:
+                Invalid format for `query_dict`.
+            HTTPError:
+                Any error that took place when making requests to Notion.
+
+        """
         endpoint = QUERY_ENDPOINT.format(db_id)
         resp = self._post_request(endpoint, query_dict)
 
@@ -135,7 +209,28 @@ class NotionClient:
         return [self._mapper.map_to_page(p, db) for p in resp["results"]]
 
     def query_db_raw(self, db_id: str, query_dict: dict[str, Any]) -> dict[str, Any]:
+        """Qeuries the database.
 
+        Args:
+            db_id (str): The id of the database to query.
+            query_dict (dict[str, Any]):
+                The filters and the sort conditions in a format that
+                adheres to the Notion specifications.
+
+        Returns:
+            The raw dictionary response as given by Notion.
+
+        Raises:
+            AuthenticationError:
+                Invalid Notion token
+            NotFoundError:
+                Database not found.
+            ValidationError:
+                Invalid format for `query_dict`.
+            HTTPError:
+                Any error that took place when making requests to Notion.
+
+        """
         endpoint = QUERY_ENDPOINT.format(db_id)
         return self._post_request(endpoint, query_dict)
 
@@ -148,7 +243,7 @@ class NotionClient:
                 The id of the page.
 
         Returns:
-            The page.
+            An instance of `Page`.
 
         Raises:
             AuthenticationError:
@@ -174,12 +269,29 @@ class NotionClient:
         return self._mapper.map_to_page(page_dict, db)
 
     def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
+        """Retrieves the page from Notion.
 
+        Args:
+            page_id:
+                The id of the page.
+
+        Returns:
+            The page as the raw dictionary as returned by Notion.
+
+        Raises:
+            AuthenticationError:
+                Invalid Notion token
+            NotFoundError:
+                Database not found.
+            HTTPError:
+                Any error that took place when making requests to Notion.
+
+        """
         return self._get_request(PAGE_ENDPOINT + page_id)
 
     # ----- BLOCK RELATED METHODS -----
     def retrieve_block(self, block_id: str, *, save_to_fp: str | Path = ""):
-        """Retrieves the page from Notion.
+        """Retrieves the block from Notion.
 
         Args:
             block_id:
