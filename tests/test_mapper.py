@@ -1,25 +1,25 @@
 import dateutil.parser as date_parser
 
-from notion.client import NotionClient
-from notion.properties.common_properties import Text
-from notion.properties.db_properties import DBCheckbox
-from notion.properties.db_properties import DBCreatedBy
-from notion.properties.db_properties import DBCreatedTime
-from notion.properties.db_properties import DBDate
-from notion.properties.db_properties import DBEmail
-from notion.properties.db_properties import DBFiles
-from notion.properties.db_properties import DBFormula
-from notion.properties.db_properties import DBLastEditedBy
-from notion.properties.db_properties import DBLastEditedTime
-from notion.properties.db_properties import DBMultiSelect
-from notion.properties.db_properties import DBNumber
-from notion.properties.db_properties import DBPhoneNumber
-from notion.properties.db_properties import DBProp
-from notion.properties.db_properties import DBSelect
-from notion.properties.db_properties import DBStatus
-from notion.properties.db_properties import DBText
-from notion.properties.db_properties import DBTitle
-from notion.properties.db_properties import DBUrl
+from nopy.client import NotionClient
+from nopy.properties.common_properties import Text
+from nopy.properties.db_properties import DBCheckbox
+from nopy.properties.db_properties import DBCreatedBy
+from nopy.properties.db_properties import DBCreatedTime
+from nopy.properties.db_properties import DBDate
+from nopy.properties.db_properties import DBEmail
+from nopy.properties.db_properties import DBFiles
+from nopy.properties.db_properties import DBFormula
+from nopy.properties.db_properties import DBLastEditedBy
+from nopy.properties.db_properties import DBLastEditedTime
+from nopy.properties.db_properties import DBMultiSelect
+from nopy.properties.db_properties import DBNumber
+from nopy.properties.db_properties import DBPhoneNumber
+from nopy.properties.db_properties import DBProp
+from nopy.properties.db_properties import DBSelect
+from nopy.properties.db_properties import DBStatus
+from nopy.properties.db_properties import DBText
+from nopy.properties.db_properties import DBTitle
+from nopy.properties.db_properties import DBUrl
 
 
 def test_map_to_db(mapper, db_dict):

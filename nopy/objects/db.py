@@ -22,8 +22,8 @@ from .notion_object import NotionObject
 from .properties import Properties
 
 if TYPE_CHECKING:
-    from notion.client import NotionClient
-    from notion.objects.page import Page
+    from nopy.client import NotionClient
+    from nopy.objects.page import Page
 
 
 @dataclass

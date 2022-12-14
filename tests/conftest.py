@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 from dotenv import load_dotenv
 
-from notion.client import NotionClient
-from notion.mapper import Mapper
+from nopy.client import NotionClient
+from nopy.mapper import Mapper
 
 
 # ----- CONFIGURING PYTEST -----

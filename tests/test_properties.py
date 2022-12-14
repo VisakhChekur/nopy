@@ -1,7 +1,7 @@
 import pytest
 
-import notion.properties.db_properties as dbp
-from notion.objects.properties import Properties
+import nopy.properties.db_properties as dbp
+from nopy.objects.properties import Properties
 
 
 @pytest.fixture

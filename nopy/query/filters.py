@@ -7,9 +7,9 @@ from typing import Optional
 from typing import Set
 from typing import Union
 
-from notion.exceptions import UnsupportedError
-from notion.properties.db_properties import DBProp
-from notion.properties.prop_enums import PropTypes
+from nopy.exceptions import UnsupportedError
+from nopy.properties.db_properties import DBProp
+from nopy.properties.prop_enums import PropTypes
 
 Number = Union[int, float]
 

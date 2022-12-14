@@ -18,7 +18,7 @@ from .typings import PageProps
 from .typings import Parents
 
 if TYPE_CHECKING:
-    from notion.client import NotionClient
+    from nopy.client import NotionClient
 
 DB_PROPS_REVERSE_MAP: dict[str, type[DBProps]] = {
     "title": dbp.DBTitle,

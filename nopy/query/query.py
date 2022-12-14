@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import Any
 from typing import Optional
 
-from notion.query.filters import Filter
-from notion.query.sorts import Sort
+from nopy.query.filters import Filter
+from nopy.query.sorts import Sort
 
 
 @dataclass

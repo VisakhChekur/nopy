@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Literal
 from typing import Union
 
-from notion.properties.db_properties import DBProp
+from nopy.properties.db_properties import DBProp
 
 Direction = Literal["ascending", "descending"]
 
