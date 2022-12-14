@@ -6,8 +6,11 @@ from pprint import pprint
 from typing import Any
 from typing import Callable
 from typing import Optional
+from typing import Union
 
 import requests
+from requests.adapters import HTTPAdapter
+from requests.adapters import Retry
 
 from notion.constants import API_VERSION
 from notion.constants import BLOCK_ENDPOINT
@@ -55,14 +58,26 @@ class NotionClient:
         token:
             The Notion token from the Notion integration. If it's not
             provided, then the value must be present in the environment
-            variables with the name `NOTION_TOKEN`. Refer the following:
+            variables with the name `NOTION_TOKEN`. For more details, refer
+            the following:
             https://developers.notion.com/docs/create-a-notion-integration
+
+        retry:
+            If provided, retries will be done on requests that fail due to
+            issues such as network issues. If a dictionary is provided, the
+            keys and values must match the allowed values in the `Retry`
+            constructor. An instance of a `Retry` object can be provided which
+            can be from `requests.adapter` or from `urllib3.util`. For more
+            details, refer the following:
+            https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#urllib3.util.Retry
 
     Raises:
         AuthenticationError: Token not found.
     """
 
-    def __init__(self, token: str = ""):
+    def __init__(
+        self, token: str = "", *, retry: Optional[Union[dict[str, Any], Retry]] = None
+    ):
 
         try:
             self._token = token or os.environ["NOTION_TOKEN"]
@@ -72,13 +87,16 @@ class NotionClient:
             )
 
         self._mapper = Mapper(self)
+        self._db_cache: dict[str, Database] = {}
+
+        self._retry = retry
+        self._request_session = self._get_request_session()
         # The headers that are included in every request sent to
         # Notion.
         self._headers = {
             "Authorization": f"Bearer {self._token}",
             "Notion-Version": API_VERSION,
         }
-        self._db_cache: dict[str, Database] = {}
 
     # ----- DATABASE RELATED METHODS ------
     def retrieve_db(
@@ -304,6 +322,21 @@ class NotionClient:
 
     # ------ PRIVATE METHODS ------
 
+    def _get_request_session(self):
+
+        session = requests.Session()
+
+        if not self._retry:
+            return session
+
+        if isinstance(self._retry, dict):
+            retry = Retry(**self._retry)
+        else:
+            retry = self._retry
+
+        session.mount("https://", HTTPAdapter(max_retries=retry))
+        return session
+
     @staticmethod
     def _save_to_fp(data: dict[str, Any], fp: Path):
         """Saves the given data as JSON to the given file."""
@@ -314,20 +347,24 @@ class NotionClient:
     @_handle_http_error
     def _get_request(self, endpoint: str):
 
-        response = requests.get(endpoint, headers=self._headers)
+        response = self._request_session.get(endpoint, headers=self._headers)
         response.raise_for_status()
         return response.json()
 
     @_handle_http_error
     def _post_request(self, endpoint: str, data: dict[str, Any]):
 
-        response = requests.post(endpoint, json=data, headers=self._headers)
+        response = self._request_session.post(
+            endpoint, json=data, headers=self._headers
+        )
         response.raise_for_status()
         return response.json()
 
     @_handle_http_error
     def _patch_request(self, endpoint: str, data: dict[str, Any]):
 
-        response = requests.patch(endpoint, json=data, headers=self._headers)
+        response = self._request_session.patch(
+            endpoint, json=data, headers=self._headers
+        )
         response.raise_for_status()
         return response.json()
