@@ -1,7 +1,7 @@
-import notion.properties.common_properties as cp
-import notion.properties.db_properties as dbp
-from notion.properties.prop_enums import NumberFormat
-from notion.properties.prop_enums import PropTypes
+import nopy.properties.common_properties as cp
+import nopy.properties.db_properties as dbp
+from nopy.properties.prop_enums import NumberFormat
+from nopy.properties.prop_enums import PropTypes
 
 
 def test_title_from_dict():

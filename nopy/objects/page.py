@@ -14,7 +14,7 @@ from .notion_object import NotionObject
 from .properties import Properties
 
 if TYPE_CHECKING:
-    from notion.client import NotionClient
+    from nopy.client import NotionClient
 
 
 @dataclass

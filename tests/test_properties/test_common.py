@@ -2,12 +2,12 @@ from datetime import datetime
 
 import pytest
 
-import notion.properties.common_properties as cp
-from notion.properties.prop_enums import Colors
-from notion.properties.prop_enums import EmojiTypes
-from notion.properties.prop_enums import FileTypes
-from notion.properties.prop_enums import ParentTypes
-from notion.properties.prop_enums import RichTextTypes
+import nopy.properties.common_properties as cp
+from nopy.properties.prop_enums import Colors
+from nopy.properties.prop_enums import EmojiTypes
+from nopy.properties.prop_enums import FileTypes
+from nopy.properties.prop_enums import ParentTypes
+from nopy.properties.prop_enums import RichTextTypes
 
 
 # ----- FIXTURES -----

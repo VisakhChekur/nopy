@@ -1,6 +1,6 @@
 from typing import MutableMapping
 
-from notion.typings import Props
+from nopy.typings import Props
 
 
 class Properties(MutableMapping[str, Props]):

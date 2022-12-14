@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "notion"
+name = "nopy"
 version = "0.1.0"
 description = ""
 authors = ["Visakh Unnikrishnan <visakhcu96@gmail.com>"]

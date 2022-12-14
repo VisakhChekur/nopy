@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from typing import Optional
 
 if TYPE_CHECKING:
-    from notion.client import NotionClient
+    from nopy.client import NotionClient
 
 
 class NotionObject(metaclass=abc.ABCMeta):
