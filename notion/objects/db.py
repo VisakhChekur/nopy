@@ -10,14 +10,16 @@ from typing import Optional
 from typing import Set
 from typing import Union
 
-import notion.properties.common_properties as cp
-from notion.helpers import get_plain_text
-from notion.objects.notion_object import NotionObject
-from notion.objects.properties import Properties
-from notion.properties.base import BaseProperty
-from notion.properties.prop_enums import PropTypes
-from notion.query.query import Query
-from notion.typings import Parents
+from ..helpers import get_plain_text
+from ..properties.base import BaseProperty
+from ..properties.common_properties import Emoji
+from ..properties.common_properties import File
+from ..properties.common_properties import Text
+from ..properties.prop_enums import PropTypes
+from ..query.query import Query
+from ..typings import Parents
+from .notion_object import NotionObject
+from .properties import Properties
 
 if TYPE_CHECKING:
     from notion.client import NotionClient
@@ -81,14 +83,14 @@ class Database(NotionObject):
     }
 
     title: str = ""
-    rich_title: list[cp.Text] = field(default_factory=list)
+    rich_title: list[Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
     created_time: Optional[datetime] = None
     last_edited_time: Optional[datetime] = None
     description: str = ""
-    rich_description: list[cp.Text] = field(default_factory=list)
-    icon: Optional[Union[cp.File, cp.Emoji]] = None
-    cover: Optional[cp.File] = None
+    rich_description: list[Text] = field(default_factory=list)
+    icon: Optional[Union[File, Emoji]] = None
+    cover: Optional[File] = None
     parent: Optional[Parents] = None
     url: str = ""
     archived: bool = False
@@ -102,11 +104,11 @@ class Database(NotionObject):
         if self.rich_title:
             self.title = get_plain_text(self.rich_title)
         else:
-            self.rich_title.append(cp.Text(self.title))
+            self.rich_title.append(Text(self.title))
         if self.rich_description:
             self.description = get_plain_text(self.rich_description)
         else:
-            self.rich_description.append(cp.Text(self.title))
+            self.rich_description.append(Text(self.title))
         # Keep track of the original properties if present so they can
         # be used later to determine whether to use the ID or the name
         # when serializing the properties.
@@ -173,8 +175,7 @@ class Database(NotionObject):
                       and the current instance is NOT modified.
 
         Returns:
-            The "refreshed" database. If `in_place` is `False`, this just
-            returns `self`.
+            The "refreshed" database.
 
         Raises:
             ValueError: `NotionClient` instance was not provided either during

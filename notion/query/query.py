@@ -8,6 +8,7 @@ from notion.query.sorts import Sort
 
 @dataclass
 class Query:
+    """A representation of a query to the Notion API."""
 
     and_filters: Optional[list[Filter]] = None
     or_filters: Optional[list[Filter]] = None

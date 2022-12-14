@@ -4,9 +4,9 @@ from typing import Iterable
 from typing import Optional
 from typing import Union
 
-import notion.properties.common_properties as cp
-import notion.properties.db_properties as dbp
-import notion.properties.page_properties as pgp
+from .properties import common_properties as cp
+from .properties import db_properties as dbp
+from .properties import page_properties as pgp
 
 OptionalDict = Optional[dict[str, Any]]
 
@@ -16,6 +16,8 @@ IterableInitVars = InitVar[Optional[Iterable[dict[str, Any]]]]
 Parents = Union[
     cp.DatabaseParent, cp.PageParent, cp.BlockParent, cp.WorkspaceParent, cp.Parent
 ]
+"""All Parent types."""
+
 DBProps = Union[
     dbp.DBTitle,
     dbp.DBText,
@@ -36,6 +38,7 @@ DBProps = Union[
     dbp.DBStatus,
     dbp.DBProp,
 ]
+"""All database property types."""
 
 PageProps = Union[
     pgp.PProp,
@@ -53,5 +56,7 @@ PageProps = Union[
     pgp.PCreatedTime,
     pgp.PLastEditedTime,
 ]
+"""All page property types."""
 
 Props = Union[DBProps, PageProps]
+"""All database AND page property types."""

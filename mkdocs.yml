@@ -1,4 +1,27 @@
-site_name: PyNotion
+site_name: NoPy
+repo_url: https://github.com/VisakhChekur/notion-py
+repo_name: VisakhChekur/nopy
+
+nav:
+  - Home: index.md
+  - Usage:
+      - Databases: usage/databases.md
+  - API Reference:
+      - Notion Objects:
+          - Notion Object: api_reference/notion_objects/notion_object.md
+          - Database: api_reference/notion_objects/database.md
+          - Page: api_reference/notion_objects/page.md
+      - Properties:
+          - Properties: api_reference/properties/properties.md
+          - Common Properties: api_reference/properties/common_properties.md
+          - Database Properties: api_reference/properties/database_properties.md
+          - Page Properties: api_reference/properties/page_properties.md
+          - Enums: api_reference/properties/property_enums.md
+      - Query: api_reference/querying/query.md
+      - Filters: api_reference/querying/filters.md
+      - Sorts: api_reference/querying/sorts.md
+      - Types: api_reference/typings.md
+      - Exceptions: api_reference/exceptions.md
 
 theme:
   name: "material"
@@ -12,7 +35,34 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.top
+    - navigation.tabs
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - toc:
+      permalink: true
 
 plugins:
+  - search
+  - autorefs
   - mkdocstrings:
       default_handler: python
+      handlers:
+        python:
+          paths: [notion/]
+          options:
+            show_root_full_path: false
+            show_category_heading: true
+            separate_signature: true
+            show_root_toc_entry: false
+            members_order: source
+          import:
+            - https://docs.python.org/3/objects.inv

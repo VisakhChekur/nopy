@@ -1,0 +1,1 @@
+::: properties.common_properties

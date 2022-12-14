@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from notion.properties.common_properties import RichText
+from .properties.common_properties import RichText
 
 
 def get_plain_text(rich_texts: Iterable[RichText]) -> str:

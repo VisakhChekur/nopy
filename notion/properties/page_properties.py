@@ -11,14 +11,14 @@ from typing import Union
 
 import dateutil.parser as date_parser
 
-from notion.helpers import get_plain_text
-from notion.properties.base import BaseProperty
-from notion.properties.common_properties import Date
-from notion.properties.common_properties import File
-from notion.properties.common_properties import Option
-from notion.properties.common_properties import Text
-from notion.properties.prop_enums import FormulaTypes
-from notion.properties.prop_enums import PropTypes
+from ..helpers import get_plain_text
+from .base import BaseProperty
+from .common_properties import Date
+from .common_properties import File
+from .common_properties import Option
+from .common_properties import Text
+from .prop_enums import FormulaTypes
+from .prop_enums import PropTypes
 
 
 @dataclass

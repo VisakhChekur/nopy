@@ -7,15 +7,15 @@ from typing import cast
 
 import dateutil.parser as date_parser
 
-import notion.properties.common_properties as cp
-import notion.properties.db_properties as dbp
-import notion.properties.page_properties as pgp
-from notion.objects.db import Database
-from notion.objects.page import Page
-from notion.objects.properties import Properties
-from notion.typings import DBProps
-from notion.typings import PageProps
-from notion.typings import Parents
+from .objects.db import Database
+from .objects.page import Page
+from .objects.properties import Properties
+from .properties import common_properties as cp
+from .properties import db_properties as dbp
+from .properties import page_properties as pgp
+from .typings import DBProps
+from .typings import PageProps
+from .typings import Parents
 
 if TYPE_CHECKING:
     from notion.client import NotionClient

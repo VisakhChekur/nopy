@@ -12,19 +12,19 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
 
-from notion.constants import API_VERSION
-from notion.constants import BLOCK_ENDPOINT
-from notion.constants import DB_ENDPOINT
-from notion.constants import PAGE_ENDPOINT
-from notion.constants import QUERY_ENDPOINT
-from notion.exceptions import AuthenticationError
-from notion.exceptions import FormatError
-from notion.exceptions import NotFoundError
-from notion.exceptions import NotionAPIError
-from notion.exceptions import NotionError
-from notion.mapper import Mapper
-from notion.objects.db import Database
-from notion.objects.page import Page
+from .constants import API_VERSION
+from .constants import BLOCK_ENDPOINT
+from .constants import DB_ENDPOINT
+from .constants import PAGE_ENDPOINT
+from .constants import QUERY_ENDPOINT
+from .exceptions import AuthenticationError
+from .exceptions import FormatError
+from .exceptions import NotFoundError
+from .exceptions import NotionAPIError
+from .exceptions import NotionError
+from .mapper import Mapper
+from .objects.db import Database
+from .objects.page import Page
 
 
 # TODO: Try 'faster-than-requests' instead of 'requests'
@@ -170,7 +170,7 @@ class NotionClient:
 
         Raises:
             AuthenticationError: Invalid Notion token
-            ValidationError: Invalid format for `db_dict`.
+            FormatError: Invalid format for `db_dict`.
             NotionAPIError: Any error that took place when making requests
             to Notion.
 
@@ -187,7 +187,7 @@ class NotionClient:
 
         Raises:
             AuthenticationError: Invalid Notion token.
-            ValidationError: Invalid format for `db_dict`.
+            FormatError: Invalid format for `db_dict`.
             NotionAPIError: Any error that took place when making requests to
             Notion.
         """

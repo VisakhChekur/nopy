@@ -7,11 +7,11 @@ from typing import Optional
 from typing import Set
 from typing import Union
 
-import notion.properties.common_properties as cp
-from notion.helpers import get_plain_text
-from notion.objects.notion_object import NotionObject
-from notion.objects.properties import Properties
-from notion.typings import Parents
+from ..helpers import get_plain_text
+from ..properties import common_properties as cp
+from ..typings import Parents
+from .notion_object import NotionObject
+from .properties import Properties
 
 if TYPE_CHECKING:
     from notion.client import NotionClient
