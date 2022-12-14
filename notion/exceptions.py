@@ -4,19 +4,23 @@ class NotionError(Exception):
     pass
 
 
-class AuthenticationError(NotionError):
+class NotionAPIError(NotionError):
+    """Any error that took place during the call to the Notion API."""
+
+
+class AuthenticationError(NotionAPIError):
     """Authentication issue when connecting to Notion API."""
 
     pass
 
 
-class NotFoundError(NotionError):
+class NotFoundError(NotionAPIError):
     """Requested resource wasn't found."""
 
     pass
 
 
-class ValidationError(NotionError):
+class FormatError(NotionAPIError):
     """Invalid format."""
 
     pass
@@ -30,5 +34,12 @@ class UnsupportedError(NotionError):
 
 class SerializationError(NotionError):
     """Error that took place during serialization."""
+
+    pass
+
+
+class MappingError(NotionError):
+    """Error that took place while mapping the response from the Notion
+    API into the corresponding Notion object."""
 
     pass

@@ -65,9 +65,9 @@ class DBText(DBProp):
     """A representation of a 'Text' property in a database.
 
     Args:
-        name (str): The name of the property.
-        id (str): The id of the property.
-        type (str): The type of the property which will always be
+        name: The name of the property.
+        id: The id of the property.
+        type: The type of the property which will always be
         `PropTypes.RICH_TEXT`.
     """
 

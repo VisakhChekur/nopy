@@ -10,12 +10,21 @@ class BaseProperty:
     @classmethod
     def from_dict(cls: Type[BaseProperty], args: dict[str, Any]) -> BaseProperty:
         """Creates an instance of this class from a dictionary that follows
-        the Notion API spec."""
+        the Notion API spec.
+
+        Args:
+            args: The dictionary containing the data of the property as per the
+            Notion specifications.
+        """
         raise NotImplementedError("to be implemented by subclass")
 
     def serialize(self) -> dict[str, Any]:
         """Serializes the property as per the Notion spec for creation of the
-        datbase/page."""
+        database/page.
+
+        Returns:
+            The serialized dictionary.
+        """
 
         raise NotImplementedError("to be implemented by subclass")
 

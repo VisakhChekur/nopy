@@ -15,8 +15,10 @@ from notion.constants import DB_ENDPOINT
 from notion.constants import PAGE_ENDPOINT
 from notion.constants import QUERY_ENDPOINT
 from notion.exceptions import AuthenticationError
+from notion.exceptions import FormatError
 from notion.exceptions import NotFoundError
-from notion.exceptions import ValidationError
+from notion.exceptions import NotionAPIError
+from notion.exceptions import NotionError
 from notion.mapper import Mapper
 from notion.objects.db import Database
 from notion.objects.page import Page
@@ -24,7 +26,7 @@ from notion.objects.page import Page
 
 # TODO: Try 'faster-than-requests' instead of 'requests'
 def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
-    """Decorator to handle HTTPErrors."""
+    """Decorator to handle errors during API calls."""
 
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -39,8 +41,10 @@ def _handle_http_error(func: Callable[..., Any]) -> Callable[..., Any]:
                     "Invalid 'id' for the requested resource or this integration hasn't been given access."
                 )
             if e.response.status_code == 400:
-                raise ValidationError(e.response.json())
-            raise e
+                raise FormatError(e.response.json())
+            raise NotionAPIError(e.response.json())
+        except Exception as e:
+            raise NotionError(e)
 
     return wrapper
 
@@ -59,7 +63,6 @@ class NotionClient:
     """
 
     def __init__(self, token: str = ""):
-        """Constructor for client."""
 
         try:
             self._token = token or os.environ["NOTION_TOKEN"]
@@ -89,6 +92,9 @@ class NotionClient:
             db_id:
                 The id of the database to retrieve.
 
+            use_cached:
+                If 'True', then the cached database is returned, if available.
+
             save_to_fp:
                 If provided, saves the returned response JSON from Notion
                 to the provided file path.
@@ -97,18 +103,16 @@ class NotionClient:
             The database.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            NotFoundError: Database not found.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
         """
 
         cached_db: Optional[Database] = self._db_cache.get(db_id, None)
-
         if use_cached and cached_db:
             return cached_db
+
         db_dict = self._get_request(DB_ENDPOINT + db_id)
         if save_to_fp:
             self._save_to_fp(db_dict, Path(save_to_fp))
@@ -130,12 +134,10 @@ class NotionClient:
             The raw dictionary as returned by Notion.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            NotFoundError: Database not found.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
 
         """
         return self._get_request(DB_ENDPOINT + db_id)
@@ -149,12 +151,10 @@ class NotionClient:
                 adheres to the Notion specifications.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            ValidationError:
-                Invalid format for `db_dict`.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            ValidationError: Invalid format for `db_dict`.
+            NotionAPIError: Any error that took place when making requests
+            to Notion.
 
         """
         self._post_request(DB_ENDPOINT, db_dict)
@@ -168,12 +168,10 @@ class NotionClient:
                 adheres to the Notion specifications.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            ValidationError:
-                Invalid format for `db_dict`.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token.
+            ValidationError: Invalid format for `db_dict`.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
         """
         endpoint = DB_ENDPOINT + db_id
         resp = self._patch_request(endpoint, db_dict)
@@ -192,14 +190,11 @@ class NotionClient:
             A list of `Page` instances that satisfy the query conditions.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            ValidationError:
-                Invalid format for `query_dict`.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            NotFoundError: Database not found.
+            FormatError: Invalid format for `query_dict`.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
 
         """
         endpoint = QUERY_ENDPOINT.format(db_id)
@@ -221,14 +216,11 @@ class NotionClient:
             The raw dictionary response as given by Notion.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            ValidationError:
-                Invalid format for `query_dict`.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            NotFoundError: Database not found.
+            FormatError: Invalid format for `query_dict`.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
 
         """
         endpoint = QUERY_ENDPOINT.format(db_id)
@@ -246,12 +238,10 @@ class NotionClient:
             An instance of `Page`.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Valid Notion token
+            NotFoundError: Page not found.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
 
         """
 
@@ -279,12 +269,10 @@ class NotionClient:
             The page as the raw dictionary as returned by Notion.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            NotFoundError: Page not found.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
 
         """
         return self._get_request(PAGE_ENDPOINT + page_id)
@@ -301,12 +289,10 @@ class NotionClient:
             The block.
 
         Raises:
-            AuthenticationError:
-                Invalid Notion token
-            NotFoundError:
-                Database not found.
-            HTTPError:
-                Any error that took place when making requests to Notion.
+            AuthenticationError: Invalid Notion token
+            NotFoundError: Block not found.
+            NotionAPIError: Any error that took place when making requests to
+            Notion.
 
         """
 

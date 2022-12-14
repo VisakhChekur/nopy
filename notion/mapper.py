@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
@@ -83,10 +84,20 @@ class Mapper:
 
         self._client = client
 
-    def map_to_db(self, db: dict[str, Any], *, no_mutate: bool = True) -> Database:
+    def map_to_db(self, db: dict[str, Any], *, no_mutate: bool = False) -> Database:
+        """Maps the given dictionary to a `Database`.
 
+        Args:
+            db: The dictionary of containing the data of the database in a
+                format as in the Notion specifications.
+
+            no_mutate: If 'True', a deepcopy is performed on the given `db`.
+
+        Returns:
+            An instance of `Database`.
+        """
         if no_mutate:
-            db = db.copy()
+            db = deepcopy(db)
 
         db["cover"] = self._get_cover(db["cover"])
         db["created_time"] = date_parser.parse(db["created_time"])
@@ -114,9 +125,24 @@ class Mapper:
         *,
         no_mutate: bool = True
     ) -> Page:
+        """Maps the given dictionary to a `Page`.
+
+        Args:
+            page: The dictionary of containing the data of the page in a
+                  format as in the Notion specifications.
+
+            db: This should be the database within which the `Page` lies. If
+                provided, it is used to try to find the name of the property
+                using the `id` of the property.
+
+            no_mutate: If 'True', a deepcopy is performed on the given `page`.
+
+        Returns:
+            An instance of `Page`.
+        """
 
         if no_mutate:
-            page = page.copy()
+            page = deepcopy(page)
 
         page["cover"] = self._get_cover(page["cover"])
         page["created_time"] = date_parser.parse(page["created_time"])
@@ -145,6 +171,7 @@ class Mapper:
         return parent_class(parent_dict[parent_type])
 
     def _get_cover(self, cover_dict: Optional[dict[str, Any]]) -> Optional[cp.File]:
+
         if not cover_dict:
             return None
         return cp.File.from_dict(cover_dict)
@@ -152,7 +179,6 @@ class Mapper:
     def _get_icon(
         self, icon_dict: dict[str, Any]
     ) -> Optional[Union[cp.File, cp.Emoji]]:
-        """Gets the corresponding object of the Icon based on it's type."""
 
         if not icon_dict:
             return None
@@ -188,9 +214,9 @@ class Mapper:
                 prop_class = pgp.PProp
             prop_instance = prop_class.from_dict(prop)
 
-            # Finding name if possible
+            # Finding name if possible.
             # This is needed because the Notion API does not return
-            # the name of preperty when retrieving a page
+            # the name of preperty when retrieving a page.
             if db:
                 prop_instance.name = db.properties._ids[prop_instance.id].name  # type: ignore
 

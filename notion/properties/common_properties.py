@@ -26,7 +26,7 @@ class Option(BaseProperty):
     This can be used in the options for Select, Mutli-select
     and Status options.
 
-    Args:
+    Attributes:
         name: Name of the option.
         id: Id of the option.
         color: The color associated with the option.
@@ -41,17 +41,16 @@ class Option(BaseProperty):
         return {"name": self.name, "color": self.color.value}
 
     @classmethod
-    def from_dict(cls: Type[Option], args: dict[str, str]) -> Option:
-        args["color"] = Colors[args["color"].upper()]  # type: ignore
+    def from_dict(cls: Type[Option], args: dict[str, Any]) -> Option:
+        args["color"] = Colors[args["color"].upper()]
         return Option(**args)
 
 
-# TODO: Implement serialization.
 @dataclass
 class StatusGroup(BaseProperty):
     """A representation of a Status Group.
 
-    Args:
+    Attributes:
         name: Name of the group.
         id: Id of the group.
         color: Color associated with the group.
@@ -64,18 +63,23 @@ class StatusGroup(BaseProperty):
     option_ids: list[str] = field(default_factory=list)
 
     @classmethod
-    def from_dict(cls: Type[StatusGroup], args: dict[str, str]) -> StatusGroup:
+    def from_dict(cls: Type[StatusGroup], args: dict[str, Any]) -> StatusGroup:
 
-        args["color"] = Colors[args["color"].upper()]  # type: ignore
+        args["color"] = Colors[args["color"].upper()]
 
         return StatusGroup(**args)
+
+    def serialize(self) -> dict[str, Any]:
+        raise UnsupportedError(
+            "updation/creation of `Status Group` is not supported by the official Notion API"
+        )
 
 
 @dataclass
 class Annotations(BaseProperty):
     """A representation of the annotations.
 
-    Args:
+    Attributes:
         bold:
         italic:
         strikethrough:
@@ -113,8 +117,8 @@ class Annotations(BaseProperty):
 class Link(BaseProperty):
     """A representation of a 'Link' object.
 
-    Args:
-        url:
+    Attributes:
+        url: The url.
     """
 
     def __init__(self, url: str):
@@ -132,7 +136,7 @@ class Link(BaseProperty):
 class RichText(BaseProperty):
     """Base class of Rich Text.
 
-    Args:
+    Attributes:
         plain_text: The text without any annotations.
         annotations: The annotations applied on the text.
         href: The link, if any, within the text.
@@ -166,7 +170,7 @@ class RichText(BaseProperty):
 class Text(RichText):
     """A representation of 'Text' type of Rich Text.
 
-    Args:
+    Attributes:
         plain_text: The text without any annotations.
         annotations: The annotations applied on the text.
         href: The link, if any, within the text.
@@ -214,10 +218,10 @@ class Text(RichText):
 class File(BaseProperty):
     """A representation of a File object.
 
-    Args:
-        url (AnyUrl): The url of the file.
-        type (FileType): The 'type' of file.
-        expiry_time (datetime):
+    Attributes:
+        url: The url of the file.
+        type: The 'type' of file.
+        expiry_time:
             The date on which the file will expire from Notion.
             NOTE: Only files hosted by Notion will have an `expiry_time`.
             That is, the `type` should be `FileType.FILE`.
@@ -251,9 +255,9 @@ class File(BaseProperty):
 class Emoji(BaseProperty):
     """A representation of the Emoji object.
 
-    Args:
-        emoji (str): The emoji as a Unicode string.
-        type (EmojiTypes): The type of the emoji.
+    Attributes:
+        emoji: The emoji as a Unicode string.
+        type: The type of the emoji.
     """
 
     emoji: str
@@ -272,6 +276,15 @@ class Emoji(BaseProperty):
 
 @dataclass
 class Date(BaseProperty):
+    """A representation of a date value in Notion.
+
+    Attributes:
+        start: The start time.
+        end: The end time, if any.
+        time_zone:
+            The time zone, if any. If provided, the time provided
+            in the `start` and `end` dates are ignored.
+    """
 
     start: datetime
     end: Optional[datetime] = None
@@ -291,6 +304,12 @@ class Date(BaseProperty):
 
 @dataclass
 class Parent(BaseProperty):
+    """A representation of a parent of a Notion object.
+
+    Attributes:
+        id: The id of the parent.
+        type: The type of the parent.
+    """
 
     id: str
     type: ParentTypes = ParentTypes.DATABASE

@@ -19,6 +19,37 @@ if TYPE_CHECKING:
 
 @dataclass
 class Page(NotionObject):
+    """A representation of a Notion Page.
+
+    Attributes:
+        title: The title of the page without any annotations/styling.
+
+        rich_title: The title of the page with the annotations/styling.
+
+        properties: The properties of the page. Properties can be
+                    accessed as a dictionary, but new properties can NOT
+                    be added as possible within a dictionary.
+
+        created_time: The time the page was created. Edits to this are
+                      ignore during updating or creation of pages.
+
+        last_edited_time: The time the page was last edited. Edits to
+        this are ignore during updating or creation of pages.
+
+        icon: The icon of the page, if any.
+
+        cover: THe cover of the page, if any.
+
+        parent: The parent of the page.
+
+        url: The URL of the page.
+
+        archived: Denotes whether the page is archived or not.
+
+        id: The id of the page.
+
+
+    """
 
     title: str = ""
     rich_title: list[cp.Text] = field(default_factory=list)

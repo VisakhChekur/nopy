@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 
 class NotionObject(metaclass=abc.ABCMeta):
+    """The base class from which all other Notion objects inherit."""
 
     client: InitVar[Optional["NotionClient"]] = None
 
@@ -20,7 +21,7 @@ class NotionObject(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def update(self):
-        """Updates the instance to the Notion server and refreshes."""
+        """Updates the instance to the Notion server."""
 
     @abc.abstractmethod
     def refresh(self, in_place: bool = True) -> "NotionObject":
