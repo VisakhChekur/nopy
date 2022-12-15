@@ -5,12 +5,14 @@ from dataclasses import dataclass
 from dataclasses import field
 from datetime import datetime
 from typing import Any
+from typing import ClassVar
 from typing import Optional
 from typing import Type
 from typing import Union
 
 import dateutil.parser as date_parser
 
+from ..helpers import TextDescriptor
 from ..helpers import get_plain_text
 from .base import BaseProperty
 from .common_properties import Date
@@ -23,6 +25,12 @@ from .prop_enums import PropTypes
 
 @dataclass(eq=False)
 class PProp(BaseProperty):
+    """The base property from which all page properties inherit.
+
+    Args:
+        name (str): The name of the property.
+        id (str): The id of the property.
+    """
 
     name: str
     _: KW_ONLY
@@ -34,6 +42,9 @@ class PProp(BaseProperty):
 
     @property
     def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.UNUSPPORTED`."""
+
         return self._type
 
     @classmethod
@@ -47,14 +58,29 @@ class PProp(BaseProperty):
 
 @dataclass(eq=False)
 class PTitle(PProp):
+    """A representation of a 'Title' page property.
 
-    title: str = ""
+    Args:
+        name (str): The name of the property.
+        title (str): The title as plain text.
+        rich_title: The title with the styling details.
+        id (str): The id of the property.
+    """
+
+    title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
+
     rich_title: list[Text] = field(default_factory=list)
 
     def __post_init__(self):
 
         self._type = PropTypes.TITLE
-        self.title = get_plain_text(self.rich_title)
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.UNUSPPORTED`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PTitle], args: dict[str, Any]) -> PTitle:
@@ -70,14 +96,32 @@ class PTitle(PProp):
 
 @dataclass(eq=False)
 class PText(PProp):
+    """A representation of a 'Text' page property.
 
-    text: str = ""
+    Args:
+        name (str): The name of the property.
+        text (str): The text as plain text.
+        rich_text: The text with the styling details.
+        id (str): The id of the property.
+        type (PropTyes):
+            The type of the property which will always be `PropTypes.RICH_TEXT`
+    """
+
+    text: ClassVar[TextDescriptor] = TextDescriptor("rich_text")
+
     rich_text: list[Text] = field(default_factory=list)
 
     def __post_init__(self):
 
         self._type = PropTypes.RICH_TEXT
         self.text = get_plain_text(self.rich_text)
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.RICH_TEXT`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PText], args: dict[str, Any]) -> PText:
@@ -93,12 +137,28 @@ class PText(PProp):
 
 @dataclass(eq=False)
 class PNumber(PProp):
+    """A representation of a 'Number' page property.
+
+    Args:
+        name: The name of the property.
+        number: The number stored in the property.
+        id: The id of the property.
+        type (PropTyes):
+            The type of the property which will always be `PropTypes.RICH_TEXT`
+    """
 
     number: float = 0
 
     def __post_init__(self):
 
         self._type = PropTypes.NUMBER
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.NUMBER`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PNumber], args: dict[str, Any]) -> PNumber:
@@ -120,6 +180,13 @@ class PSelect(PProp):
 
         self._type = PropTypes.SELECT
 
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.SELECT`."""
+
+        return self._type
+
     @classmethod
     def from_dict(cls: Type[PSelect], args: dict[str, Any]) -> PSelect:
 
@@ -140,6 +207,13 @@ class PMultiSelect(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.MULTI_SELECT
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.MULTI_SELECT`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PMultiSelect], args: dict[str, Any]) -> PMultiSelect:
@@ -165,6 +239,13 @@ class PDate(PProp):
 
         self._type = PropTypes.DATE
 
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.DATE`."""
+
+        return self._type
+
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
 
@@ -185,6 +266,13 @@ class PFormula(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.FORMULA
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.FORMULA`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -217,6 +305,13 @@ class PFile(PProp):
 
         self._type = PropTypes.FILES
 
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.FILES`."""
+
+        return self._type
+
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
 
@@ -238,6 +333,13 @@ class PCheckbox(PProp):
 
         self._type = PropTypes.CHECKBOX
 
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.CHECKBOX`."""
+
+        return self._type
+
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
 
@@ -257,6 +359,13 @@ class PUrl(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.URL
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.URL`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -278,6 +387,13 @@ class PEmail(PProp):
 
         self._type = PropTypes.CHECKBOX
 
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.CHECKBOX`."""
+
+        return self._type
+
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
 
@@ -297,6 +413,13 @@ class PPhoneNumber(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.PHONE_NUMBER
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.PHONE_NUMBER`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -318,6 +441,13 @@ class PCreatedTime(PProp):
 
         self._type = PropTypes.CREATED_TIME
 
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.CREATED_TIME`."""
+
+        return self._type
+
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
 
@@ -337,6 +467,13 @@ class PLastEditedTime(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.LAST_EDITED_TIME
+
+    @property
+    def type(self) -> PropTypes:
+        """The type of the property which will always be
+        `PropTypes.LAST_EDITED_TIME`."""
+
+        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:

@@ -3,11 +3,12 @@ from dataclasses import dataclass
 from dataclasses import field
 from datetime import datetime
 from typing import TYPE_CHECKING
+from typing import ClassVar
 from typing import Optional
 from typing import Set
 from typing import Union
 
-from ..helpers import get_plain_text
+from ..helpers import TextDescriptor
 from ..properties import common_properties as cp
 from ..typings import Parents
 from .notion_object import NotionObject
@@ -51,7 +52,8 @@ class Page(NotionObject):
 
     """
 
-    title: str = ""
+    title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
+
     rich_title: list[cp.Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
     created_time: Optional[datetime] = None
@@ -66,11 +68,6 @@ class Page(NotionObject):
 
     def __post_init__(self, client: Optional["NotionClient"]):
         super().__post_init__(client)
-
-        if self.rich_title:
-            self.title = get_plain_text(self.rich_title)
-        else:
-            self.rich_title = [cp.Text(self.title)]
 
         self._og_props: Set[str] = set(self.properties._ids.keys())  # type: ignore
 

@@ -10,7 +10,7 @@ from typing import Optional
 from typing import Set
 from typing import Union
 
-from ..helpers import get_plain_text
+from ..helpers import TextDescriptor
 from ..properties.base import BaseProperty
 from ..properties.common_properties import Emoji
 from ..properties.common_properties import File
@@ -81,13 +81,13 @@ class Database(NotionObject):
         PropTypes.LAST_EDITED_TIME,
         PropTypes.TITLE,
     }
+    title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
+    description: ClassVar[TextDescriptor] = TextDescriptor("rich_description")
 
-    title: str = ""
     rich_title: list[Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
     created_time: Optional[datetime] = None
     last_edited_time: Optional[datetime] = None
-    description: str = ""
     rich_description: list[Text] = field(default_factory=list)
     icon: Optional[Union[File, Emoji]] = None
     cover: Optional[File] = None
@@ -101,14 +101,6 @@ class Database(NotionObject):
     def __post_init__(self, client: Optional["NotionClient"]):
         super().__post_init__(client)
 
-        if self.rich_title:
-            self.title = get_plain_text(self.rich_title)
-        else:
-            self.rich_title.append(Text(self.title))
-        if self.rich_description:
-            self.description = get_plain_text(self.rich_description)
-        else:
-            self.rich_description.append(Text(self.title))
         # Keep track of the original properties if present so they can
         # be used later to determine whether to use the ID or the name
         # when serializing the properties.

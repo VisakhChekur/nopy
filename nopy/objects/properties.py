@@ -7,17 +7,22 @@ from nopy.typings import Props
 
 
 class Properties(Collection[Props]):
+    """A class that acts as a collection that holds all the properties of a
+    Notion database or page."""
+
     def __init__(self):
 
         self._names: dict[str, Props] = {}
         self._ids: dict[str, Props] = {}
         self._props: Set[Props] = set()
 
-    def get(self, prop: str) -> Props:
+    def get(self, prop_identifier: str) -> Props:
+        """Returns the property with the given name or id."""
 
-        return self.__getitem__(prop)
+        return self.__getitem__(prop_identifier)
 
     def add(self, prop: Props):
+        """Adds the given property."""
 
         if prop in self:
             raise PropertyExistsError("property with same id or name already exists")
@@ -28,16 +33,17 @@ class Properties(Collection[Props]):
         if prop.name:
             self._names[prop.name] = prop
 
-    def pop(self, prop: str) -> Props:
+    def pop(self, prop_identifier: str) -> Props:
+        """Deletes and returns the property with the given name or id."""
 
         try:
-            popped = self._names.pop(prop, None)
+            popped = self._names.pop(prop_identifier, None)
             if not popped:
-                return self._ids.pop(prop)
+                return self._ids.pop(prop_identifier)
             return popped
         except KeyError:
             raise PropertyNotFoundError(
-                f"property with name or id, {prop}, was not found"
+                f"property with name or id, {prop_identifier}, was not found"
             )
 
     def _pop_with_str(self, prop_identifier: str) -> Props:
@@ -68,13 +74,13 @@ class Properties(Collection[Props]):
 
         return self._props.__iter__()
 
-    def __getitem__(self, key: str) -> Props:
+    def __getitem__(self, prop_identifier: str) -> Props:
 
         try:
-            prop = self._names.get(key, None)
+            prop = self._names.get(prop_identifier, None)
             if prop:
                 return prop
-            return self._ids[key]
+            return self._ids[prop_identifier]
         except KeyError:
             raise PropertyNotFoundError(
                 "property with name or id, `{key}`, was not found"
