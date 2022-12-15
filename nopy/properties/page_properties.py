@@ -21,7 +21,7 @@ from .prop_enums import FormulaTypes
 from .prop_enums import PropTypes
 
 
-@dataclass
+@dataclass(eq=False)
 class PProp(BaseProperty):
 
     name: str
@@ -45,7 +45,7 @@ class PProp(BaseProperty):
         return PProp(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PTitle(PProp):
 
     title: str = ""
@@ -68,7 +68,7 @@ class PTitle(PProp):
         return PTitle(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PText(PProp):
 
     text: str = ""
@@ -91,7 +91,7 @@ class PText(PProp):
         return PText(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PNumber(PProp):
 
     number: float = 0
@@ -111,7 +111,7 @@ class PNumber(PProp):
         return PNumber(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PSelect(PProp):
 
     option: Optional[Option] = None
@@ -132,7 +132,7 @@ class PSelect(PProp):
         return PSelect(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PMultiSelect(PProp):
 
     options: list[Option] = field(default_factory=list)
@@ -156,7 +156,7 @@ class PMultiSelect(PProp):
         return PMultiSelect(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PDate(PProp):
 
     date: Date
@@ -176,7 +176,7 @@ class PDate(PProp):
         return PDate(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PFormula(PProp):
 
     value: Union[str, float, bool, Date]
@@ -208,7 +208,7 @@ class PFormula(PProp):
         return PFormula(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PFile(PProp):
 
     files: list[File] = field(default_factory=list)
@@ -229,7 +229,7 @@ class PFile(PProp):
         return PFile(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PCheckbox(PProp):
 
     checked: bool
@@ -249,7 +249,7 @@ class PCheckbox(PProp):
         return PCheckbox(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PUrl(PProp):
 
     url: str
@@ -269,7 +269,7 @@ class PUrl(PProp):
         return PUrl(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PEmail(PProp):
 
     email: str
@@ -289,7 +289,7 @@ class PEmail(PProp):
         return PEmail(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PPhoneNumber(PProp):
 
     phone_number: str
@@ -309,7 +309,7 @@ class PPhoneNumber(PProp):
         return PPhoneNumber(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PCreatedTime(PProp):
 
     created_time: datetime
@@ -329,7 +329,7 @@ class PCreatedTime(PProp):
         return PCreatedTime(**new_args)
 
 
-@dataclass
+@dataclass(eq=False)
 class PLastEditedTime(PProp):
 
     last_edited_time: datetime

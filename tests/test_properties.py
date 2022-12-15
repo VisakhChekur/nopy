@@ -1,6 +1,8 @@
 import pytest
 
 import nopy.properties.db_properties as dbp
+from nopy.exceptions import PropertyExistsError
+from nopy.exceptions import PropertyNotFoundError
 from nopy.objects.properties import Properties
 
 
@@ -11,83 +13,69 @@ def text():
 
 
 @pytest.fixture
-def email():
+def props():
 
-    return dbp.DBEmail("Email prop", id="2")
-
-
-@pytest.fixture
-def checkbox():
-
-    return dbp.DBCheckbox("Checkbox")
+    return Properties()
 
 
-@pytest.fixture
-def props(text, email):
+def test_add_props(props, text):
 
-    props = Properties()
-    for prop in (text, email):
-        props.add_prop(prop)
-    return props
+    props.add(text)
+
+    assert props._names[text.name] == text
+    assert props._ids[text.id] == text
+    assert text in props
 
 
-def test_add_prop(text):
+def test_adding_same_prop(props, text):
 
-    props = Properties()
-    props.add_prop(text)
+    props.add(text)
+    with pytest.raises(PropertyExistsError):
+        props.add(text)
 
+
+def test_adding_prop_with_same_name(props, text):
+
+    props.add(text)
+    with pytest.raises(PropertyExistsError):
+        props.add(dbp.DBCheckbox(text.name))
+
+
+def test_adding_prop_with_same_id(props, text):
+
+    props.add(text)
+    with pytest.raises(PropertyExistsError):
+        props.add(dbp.DBCheckbox("Check", id=text.id))
+
+
+def test_contains(props, text):
+
+    props.add(text)
+    assert text in props
+    assert text.name in props
     assert text.id in props
-    assert text.id in props._ids
-    assert text.name in props._names
 
 
-def test_get_prop(props):
+def test_pop_with_name(props, text):
 
-    # Testing with name
-    text = props["Text prop"]
-    assert isinstance(text, dbp.DBText)
-    assert text.name == "Text prop"
-
-    # Testing with id
-    text = props["1"]
-    assert isinstance(text, dbp.DBText)
-    assert text.name == "Text prop"
+    props.add(text)
+    assert props.pop(text.name) == text
 
 
-def test_pop_prop(props: Properties):
+def test_pop_with_id(props, text):
 
-    # Deleting with prop name
-    text = props.pop("Text prop")
-    assert text.name not in props
-    assert text.id not in props
-    assert text.name not in props._names
-    assert text.id not in props._ids
-
-    email = props.pop("2")
-    assert email.name not in props
-    assert email.id not in props
-    assert email.name not in props._names
-    assert email.id not in props._ids
+    props.add(text)
+    assert props.pop(text.id) == text
 
 
-def test_update_prop_name(
-    props: Properties, checkbox: dbp.DBCheckbox, text: dbp.DBText
-):
+def test_get_prop(props, text):
 
-    # 'text' is the one being replaced
-    props.update_prop(text.name, checkbox)
-
-    assert text.name not in props
-    assert text.id in props
-    assert checkbox.name in props
-    assert isinstance(props[text.id], dbp.DBCheckbox)
+    props.add(text)
+    assert props[text.name] == text
+    assert props[text.id] == text
 
 
-def test_update_prop_id(props: Properties, text: dbp.DBText, checkbox: dbp.DBCheckbox):
+def test_invalid_prop_pop(props):
 
-    props.update_prop(text.id, checkbox)
-
-    assert text.name not in props
-    assert text.id in props
-    assert checkbox.name in props
-    assert isinstance(props[text.id], dbp.DBCheckbox)
+    with pytest.raises(PropertyNotFoundError):
+        props.pop("invalid")

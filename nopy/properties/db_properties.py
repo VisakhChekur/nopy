@@ -14,7 +14,7 @@ from .prop_enums import NumberFormat
 from .prop_enums import PropTypes
 
 
-@dataclass
+@dataclass(eq=False)
 class DBProp(BaseProperty):
     """The base class for all database properties.
 
@@ -55,7 +55,7 @@ class DBProp(BaseProperty):
         return {self._type.value: {}, "name": self.name}
 
 
-@dataclass
+@dataclass(eq=False)
 class DBCheckbox(DBProp):
     """A representation of a 'Checkbox' property in a database.
 
@@ -75,8 +75,11 @@ class DBCheckbox(DBProp):
 
         return DBCheckbox(name=args["name"], id=args["id"])
 
+    def __hash__(self) -> int:
+        return super().__hash__()
 
-@dataclass
+
+@dataclass(eq=False)
 class DBCreatedBy(DBProp):
     """A representation of a 'Created By' property in a database.
 
@@ -100,7 +103,7 @@ class DBCreatedBy(DBProp):
         raise UnsupportedError("'created_by' is not supported by the Notion API")
 
 
-@dataclass
+@dataclass(eq=False)
 class DBCreatedTime(DBProp):
     """A representation of a 'Created Time' property in a database.
 
@@ -124,7 +127,7 @@ class DBCreatedTime(DBProp):
         raise UnsupportedError("'created_time' is not supported by the Notion API")
 
 
-@dataclass
+@dataclass(eq=False)
 class DBDate(DBProp):
     """A representation of a 'Date' property in a database.
 
@@ -145,7 +148,7 @@ class DBDate(DBProp):
         return DBDate(name=args["name"], id=args["id"])
 
 
-@dataclass
+@dataclass(eq=False)
 class DBEmail(DBProp):
     """A representation of a 'Email' property in a database.
 
@@ -166,7 +169,7 @@ class DBEmail(DBProp):
         return DBEmail(name=args["name"], id=args["id"])
 
 
-@dataclass
+@dataclass(eq=False)
 class DBFiles(DBProp):
     """A representation of a 'Files' property in a database.
 
@@ -187,7 +190,7 @@ class DBFiles(DBProp):
         return DBFiles(name=args["name"], id=args["id"])
 
 
-@dataclass
+@dataclass(eq=False)
 class DBFormula(DBProp):
     """A representation of a 'Formula' property in a database.
 
@@ -217,7 +220,7 @@ class DBFormula(DBProp):
         return {self._type.value: {"expression": self.expression}, "name": self.name}
 
 
-@dataclass
+@dataclass(eq=False)
 class DBLastEditedBy(DBProp):
     """A representation of a 'Last Edited By' property in a database.
 
@@ -241,7 +244,7 @@ class DBLastEditedBy(DBProp):
         raise UnsupportedError("'last_edited_by' is not supported by the Notion API")
 
 
-@dataclass
+@dataclass(eq=False)
 class DBLastEditedTime(DBProp):
     """A representation of a 'Last Edited Time' property in a database.
 
@@ -267,7 +270,7 @@ class DBLastEditedTime(DBProp):
         raise UnsupportedError("'last_edited_time' is not supported by the Notion API")
 
 
-@dataclass
+@dataclass(eq=False)
 class DBMultiSelect(DBProp):
     """A representation of a 'Multi Select' property in a database.
 
@@ -302,7 +305,7 @@ class DBMultiSelect(DBProp):
         return {self._type.value: {"options": serialized_options}, "name": self.name}
 
 
-@dataclass
+@dataclass(eq=False)
 class DBNumber(DBProp):
     """A representation of a 'Number' property in a database.
 
@@ -336,7 +339,7 @@ class DBNumber(DBProp):
         return {self._type.value: {"format": self.format.value}, "name": self.name}
 
 
-@dataclass
+@dataclass(eq=False)
 class DBPhoneNumber(DBProp):
     """A representation of a 'Phone Number' property in a database.
 
@@ -357,7 +360,7 @@ class DBPhoneNumber(DBProp):
         return DBPhoneNumber(name=args["name"], id=args["id"])
 
 
-@dataclass
+@dataclass(eq=False)
 class DBSelect(DBProp):
     """A representation of a 'Select' property in a database.
 
@@ -393,7 +396,7 @@ class DBSelect(DBProp):
         return {self._type.value: {"options": serialized_options}, "name": self.name}
 
 
-@dataclass
+@dataclass(eq=False)
 class DBStatus(DBProp):
     """A representation of a 'Status' property in a database.
 
@@ -434,7 +437,7 @@ class DBStatus(DBProp):
         raise UnsupportedError("'status' types are not supported by the Notion API")
 
 
-@dataclass
+@dataclass(eq=False)
 class DBText(DBProp):
     """A representation of a 'Text' property in a database.
 
@@ -455,7 +458,7 @@ class DBText(DBProp):
         return DBText(name=args["name"], id=args["id"])
 
 
-@dataclass
+@dataclass(eq=False)
 class DBTitle(DBProp):
     """A representation of a 'Title' property in a database.
 
@@ -476,7 +479,7 @@ class DBTitle(DBProp):
         return DBTitle(name=args["name"], id=args["id"])
 
 
-@dataclass
+@dataclass(eq=False)
 class DBUrl(DBProp):
     """A representation of a 'Url' property in a database.
 

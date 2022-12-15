@@ -72,7 +72,7 @@ class Page(NotionObject):
         else:
             self.rich_title = [cp.Text(self.title)]
 
-        self._og_props: Set[str] = set(self.properties.get_ids())
+        self._og_props: Set[str] = set(self.properties._ids.keys())  # type: ignore
 
     def update(self):
         return super().update()

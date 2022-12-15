@@ -197,7 +197,7 @@ class Mapper:
                 prop_class = dbp.DBProp
             prop_instance = prop_class.from_dict(prop)
 
-            props.add_prop(prop_instance)
+            props.add(prop_instance)
 
         return props
 
@@ -220,6 +220,6 @@ class Mapper:
             if db:
                 prop_instance.name = db.properties._ids[prop_instance.id].name  # type: ignore
 
-            props.add_prop(prop_instance)
+            props.add(prop_instance)
 
         return props

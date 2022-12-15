@@ -43,3 +43,16 @@ class MappingError(NotionError):
     API into the corresponding Notion object."""
 
     pass
+
+
+class PropertyExistsError(NotionError):
+    """Error that is raised when a property that is already existing is added
+    again."""
+
+    pass
+
+
+class PropertyNotFoundError(NotionError):
+    """Error that is raised when a property is not found."""
+
+    pass
