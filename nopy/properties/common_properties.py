@@ -23,7 +23,7 @@ from .prop_enums import RichTextTypes
 class Annotations(BaseProperty):
     """A representation of the annotations.
 
-    Args:
+    Attributes:
         bold: Mark the text as bold.
         italic: Make the text italic.
         strikethrough: Strikethrough the text.
@@ -61,7 +61,7 @@ class Annotations(BaseProperty):
 class Date(BaseProperty):
     """A representation of a date value in Notion.
 
-    Args:
+    Attributes:
         start: The start time.
         end: The end time, if any.
         time_zone:
@@ -89,7 +89,7 @@ class Date(BaseProperty):
 class Emoji(BaseProperty):
     """A representation of the Emoji object.
 
-    Args:
+    Attributes:
         emoji: The emoji as a Unicode string.
         type (EmojiTypes): The type of the emoji.
     """
@@ -112,7 +112,7 @@ class Emoji(BaseProperty):
 class File(BaseProperty):
     """A representation of a File object.
 
-    Args:
+    Attributes:
         url: The url of the file.
         type (FileTypes): The 'type' of file.
         expiry_time:
@@ -148,7 +148,7 @@ class File(BaseProperty):
 class Link(BaseProperty):
     """A representation of a 'Link' object.
 
-    Args:
+    Attributes:
         url: The url.
     """
 
@@ -170,7 +170,7 @@ class Option(BaseProperty):
     This can be used in the options for Select, Mutli-select
     and Status options.
 
-    Args:
+    Attributes:
         name: Name of the option.
         id: Id of the option.
         color: The color associated with the option.
@@ -194,7 +194,7 @@ class Option(BaseProperty):
 class StatusGroup(BaseProperty):
     """A representation of a Status Group.
 
-    Args:
+    Attributes:
         name: Name of the group.
         id: Id of the group.
         color: Color associated with the group.
@@ -223,11 +223,13 @@ class StatusGroup(BaseProperty):
 class RichText(BaseProperty):
     """Base class of Rich Text.
 
-    Args:
+    Attributes:
         plain_text: The text without any annotations.
         annotations: The annotations applied on the text.
         href: The link, if any, within the text.
-        type: The 'type' of the Rich Text.
+        type (RichTextTypes):
+            The 'type' of the Rich Text which will always be
+            `RichTextTypes.UNSUPPORTED`.
     """
 
     plain_text: str
@@ -236,8 +238,12 @@ class RichText(BaseProperty):
 
     def __post_init__(self):
 
-        self.type = RichTextTypes.UNSUPPORTED
+        self._type = RichTextTypes.UNSUPPORTED
         self.plain_text = self.plain_text.strip()
+
+    @property
+    def type(self):
+        return self._type
 
     def serialize(self) -> dict[str, Any]:
         raise UnsupportedError("'mention' and 'equation' are not supported yet")
@@ -257,11 +263,13 @@ class RichText(BaseProperty):
 class Text(RichText):
     """A representation of 'Text' type of Rich Text.
 
-    Args:
+    Attributes:
         plain_text: The text without any annotations.
         annotations: The annotations applied on the text.
         href: The link, if any, within the text.
-        type: The 'type' of the Rich Text.
+        type:
+            The 'type' of the Rich Text which will always be
+            `RichTextTypes.TEXT`.
         link:
             Any inline link within the text. This should be the one used
             by the user when creating a new property or updating an
@@ -273,7 +281,7 @@ class Text(RichText):
     def __post_init__(self):
 
         self.plain_text = self.plain_text.strip()
-        self.type = RichTextTypes.TEXT
+        self._type = RichTextTypes.TEXT
 
     def serialize(self) -> dict[str, Any]:
 
@@ -307,9 +315,11 @@ class Parent(BaseProperty):
 
     The base parent class from which all parent objects inherit.
 
-    Args:
+    Attributes:
         id: The id of the parent.
-        type: The type of the parent.
+        type (ParentTypes):
+            The type of the parent which will always be
+            `ParentTypes.UNSUPPORTED`.
     """
 
     id: str
@@ -332,9 +342,11 @@ class Parent(BaseProperty):
 class DatabaseParent(Parent):
     """A representation of a database parent of a Notion object.
 
-    Args:
-        id: The id of the database.
-        type: The type of the parent which is always `ParentTypes.DATABASE`.
+    Attributes:
+        id (str): The id of the database.
+        type (ParentTypes):
+            The type of the parent which will always
+            be `ParentTypes.DATABASE`.
     """
 
     def __post_init__(self):
@@ -349,9 +361,10 @@ class DatabaseParent(Parent):
 class PageParent(Parent):
     """A representation of a page parent of a Notion object.
 
-    Args:
-        id: The id of the page.
-        type: The type of the parent which is always `ParentTypes.PAGE`.
+    Attributes:
+        id (str): The id of the page.
+        type (ParentTypes): The type of the parent which will always
+        be `ParentTypes.PAGE`.
     """
 
     def __post_init__(self):
@@ -366,9 +379,10 @@ class PageParent(Parent):
 class WorkspaceParent(Parent):
     """A representation of a workspace parent of a Notion object.
 
-    Args:
-        id: The id of the workspace.
-        type: The type of the parent which is always `ParentTypes.WORKSPACE`.
+    Attributes:
+        id (str): The id of the workspace.
+        type (ParentType): The type of the parent which will always
+        be `ParentTypes.WORKSPACE`.
     """
 
     id: str = ""
@@ -388,9 +402,10 @@ class WorkspaceParent(Parent):
 class BlockParent(Parent):
     """A representation of a block parent of a Notion object.
 
-    Args:
-        id: The id of the block.
-        type: The type of the parent which is always `ParentTypes.BLOCK`.
+    Attributes:
+        id (str): The id of the block.
+        type (ParentTypes): The type of the parent which will always
+        be `ParentTypes.BLOCK`.
     """
 
     def __post_init__(self):

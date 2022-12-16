@@ -1,1 +1,1 @@
-::: notion.client.NotionClient
+::: nopy.client.NotionClient

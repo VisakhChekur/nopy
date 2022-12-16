@@ -17,12 +17,20 @@ class Properties(Collection[Props]):
         self._props: Set[Props] = set()
 
     def get(self, prop_identifier: str) -> Props:
-        """Returns the property with the given name or id."""
+        """Returns the property with the given name or id.
+
+        Raises:
+            PropertyNotFoundError: Property with give name or id was not found.
+        """
 
         return self.__getitem__(prop_identifier)
 
     def add(self, prop: Props):
-        """Adds the given property."""
+        """Adds the given property.
+
+        Raises:
+            PropertyExistsError: Property with same id or name already exists.
+        """
 
         if prop in self:
             raise PropertyExistsError("property with same id or name already exists")
@@ -34,7 +42,11 @@ class Properties(Collection[Props]):
             self._names[prop.name] = prop
 
     def pop(self, prop_identifier: str) -> Props:
-        """Deletes and returns the property with the given name or id."""
+        """Deletes and returns the property with the given name or id.
+
+        Raises:
+            PropertyNotFoundError: Property with give name or id was not found.
+        """
 
         try:
             popped = self._names.pop(prop_identifier, None)
@@ -45,6 +57,8 @@ class Properties(Collection[Props]):
             raise PropertyNotFoundError(
                 f"property with name or id, {prop_identifier}, was not found"
             )
+
+    # ---- Private Methods ----
 
     def _pop_with_str(self, prop_identifier: str) -> Props:
 

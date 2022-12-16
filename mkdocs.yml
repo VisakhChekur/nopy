@@ -6,6 +6,7 @@ nav:
   - Home: index.md
   - Usage:
       - Databases: usage/databases.md
+      - Working with Properties: usage/working_with_properties.md
   - API Reference:
       - Notion Objects:
           - Notion Object: api_reference/notion_objects/notion_object.md
@@ -57,11 +58,11 @@ plugins:
       default_handler: python
       handlers:
         python:
-          paths: [notion/]
+          paths: [nopy/]
           options:
             show_root_full_path: false
             show_category_heading: true
-            separate_signature: true
+            # separate_signature: true
             show_root_toc_entry: false
             members_order: source
           import:

@@ -27,9 +27,12 @@ from .prop_enums import PropTypes
 class PProp(BaseProperty):
     """The base property from which all page properties inherit.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
+        type (PropTyes):
+            The type of the property which will always be
+            `PropTyes.UNSUPPORTED`.
     """
 
     name: str
@@ -42,8 +45,6 @@ class PProp(BaseProperty):
 
     @property
     def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.UNUSPPORTED`."""
 
         return self._type
 
@@ -60,11 +61,14 @@ class PProp(BaseProperty):
 class PTitle(PProp):
     """A representation of a 'Title' page property.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         title (str): The title as plain text.
-        rich_title: The title with the styling details.
+        rich_title (list[Text]): The title with the styling information.
         id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.TITLE`.
     """
 
     title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
@@ -74,13 +78,6 @@ class PTitle(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.TITLE
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.UNUSPPORTED`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PTitle], args: dict[str, Any]) -> PTitle:
@@ -98,13 +95,14 @@ class PTitle(PProp):
 class PText(PProp):
     """A representation of a 'Text' page property.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
-        text (str): The text as plain text.
-        rich_text: The text with the styling details.
+        text (str):  The text as plain text.
+        rich_text (list[Text]): The text with the styling information.
         id (str): The id of the property.
-        type (PropTyes):
-            The type of the property which will always be `PropTypes.RICH_TEXT`
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.TEXT`.
     """
 
     text: ClassVar[TextDescriptor] = TextDescriptor("rich_text")
@@ -115,13 +113,6 @@ class PText(PProp):
 
         self._type = PropTypes.RICH_TEXT
         self.text = get_plain_text(self.rich_text)
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.RICH_TEXT`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PText], args: dict[str, Any]) -> PText:
@@ -136,115 +127,53 @@ class PText(PProp):
 
 
 @dataclass(eq=False)
-class PNumber(PProp):
-    """A representation of a 'Number' page property.
+class PCheckbox(PProp):
+    """A representation of a 'Checkbox' page property.
 
-    Args:
-        name: The name of the property.
-        number: The number stored in the property.
-        id: The id of the property.
-        type (PropTyes):
-            The type of the property which will always be `PropTypes.RICH_TEXT`
+    Attributes:
+        name (str): The name of the property.
+        checked (bool): Whether the checkbox is checked or not.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.CHECKBOX`.
     """
 
-    number: float = 0
+    checked: bool
 
     def __post_init__(self):
 
-        self._type = PropTypes.NUMBER
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.NUMBER`."""
-
-        return self._type
+        self._type = PropTypes.CHECKBOX
 
     @classmethod
-    def from_dict(cls: Type[PNumber], args: dict[str, Any]) -> PNumber:
+    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
 
         new_args: dict[str, Any] = {
             "name": args.get("name", ""),
             "id": args["id"],
-            "number": args["number"],
+            "checked": args["checkbox"],
         }
-        return PNumber(**new_args)
-
-
-@dataclass(eq=False)
-class PSelect(PProp):
-
-    option: Optional[Option] = None
-
-    def __post_init__(self):
-
-        self._type = PropTypes.SELECT
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.SELECT`."""
-
-        return self._type
-
-    @classmethod
-    def from_dict(cls: Type[PSelect], args: dict[str, Any]) -> PSelect:
-
-        option = Option.from_dict(args["select"]) if args["select"] else None
-        new_args: dict[str, Any] = {
-            "name": args.get("name", ""),
-            "id": args["id"],
-            "option": option,
-        }
-        return PSelect(**new_args)
-
-
-@dataclass(eq=False)
-class PMultiSelect(PProp):
-
-    options: list[Option] = field(default_factory=list)
-
-    def __post_init__(self):
-
-        self._type = PropTypes.MULTI_SELECT
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.MULTI_SELECT`."""
-
-        return self._type
-
-    @classmethod
-    def from_dict(cls: Type[PMultiSelect], args: dict[str, Any]) -> PMultiSelect:
-
-        if args["multi_select"]:
-            options = [Option.from_dict(opt) for opt in args["multi_select"]]
-        else:
-            options = []
-        new_args: dict[str, Any] = {
-            "name": args.get("name", ""),
-            "id": args["id"],
-            "options": options,
-        }
-        return PMultiSelect(**new_args)
+        return PCheckbox(**new_args)
 
 
 @dataclass(eq=False)
 class PDate(PProp):
+    """A representation of a 'Date' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        date (Date): The date.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.DATE`.
+    """
 
     date: Date
 
     def __post_init__(self):
 
         self._type = PropTypes.DATE
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.DATE`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -258,7 +187,80 @@ class PDate(PProp):
 
 
 @dataclass(eq=False)
+class PEmail(PProp):
+    """A representation of a 'Email' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        email (str): The email id.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.EMAIL`.
+    """
+
+    email: str
+
+    def __post_init__(self):
+
+        self._type = PropTypes.EMAIL
+
+    @classmethod
+    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
+
+        new_args: dict[str, Any] = {
+            "name": args.get("name", ""),
+            "id": args["id"],
+            "email": args["email"],
+        }
+        return PEmail(**new_args)
+
+
+@dataclass(eq=False)
+class PFile(PProp):
+    """A representation of a 'File' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        files (list[File]): The list of files being stored.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.FILE`.
+    """
+
+    files: list[File] = field(default_factory=list)
+
+    def __post_init__(self):
+
+        self._type = PropTypes.FILES
+
+    @classmethod
+    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
+
+        new_args: dict[str, Any] = {
+            "name": args.get("name", ""),
+            "id": args["id"],
+            "files": [File.from_dict(f) for f in args["files"]],
+        }
+
+        return PFile(**new_args)
+
+
+@dataclass(eq=False)
 class PFormula(PProp):
+    """A representation of a 'Formula' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        value (Union[str, float, bool, Date]):
+            The actual value as calculated via the formula.
+        formula_type (FormulaTypes): The type of the formula.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.FORMULA`.
+    """
 
     value: Union[str, float, bool, Date]
     formula_type: FormulaTypes = FormulaTypes.NUMBER
@@ -266,13 +268,6 @@ class PFormula(PProp):
     def __post_init__(self):
 
         self._type = PropTypes.FORMULA
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.FORMULA`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -297,129 +292,53 @@ class PFormula(PProp):
 
 
 @dataclass(eq=False)
-class PFile(PProp):
+class PNumber(PProp):
+    """A representation of a 'Number' page property.
 
-    files: list[File] = field(default_factory=list)
+    Attributes:
+        name (str): The name of the property.
+        number (float): The number being stored.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.NUMBER`.
+    """
+
+    number: float = 0
 
     def __post_init__(self):
 
-        self._type = PropTypes.FILES
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.FILES`."""
-
-        return self._type
+        self._type = PropTypes.NUMBER
 
     @classmethod
-    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
+    def from_dict(cls: Type[PNumber], args: dict[str, Any]) -> PNumber:
 
         new_args: dict[str, Any] = {
             "name": args.get("name", ""),
             "id": args["id"],
-            "files": [File.from_dict(f) for f in args["files"]],
+            "number": args["number"],
         }
-
-        return PFile(**new_args)
-
-
-@dataclass(eq=False)
-class PCheckbox(PProp):
-
-    checked: bool
-
-    def __post_init__(self):
-
-        self._type = PropTypes.CHECKBOX
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.CHECKBOX`."""
-
-        return self._type
-
-    @classmethod
-    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
-
-        new_args: dict[str, Any] = {
-            "name": args.get("name", ""),
-            "id": args["id"],
-            "checked": args["checkbox"],
-        }
-        return PCheckbox(**new_args)
-
-
-@dataclass(eq=False)
-class PUrl(PProp):
-
-    url: str
-
-    def __post_init__(self):
-
-        self._type = PropTypes.URL
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.URL`."""
-
-        return self._type
-
-    @classmethod
-    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
-
-        new_args: dict[str, Any] = {
-            "name": args.get("name", ""),
-            "id": args["id"],
-            "url": args["url"],
-        }
-        return PUrl(**new_args)
-
-
-@dataclass(eq=False)
-class PEmail(PProp):
-
-    email: str
-
-    def __post_init__(self):
-
-        self._type = PropTypes.CHECKBOX
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.CHECKBOX`."""
-
-        return self._type
-
-    @classmethod
-    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
-
-        new_args: dict[str, Any] = {
-            "name": args.get("name", ""),
-            "id": args["id"],
-            "email": args["email"],
-        }
-        return PEmail(**new_args)
+        return PNumber(**new_args)
 
 
 @dataclass(eq=False)
 class PPhoneNumber(PProp):
+    """A representation of a 'PhoneNumber' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        phone_number (str): The phone number being stored.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.PHONE_NUMBER`.
+    """
 
     phone_number: str
 
     def __post_init__(self):
 
         self._type = PropTypes.PHONE_NUMBER
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.PHONE_NUMBER`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -433,20 +352,121 @@ class PPhoneNumber(PProp):
 
 
 @dataclass(eq=False)
+class PSelect(PProp):
+    """A representation of a 'Select' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        option (Optional[Option]):
+            The selected option. If no option is selected, the it's `None`.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.SELECT`.
+    """
+
+    option: Optional[Option] = None
+
+    def __post_init__(self):
+
+        self._type = PropTypes.SELECT
+
+    @classmethod
+    def from_dict(cls: Type[PSelect], args: dict[str, Any]) -> PSelect:
+
+        option = Option.from_dict(args["select"]) if args["select"] else None
+        new_args: dict[str, Any] = {
+            "name": args.get("name", ""),
+            "id": args["id"],
+            "option": option,
+        }
+        return PSelect(**new_args)
+
+
+@dataclass(eq=False)
+class PMultiSelect(PProp):
+    """A representation of a 'MultiSelect' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        options (list[Option]):
+            The list of selected options. If not options are selected,
+            then it's an empty list.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.MULTI_SELECT`.
+    """
+
+    options: list[Option] = field(default_factory=list)
+
+    def __post_init__(self):
+
+        self._type = PropTypes.MULTI_SELECT
+
+    @classmethod
+    def from_dict(cls: Type[PMultiSelect], args: dict[str, Any]) -> PMultiSelect:
+
+        if args["multi_select"]:
+            options = [Option.from_dict(opt) for opt in args["multi_select"]]
+        else:
+            options = []
+        new_args: dict[str, Any] = {
+            "name": args.get("name", ""),
+            "id": args["id"],
+            "options": options,
+        }
+        return PMultiSelect(**new_args)
+
+
+@dataclass(eq=False)
+class PUrl(PProp):
+    """A representation of a 'Url' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        url (str): The URL being stored.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.URL`.
+    """
+
+    url: str
+
+    def __post_init__(self):
+
+        self._type = PropTypes.URL
+
+    @classmethod
+    def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
+
+        new_args: dict[str, Any] = {
+            "name": args.get("name", ""),
+            "id": args["id"],
+            "url": args["url"],
+        }
+        return PUrl(**new_args)
+
+
+@dataclass(eq=False)
 class PCreatedTime(PProp):
+    """A representation of a 'CreatedTime' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        created_time (datetime): The created time.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.CREATED_TIME`.
+    """
 
     created_time: datetime
 
     def __post_init__(self):
 
         self._type = PropTypes.CREATED_TIME
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.CREATED_TIME`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:
@@ -461,19 +481,22 @@ class PCreatedTime(PProp):
 
 @dataclass(eq=False)
 class PLastEditedTime(PProp):
+    """A representation of a 'LastEditedTime' page property.
+
+    Attributes:
+        name (str): The name of the property.
+        last_edited_time (datetime): The last edited time.
+        id (str): The id of the property.
+        type (PropTypes):
+            The type of the property which will always be
+            `PropTypes.LAST_EDITED_TIME`.
+    """
 
     last_edited_time: datetime
 
     def __post_init__(self):
 
         self._type = PropTypes.LAST_EDITED_TIME
-
-    @property
-    def type(self) -> PropTypes:
-        """The type of the property which will always be
-        `PropTypes.LAST_EDITED_TIME`."""
-
-        return self._type
 
     @classmethod
     def from_dict(cls: Type[PProp], args: dict[str, Any]) -> PProp:

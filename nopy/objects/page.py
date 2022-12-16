@@ -8,7 +8,9 @@ from typing import Set
 from typing import Union
 
 from ..helpers import TextDescriptor
-from ..properties import common_properties as cp
+from ..properties.common_properties import Emoji
+from ..properties.common_properties import File
+from ..properties.common_properties import Text
 from .notion_object import NotionObject
 from .properties import Properties
 
@@ -21,7 +23,7 @@ class Page(NotionObject):
     """A representation of a Notion Page.
 
     Attributes:
-        title: The title of the page without any annotations/styling.
+        title (str): The title of the page without any annotations/styling.
 
         rich_title: The title of the page with the annotations/styling.
 
@@ -52,10 +54,10 @@ class Page(NotionObject):
 
     title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
 
-    rich_title: list[cp.Text] = field(default_factory=list)
+    rich_title: list[Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
-    icon: Optional[Union[cp.File, cp.Emoji]] = None
-    cover: Optional[cp.File] = None
+    icon: Optional[Union[File, Emoji]] = None
+    cover: Optional[File] = None
     url: str = ""
     client: InitVar[Optional["NotionClient"]] = None
 

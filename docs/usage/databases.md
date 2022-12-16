@@ -12,8 +12,12 @@ All Notion databases are mapped to instances of the [`Database`][database] class
 
 ## Editing a Database
 
+To edit a database, simply edit the attributes available on the `Database` instance. Once you're done with your edits, call the `update()` method on the instance to actually update Notion with the new details regarding the database. Any changes made before the call to `update()` will be reflected.
 
-#### Editing the Metadata of Databases
+
+!!! info
+
+    We will see how to edit and create properties later in the [Working with Properties][working-with-properties] section.
 
 ```python
 
@@ -26,10 +30,7 @@ All Notion databases are mapped to instances of the [`Database`][database] class
     db = client.retrieve_db("your-db-id")
 
     # Adding a new cover image to the database
-    # NOTE: The Notion API does not support uploading local files
-    # via the API.
     cover = cp.File("url-to-the-file")
-
 
     # Editing the title and adding styles
 
@@ -44,70 +45,10 @@ All Notion databases are mapped to instances of the [`Database`][database] class
     db.rich_title = [title_segment_one, title_segment_two]
     db.update()
 ```
-
-When editing titles, make changes to the `rich_title` attribute on `Database` instances. Edits to the `title` attribute WILL be ignored during updation of databases.
-
-#### Editing the Properties of Databases
-
-All properties on a database can be accessed and manipulated via the `properties` attribute on a `Database` instance.  This `properties` attribute has an API similar to a Python dictionary.
-
 !!! warning
 
-    Properties of a can be accessed using the square notations like in normal Python dictionaries, however they can not be set using the square notation.
+    When editing titles, make changes to the `rich_title` attribute on `Database` instances. Edits to the `title` attribute **WILL** be ignored during updation of databases. The same applies for `rich_description` and `description` attributes.
 
-    ```python
-
-        # Works fine
-        prop = db.properties["property-name-or-id"]
-
-        # Raises error
-        db.properties["property-name-or-id"] = prop
-    ```
-
-##### Creating Properties
-
-For creating a new property on a database, simply add a new instance of a `DBProp` to the `properties` attribute on the `Database` instance.
-
-
-```python
-
-    from nopy.properties import db_properties as dbp
-
-    # Retrieve database
-    ...
-
-    new_checkbox_prop = dbp.DBCheckbox("I'm a checkbox property")
-    db.properties.add_prop(new_checkbox_prop)
-
-    db.update()
-```
-
-The above code will create a new checkbox property on the database.
-
-##### Editing Existing Properties
-
-For editing existing properties, manipulate the property that already exists within the `property` attribute on the `Database` instance.
-
-```python
-
-    from nopy.properties import common_properties as cp
-    from nopy.properties import Colors
-
-    # Retrieve database
-    ...
-
-    existing_select_prop = db.property["property-name-or-id"]
-
-    # Adding a new option
-    new_option = cp.Option(name="Brand New Option", color=Colors.PURPLE)
-    existing_select_prop.options.append(new_option)
-
-    # Editing the title of an existing property
-    existing_email_prop = db.propety["property-name-or-id"]
-    existing_email_prop.name = "New property name"
-
-    db.update()
-```
 
 ## Creating a Database
 
@@ -129,16 +70,26 @@ For getting all the pages in a database, use the [`get_pages()`][objects.db.Data
     ...
 
     for page in db.get_pages():
-        print(page.title) # prints the page's title
+        ... # do whatever it is that you want to do with the page
+```
+
+If you want all the pages in a list, replicate the following:
+
+```python
+
+    # Retrieving a database
+    ...
+
+    pages: list[Page] = [page for page in db.get_pages()]
 ```
 
 ### Filtering and Sorting Pages
 
 For filtering and sorting pages, use the [`query()`][objects.db.Database.query] method on the database which requires an instance of a [`Query`][query.query.Query] class.
 
-Add filters to the `Query` instance using the various filters available which can be seen [here][query.filters-classes].
+Add filters to the [`Query`][query.query.Query] instance using the various filters available which can be seen [here][query.filters-classes].
 
-Add sorts to the `Query` instance using the sorts available which can be seen [here][add sorts link]
+Add sorts to the [`Query`][query.query.Query] instance using the sorts available which can be seen [here][add sorts link]
 
 ```python
     from notion.query import Query, TextFilter, CheckboxFilter, PropertySort

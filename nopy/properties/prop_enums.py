@@ -4,7 +4,7 @@ from enum import Enum
 class PropTypes(Enum):
     """The different property types available on databases/pages.
 
-    Args:
+    Attributes:
         TITLE: A title property.
         RICH_TEXT: A rich text property.
         NUMBER: A number property.
@@ -51,7 +51,7 @@ class PropTypes(Enum):
 class NumberFormat(Enum):
     """The different types of number formats possible.
 
-    Args:
+    Attributes:
         NUMBER: A number format.
         NUMBER_WITH_COMMAS: A number with commas format.
         PERCENT: A percent format.
@@ -137,7 +137,7 @@ class NumberFormat(Enum):
 class Colors(Enum):
     """The different types of supported colors.
 
-    Args:
+    Attributes:
         DEFAULT: Default color.
         GRAY: Gray color.
         BROWN: Brown color.
@@ -168,7 +168,7 @@ class RichTextTypes(Enum):
     NOTE: Not all rich text types supported by the official Notion API
     is supported by the library currently.
 
-    Args:
+    Attributes:
         TEXT: A text type rich text.
         UNUSPPORTED: An unuspported type.
     """
@@ -180,7 +180,7 @@ class RichTextTypes(Enum):
 class FileTypes(Enum):
     """The file types.
 
-    Args:
+    Attributes:
         FILE: A file hosted by Notion.
         EXTERNAL: A file hosted externally, but rendered by Notion.
     """
@@ -192,7 +192,7 @@ class FileTypes(Enum):
 class EmojiTypes(Enum):
     """The types of Emojis.
 
-    Args:
+    Attributes:
         EMOJI: The Emoji type.
     """
 
@@ -202,7 +202,7 @@ class EmojiTypes(Enum):
 class ParentTypes(Enum):
     """The formula types.
 
-    Args:
+    Attributes:
         DATABASE: A Database parent.
         PAGE: A Page parent.
         WORKSPACE: A Workspace parent.
@@ -220,7 +220,7 @@ class ParentTypes(Enum):
 class FormulaTypes(Enum):
     """The formula types.
 
-    Args:
+    Attributes:
         NUMBER: A number formula.
         STRING: A string formula.
         BOOLEAN: A boolean formula.
@@ -231,8 +231,3 @@ class FormulaTypes(Enum):
     STRING = "string"
     BOOLEAN = "boolean"
     DATE = "date"
-
-    # """The parent types.
-
-    # Args:
-    # """

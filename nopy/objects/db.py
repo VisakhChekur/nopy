@@ -30,7 +30,7 @@ class Database(NotionObject):
     """A representation of a Notion database.
 
     Attributes:
-        title: The title of the database without any annotations/styling.
+        title (str): The title of the database without any annotations/styling.
 
         rich_title: The title of the database with the annotations/styling.
 
@@ -64,9 +64,6 @@ class Database(NotionObject):
                    or not.
 
         id: The id of the database.
-
-    NOTE: rich_* has priority over their corresponding parts during creation
-    and updation of databases.
     """
 
     # Properties to skip in serialization since they can't be updated

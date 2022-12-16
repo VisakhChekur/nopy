@@ -1,1 +1,3 @@
-::: objects.properties
+# Properties
+
+::: objects.properties.Properties

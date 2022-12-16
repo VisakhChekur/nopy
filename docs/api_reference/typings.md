@@ -1,1 +1,1 @@
-::: notion.typings
+::: nopy.typings

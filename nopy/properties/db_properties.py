@@ -18,7 +18,7 @@ from .prop_enums import PropTypes
 class DBProp(BaseProperty):
     """The base class for all database properties.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -59,7 +59,7 @@ class DBProp(BaseProperty):
 class DBCheckbox(DBProp):
     """A representation of a 'Checkbox' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -83,7 +83,7 @@ class DBCheckbox(DBProp):
 class DBCreatedBy(DBProp):
     """A representation of a 'Created By' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -107,7 +107,7 @@ class DBCreatedBy(DBProp):
 class DBCreatedTime(DBProp):
     """A representation of a 'Created Time' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -131,7 +131,7 @@ class DBCreatedTime(DBProp):
 class DBDate(DBProp):
     """A representation of a 'Date' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -152,7 +152,7 @@ class DBDate(DBProp):
 class DBEmail(DBProp):
     """A representation of a 'Email' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -173,7 +173,7 @@ class DBEmail(DBProp):
 class DBFiles(DBProp):
     """A representation of a 'Files' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -194,7 +194,7 @@ class DBFiles(DBProp):
 class DBFormula(DBProp):
     """A representation of a 'Formula' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -224,7 +224,7 @@ class DBFormula(DBProp):
 class DBLastEditedBy(DBProp):
     """A representation of a 'Last Edited By' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -248,7 +248,7 @@ class DBLastEditedBy(DBProp):
 class DBLastEditedTime(DBProp):
     """A representation of a 'Last Edited Time' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -274,7 +274,7 @@ class DBLastEditedTime(DBProp):
 class DBMultiSelect(DBProp):
     """A representation of a 'Multi Select' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -309,7 +309,7 @@ class DBMultiSelect(DBProp):
 class DBNumber(DBProp):
     """A representation of a 'Number' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -343,7 +343,7 @@ class DBNumber(DBProp):
 class DBPhoneNumber(DBProp):
     """A representation of a 'Phone Number' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -364,7 +364,7 @@ class DBPhoneNumber(DBProp):
 class DBSelect(DBProp):
     """A representation of a 'Select' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -400,7 +400,7 @@ class DBSelect(DBProp):
 class DBStatus(DBProp):
     """A representation of a 'Status' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -441,7 +441,7 @@ class DBStatus(DBProp):
 class DBText(DBProp):
     """A representation of a 'Text' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -462,7 +462,7 @@ class DBText(DBProp):
 class DBTitle(DBProp):
     """A representation of a 'Title' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
@@ -483,7 +483,7 @@ class DBTitle(DBProp):
 class DBUrl(DBProp):
     """A representation of a 'Url' property in a database.
 
-    Args:
+    Attributes:
         name (str): The name of the property.
         id (str): The id of the property.
         type (PropTypes):
