@@ -1,7 +1,6 @@
 from dataclasses import InitVar
 from dataclasses import dataclass
 from dataclasses import field
-from datetime import datetime
 from typing import TYPE_CHECKING
 from typing import ClassVar
 from typing import Optional
@@ -10,7 +9,6 @@ from typing import Union
 
 from ..helpers import TextDescriptor
 from ..properties import common_properties as cp
-from ..typings import Parents
 from .notion_object import NotionObject
 from .properties import Properties
 
@@ -56,14 +54,9 @@ class Page(NotionObject):
 
     rich_title: list[cp.Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
-    created_time: Optional[datetime] = None
-    last_edited_time: Optional[datetime] = None
     icon: Optional[Union[cp.File, cp.Emoji]] = None
     cover: Optional[cp.File] = None
-    parent: Optional[Parents] = None
     url: str = ""
-    archived: bool = False
-    id: str = ""
     client: InitVar[Optional["NotionClient"]] = None
 
     def __post_init__(self, client: Optional["NotionClient"]):

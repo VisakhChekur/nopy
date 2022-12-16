@@ -1,7 +1,7 @@
+import dataclasses
 from dataclasses import InitVar
 from dataclasses import dataclass
 from dataclasses import field
-from datetime import datetime
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
@@ -17,7 +17,6 @@ from ..properties.common_properties import File
 from ..properties.common_properties import Text
 from ..properties.prop_enums import PropTypes
 from ..query.query import Query
-from ..typings import Parents
 from .notion_object import NotionObject
 from .properties import Properties
 
@@ -84,18 +83,14 @@ class Database(NotionObject):
     title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
     description: ClassVar[TextDescriptor] = TextDescriptor("rich_description")
 
+    _: dataclasses.KW_ONLY
     rich_title: list[Text] = field(default_factory=list)
     properties: Properties = field(default_factory=Properties)
-    created_time: Optional[datetime] = None
-    last_edited_time: Optional[datetime] = None
     rich_description: list[Text] = field(default_factory=list)
     icon: Optional[Union[File, Emoji]] = None
     cover: Optional[File] = None
-    parent: Optional[Parents] = None
     url: str = ""
-    archived: bool = False
     is_inline: bool = False
-    id: str = ""
     client: InitVar[Optional["NotionClient"]] = None
 
     def __post_init__(self, client: Optional["NotionClient"]):
@@ -208,7 +203,7 @@ class Database(NotionObject):
         # 'parent' is not allowed when updating databases
         serialized.pop("parent")
         self._client.update_db(self.id, serialized)
-        self._og_props = set(self.properties.get_ids())
+        self._og_props = set(self.properties._ids.keys())  # type: ignore
 
     def serialize(self) -> dict[str, Any]:
         """Serializes the instance to a format that adheres to the Notion
@@ -234,13 +229,13 @@ class Database(NotionObject):
 
         serialized_props: dict[str, Any] = {self.title: {"title": {}}}
 
-        for name, prop in self.properties.iter_names():
+        for prop in self.properties:
             if prop.type in Database._SKIP_SERIALIZE:
                 continue
             if prop.id:
                 serialized_props[prop.name] = prop.serialize()
             else:
-                serialized_props[name] = prop.serialize()
+                serialized_props[prop.name] = prop.serialize()
 
         return serialized_props
 
@@ -248,7 +243,7 @@ class Database(NotionObject):
 
         # Finding the properties that were deleted so that their values
         # can be correspondingly set
-        curr_prop_ids = set(self.properties.get_ids())
+        curr_prop_ids = set(self.properties._ids.keys())  # type: ignore
         deleted_prop_ids = self._og_props.difference(curr_prop_ids)
         return {prop_id: None for prop_id in deleted_prop_ids}
 
