@@ -4,7 +4,6 @@ from typing import Any
 
 from nopy import Database
 from nopy.client import NotionClient
-from nopy.mappers import map_to_db
 from nopy.objects.properties import Properties
 from nopy.properties import common_properties as cp
 from nopy.properties import db_properties as dbp
@@ -14,7 +13,7 @@ def get_db(fp: Path, client: NotionClient) -> Database:
 
     with open(fp, "r") as f:
         data: dict[str, Any] = json.load(f)
-        return map_to_db(data, client)
+        return Database.from_dict(data, client)
 
 
 def test_db_full(test_data_fp: Path, client: NotionClient):

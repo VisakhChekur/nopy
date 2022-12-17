@@ -1,0 +1,44 @@
+{
+    "archived": false,
+    "created_by": {
+        "id": "user-id",
+        "object": "user"
+    },
+    "created_time": "2022-12-17T10:04:00.000Z",
+    "has_children": true,
+    "heading_2": {
+        "color": "default",
+        "is_toggleable": true,
+        "rich_text": [
+            {
+                "annotations": {
+                    "bold": false,
+                    "code": false,
+                    "color": "default",
+                    "italic": false,
+                    "strikethrough": false,
+                    "underline": false
+                },
+                "href": null,
+                "plain_text": "Toggled Heading",
+                "text": {
+                    "content": "Toggled Heading",
+                    "link": null
+                },
+                "type": "text"
+            }
+        ]
+    },
+    "id": "block-id",
+    "last_edited_by": {
+        "id": "user-id",
+        "object": "user"
+    },
+    "last_edited_time": "2022-12-17T11:19:00.000Z",
+    "object": "block",
+    "parent": {
+        "page_id": "page-id",
+        "type": "page_id"
+    },
+    "type": "heading_2"
+}

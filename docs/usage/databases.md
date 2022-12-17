@@ -47,7 +47,7 @@ To edit a database, simply edit the attributes available on the `Database` insta
 ```
 !!! warning
 
-    When editing titles, make changes to the `rich_title` attribute on `Database` instances. Edits to the `title` attribute **WILL** be ignored during updation of databases. The same applies for `rich_description` and `description` attributes.
+    When editing any text with styling, such as title, editing the text attribute directly will remove any styling that may be applied on it. If you want to have styling, edit the corresponding `rich_*` attribute instead.
 
 
 ## Creating a Database

@@ -4,9 +4,7 @@ from enum import Enum
 class BlockTypes(Enum):
 
     PARAGRAPH = "paragraph"
-    HEADING_ONE = "heading_1"
-    HEADING_TWO = "heading_2"
-    HEADING_THREE = "heading_3"
+    HEADING = "heading"
     BULLETED_LIST_ITEM = "bulleted_list_item"
     NUMBERED_LIST_ITEM = "numbered_list_item"
     TO_DO = "to_do"
@@ -30,5 +28,6 @@ class BlockTypes(Enum):
     SYNCED_BLOCK = "synced_block"
     TEMPLATE = "template"
     LINK_TO_PAGE = "link_to_page"
-    TABLETABLE_ROW = "tabletable_row"
+    TABLE = "table"
+    TABLE_ROW = "table_row"
     UNSUPPORTED = "unsupported"

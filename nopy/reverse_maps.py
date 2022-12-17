@@ -1,5 +1,6 @@
 from typing import Type
 
+from .objects import blocks
 from .properties import common_properties as cp
 from .properties import db_properties as dbp
 from .properties import page_properties as pgp
@@ -51,4 +52,17 @@ PAGE_PROPS_REVERSE_MAP: dict[str, Type[PageProps]] = {
     "phone_number": pgp.PPhoneNumber,
     "created_time": pgp.PCreatedTime,
     "last_edited_time": pgp.PLastEditedTime,
+}
+
+BLOCK_REVERSE_MAP: dict[str, Type[blocks.Block]] = {
+    "heading_1": blocks.Heading,
+    "heading_2": blocks.Heading,
+    "heading_3": blocks.Heading,
+    "paragraph": blocks.Paragraph,
+    "callout": blocks.Callout,
+    "quote": blocks.Quote,
+    "bulleted_list_item": blocks.BulletList,
+    "numbered_list_item": blocks.NumberedList,
+    "to_do": blocks.Todo,
+    "unsupported": blocks.Block,
 }

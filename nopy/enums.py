@@ -148,6 +148,15 @@ class Colors(Enum):
         PURPLE: Purple color.
         PINK: Pink color.
         RED: Red color.
+        GRAY_BACKGROUND: Gray backround color.
+        BROWN_BACKGROUND: Brown backround color.
+        ORANGE_BACKGROUND: Orange backround color.
+        YELLOW_BACKGROUND: Yellow backround color.
+        GREEN_BACKGROUND: Green backround color.
+        BLUE_BACKGROUND: Blue backround color.
+        PURPLE_BACKGROUND: Purple backround color.
+        PINK_BACKGROUND: Pink backround color.
+        RED_BACKGROUND: Red backround color.
     """
 
     DEFAULT = "default"
@@ -160,32 +169,15 @@ class Colors(Enum):
     PURPLE = "purple"
     PINK = "pink"
     RED = "red"
-
-
-class BackgroundColors(Enum):
-    """The different supported background colors.
-
-    Attributes:
-        GRAY: Gray backround color.
-        BROWN: Brown backround color.
-        ORANGE: Orange backround color.
-        YELLOW: Yellow backround color.
-        GREEN: Green backround color.
-        BLUE: Blue backround color.
-        PURPLE: Purple backround color.
-        PINK: Pink backround color.
-        RED: Red backround color.
-    """
-
-    GRAY = "gray_background"
-    BROWN = "brown_background"
-    ORANGE = "orange_background"
-    YELLOW = "yellow_background"
-    GREEN = "green_background"
-    BLUE = "blue_background"
-    PURPLE = "purple_background"
-    PINK = "pink_background"
-    RED = "red_background"
+    GRAY_BACKGROUND = "gray_background"
+    BROWN_BACKGROUND = "brown_background"
+    ORANGE_BACKGROUND = "orange_background"
+    YELLOW_BACKGROUND = "yellow_background"
+    GREEN_BACKGROUND = "green_background"
+    BLUE_BACKGROUND = "blue_background"
+    PURPLE_BACKGROUND = "purple_background"
+    PINK_BACKGROUND = "pink_background"
+    RED_BACKGROUND = "red_background"
 
 
 class RichTextTypes(Enum):
@@ -257,3 +249,19 @@ class FormulaTypes(Enum):
     STRING = "string"
     BOOLEAN = "boolean"
     DATE = "date"
+
+
+class HeadingLevels(Enum):
+    """The heading types.
+
+    Args:
+        HEADING_1: A heading at level 'one'.
+        HEADING_2 = A heading at level 'two'.
+        HEADING_3 = A heading at level 'three'.
+        UNSUPPORTED: An unsupported heading level.
+    """
+
+    HEADING_1 = "heading_1"
+    HEADING_2 = "heading_2"
+    HEADING_3 = "heading_3"
+    UNSUPPORTED = "unsupported"

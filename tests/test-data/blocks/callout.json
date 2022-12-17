@@ -1,0 +1,41 @@
+{
+    "object": "block",
+    "id": "block-id",
+    "parent": {
+        "type": "page_id",
+        "page_id": "page-id"
+    },
+    "created_time": "2022-12-17T09:54:00.000Z",
+    "last_edited_time": "2022-12-17T14:53:00.000Z",
+    "created_by": "user-id",
+    "last_edited_by": "user-id",
+    "has_children": false,
+    "archived": false,
+    "type": "callout",
+    "callout": {
+        "rich_text": [
+            {
+                "type": "text",
+                "text": {
+                    "content": "I'm calling you out.",
+                    "link": null
+                },
+                "annotations": {
+                    "bold": false,
+                    "italic": false,
+                    "strikethrough": false,
+                    "underline": false,
+                    "code": false,
+                    "color": "default"
+                },
+                "plain_text": "I'm calling you out.",
+                "href": null
+            }
+        ],
+        "icon": {
+            "type": "emoji",
+            "emoji": "\ud83d\udca1"
+        },
+        "color": "gray_background"
+    }
+}

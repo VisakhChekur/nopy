@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 from dataclasses import InitVar
 from dataclasses import dataclass
@@ -8,8 +10,10 @@ from typing import ClassVar
 from typing import Generator
 from typing import Optional
 from typing import Set
+from typing import Type
 from typing import Union
 
+from .. import mappers as mp
 from ..enums import PropTypes
 from ..helpers import TextDescriptor
 from ..helpers import serialize_text_list
@@ -18,6 +22,7 @@ from ..properties.common_properties import Emoji
 from ..properties.common_properties import File
 from ..properties.common_properties import Text
 from ..query.query import Query
+from ..reverse_maps import DB_PROPS_REVERSE_MAP
 from .notion_object import NotionObject
 from .properties import Properties
 
@@ -254,3 +259,21 @@ class Database(NotionObject):
             if not query_results["has_more"]:
                 break
             query_dict["start_cursor"] = query_results["next_cursor"]
+
+    @classmethod
+    def from_dict(
+        cls: Type[Database], db: dict[str, Any], client: Optional["NotionClient"] = None
+    ) -> Database:
+
+        db_args = {
+            "rich_title": mp.get_rich_text_list(db["title"]),
+            "rich_description": mp.get_rich_text_list(db["description"]),
+            "icon": mp.get_icon(db["icon"]),
+            "cover": mp.get_cover(db["cover"]),
+            "url": db["url"],
+            "is_inline": db["is_inline"],
+            "properties": mp.get_props(db["properties"], DB_PROPS_REVERSE_MAP),
+        }
+        db_args.update(mp.get_base_args(db, client))
+
+        return Database(**db_args)

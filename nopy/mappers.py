@@ -1,22 +1,17 @@
-from copy import deepcopy
 from datetime import datetime
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
 from typing import Type
 from typing import Union
-from typing import cast
 
-from .objects.db import Database
-from .objects.page import Page
+from nopy.enums import Colors
+
 from .objects.properties import Properties
 from .properties.common_properties import Emoji
 from .properties.common_properties import File
 from .properties.common_properties import Text
 from .properties.db_properties import DBProp
-from .properties.page_properties import PTitle
-from .reverse_maps import DB_PROPS_REVERSE_MAP
-from .reverse_maps import PAGE_PROPS_REVERSE_MAP
 from .reverse_maps import PARENT_REVERSE_MAP
 from .typings import DBProps
 from .typings import PageProps
@@ -24,6 +19,7 @@ from .typings import Parents
 
 if TYPE_CHECKING:
     from .client import NotionClient
+    from .objects.db import Database
 
 # ----- CONSTANTS -----
 
@@ -31,65 +27,28 @@ if TYPE_CHECKING:
 TYPE = "type"
 
 
-def map_to_db(
-    db: dict[str, Any], client: "NotionClient", no_mutate: bool = False
-) -> Database:
-    """Maps the given database to a Database instance.
+def block_base_args(
+    block: dict[str, Any], client: Optional["NotionClient"] = None
+) -> dict[str, Any]:
 
-    The dictionary MUST adhere to the Notion specifications.
-    """
+    base_args = get_base_args(block, client)
+    base_args["has_children"] = block["has_children"]
 
-    if no_mutate:
-        db = deepcopy(db)
-
-    db_args = {
-        "rich_title": _get_rich_text_list(db["title"]),
-        "rich_description": _get_rich_text_list(db["description"]),
-        "icon": _get_icon(db["icon"]),
-        "cover": _get_cover(db["cover"]),
-        "url": db["url"],
-        "is_inline": db["is_inline"],
-        "properties": _get_props(db["properties"], DB_PROPS_REVERSE_MAP),
-        "client": client,
-    }
-    db_args.update(_get_base_args(db))
-
-    return Database(**db_args)
+    block_type = block["type"]
+    color: Optional[None] = block[block_type].get("color", None)
+    if color:
+        base_args["color"] = _get_color(color)
+    return base_args
 
 
-def map_to_page(
-    page: dict[str, Any],
-    db: Optional[Database],
-    client: "NotionClient",
-    no_mutate: bool = False,
-) -> Page:
-    """Maps the given dictionary to a Page instance.
+def _get_color(color: str) -> Colors:
 
-    The dictionary MUST adhere to the Notion specifications.
-    """
-
-    if no_mutate:
-        page = deepcopy(page)
-
-    properties = _get_props(page["properties"], PAGE_PROPS_REVERSE_MAP, db)
-    # `title` is not directly provided as in the case of databases
-    # which means it has to be found from the properties of the page
-    title = cast(PTitle, properties["title"])
-
-    page_args = {
-        "properties": properties,
-        "icon": _get_icon(page["icon"]),
-        "cover": _get_cover(page["cover"]),
-        "url": page["url"],
-        "rich_title": title.rich_title,
-        "client": client,
-    }
-    page_args.update(_get_base_args(page))
-
-    return Page(**page_args)
+    return Colors[color.upper()]
 
 
-def _get_base_args(obj: dict[str, Any]) -> dict[str, Any]:
+def get_base_args(
+    obj: dict[str, Any], client: Optional["NotionClient"] = None
+) -> dict[str, Any]:
     """Takes the object dictionary and finds all the values that are
     present in all Notion objects (database, page, blocks) and converts them
     into the corresponding type."""
@@ -103,6 +62,7 @@ def _get_base_args(obj: dict[str, Any]) -> dict[str, Any]:
         "archived": obj["archived"],
         "created_time": created_time,
         "last_edited_time": last_edited_time,
+        "client": client,
     }
 
 
@@ -113,14 +73,14 @@ def _get_parent(parent_dict: dict[str, Any]) -> Parents:
     return parent_class(parent_dict[parent_type])
 
 
-def _get_rich_text_list(rich_text_list: list[dict[str, Any]]) -> list[Text]:
+def get_rich_text_list(rich_text_list: list[dict[str, Any]]) -> list[Text]:
 
     if not rich_text_list:
         return []
     return [Text.from_dict(rt) for rt in rich_text_list]
 
 
-def _get_icon(icon_dict: dict[str, Any]) -> Optional[Union[File, Emoji]]:
+def get_icon(icon_dict: dict[str, Any]) -> Optional[Union[File, Emoji]]:
 
     if not icon_dict:
         return None
@@ -130,7 +90,7 @@ def _get_icon(icon_dict: dict[str, Any]) -> Optional[Union[File, Emoji]]:
     return File.from_dict(icon_dict)
 
 
-def _get_cover(cover_dict: Optional[dict[str, Any]]) -> Optional[File]:
+def get_cover(cover_dict: Optional[dict[str, Any]]) -> Optional[File]:
 
     if not cover_dict:
         return None
@@ -138,10 +98,10 @@ def _get_cover(cover_dict: Optional[dict[str, Any]]) -> Optional[File]:
     return File.from_dict(cover_dict)
 
 
-def _get_props(
+def get_props(
     props_dict: dict[str, Any],
     prop_map: Union[dict[str, Type[DBProps]], dict[str, Type[PageProps]]],
-    db: Optional[Database] = None,
+    db: Optional["Database"] = None,
 ) -> Properties:
 
     props = Properties()

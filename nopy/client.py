@@ -13,6 +13,7 @@ from requests.adapters import HTTPAdapter
 from requests.adapters import Retry
 
 from .constants import API_VERSION
+from .constants import BLOCK_CHILDREN_ENDPOINT
 from .constants import BLOCK_ENDPOINT
 from .constants import DB_ENDPOINT
 from .constants import PAGE_ENDPOINT
@@ -22,8 +23,6 @@ from .exceptions import FormatError
 from .exceptions import NotFoundError
 from .exceptions import NotionAPIError
 from .exceptions import NotionError
-from .mappers import map_to_db
-from .mappers import map_to_page
 from .objects.db import Database
 from .objects.page import Page
 
@@ -135,7 +134,7 @@ class NotionClient:
         if save_to_fp:
             self._save_to_fp(db_dict, Path(save_to_fp))
 
-        db = map_to_db(db_dict, self)
+        db = Database.from_dict(db_dict, self)
         self._db_cache[db.id] = db
 
         return db
@@ -219,7 +218,7 @@ class NotionClient:
         resp = self._post_request(endpoint, query_dict)
 
         db = self.retrieve_db(db_id)
-        return [map_to_page(p, db, self) for p in resp["results"]]
+        return [Page.from_dict(p, self, db) for p in resp["results"]]
 
     def query_db_raw(self, db_id: str, query_dict: dict[str, Any]) -> dict[str, Any]:
         """Qeuries the database.
@@ -274,7 +273,7 @@ class NotionClient:
         if page_dict["parent"]["type"] == "database_id":
             db = self.retrieve_db(page_dict["parent"]["database_id"])
 
-        return map_to_page(page_dict, db, self)
+        return Page.from_dict(page_dict, self, db)
 
     def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
         """Retrieves the page from Notion.
@@ -319,6 +318,16 @@ class NotionClient:
             self._save_to_fp(block_dict, Path(save_to_fp))
 
         return block_dict
+
+    def retrieve_block_children(self, block_id: str, *, save_to_fp: str | Path = ""):
+
+        endpoint = BLOCK_CHILDREN_ENDPOINT.format(block_id)
+        children_blocks_dict = self._get_request(endpoint)
+
+        if save_to_fp:
+            self._save_to_fp(children_blocks_dict, Path(save_to_fp))
+
+        return children_blocks_dict
 
     # ------ PRIVATE METHODS ------
 

@@ -18,6 +18,12 @@ def client():
     return NotionClient("secret-token")
 
 
+@pytest.fixture(scope="session")
+def blocks_fp(test_data_fp: Path):
+
+    return test_data_fp / "blocks"
+
+
 @pytest.fixture
 def options():
 
