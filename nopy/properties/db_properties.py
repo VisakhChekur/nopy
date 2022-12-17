@@ -6,12 +6,12 @@ from dataclasses import field
 from typing import Any
 from typing import Type
 
+from ..enums import NumberFormat
+from ..enums import PropTypes
 from ..exceptions import UnsupportedError
 from .base import BaseProperty
 from .common_properties import Option
 from .common_properties import StatusGroup
-from .prop_enums import NumberFormat
-from .prop_enums import PropTypes
 
 
 @dataclass(eq=False)
@@ -433,8 +433,10 @@ class DBStatus(DBProp):
         return DBStatus(**new_args)
 
     def serialize(self) -> dict[str, Any]:
-        # TODO: Confirm with Notion.
-        raise UnsupportedError("'status' types are not supported by the Notion API")
+        # Confirmed with Notion that they don't support it yet.
+        raise UnsupportedError(
+            "creating/updating 'status' types are not supported by the Notion API"
+        )
 
 
 @dataclass(eq=False)

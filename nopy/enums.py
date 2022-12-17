@@ -162,6 +162,32 @@ class Colors(Enum):
     RED = "red"
 
 
+class BackgroundColors(Enum):
+    """The different supported background colors.
+
+    Attributes:
+        GRAY: Gray backround color.
+        BROWN: Brown backround color.
+        ORANGE: Orange backround color.
+        YELLOW: Yellow backround color.
+        GREEN: Green backround color.
+        BLUE: Blue backround color.
+        PURPLE: Purple backround color.
+        PINK: Pink backround color.
+        RED: Red backround color.
+    """
+
+    GRAY = "gray_background"
+    BROWN = "brown_background"
+    ORANGE = "orange_background"
+    YELLOW = "yellow_background"
+    GREEN = "green_background"
+    BLUE = "blue_background"
+    PURPLE = "purple_background"
+    PINK = "pink_background"
+    RED = "red_background"
+
+
 class RichTextTypes(Enum):
     """The supported rich text types.
 

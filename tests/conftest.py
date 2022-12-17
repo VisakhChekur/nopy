@@ -1,58 +1,33 @@
-import json
 from pathlib import Path
 
 import pytest
-from dotenv import load_dotenv
 
+import nopy.properties.common_properties as cp
 from nopy.client import NotionClient
-from nopy.mapper import Mapper
+from nopy.enums import Colors
 
 
-# ----- CONFIGURING PYTEST -----
-def pytest_addoption(parser: pytest.Parser):
-    parser.addoption(
-        "--runapi",
-        action="store_true",
-        default=False,
-        help="run tests that call the Notion API",
-    )
+@pytest.fixture(scope="session")
+def test_data_fp():
+
+    return Path(__file__).parent / "test-data"
 
 
-def pytest_configure(config: pytest.Config):
-    config.addinivalue_line("markers", "serialize: mark test serialization test")
-    config.addinivalue_line("markers", "api: mark tests calling Notion API")
-
-
-def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]):
-    # Setting up the configs so that test marked with 'api' is only
-    # run if explicitly specified.
-    if config.getoption("--runapi"):
-        return
-
-    skip_api = pytest.mark.skip(reason="need --runapi option to run")
-    for item in items:
-        if "api" in item.keywords:
-            item.add_marker(skip_api)
-
-
-# ----- MISCELLANEOUS -----
-
-
-# ----- FIXTURES -----
 @pytest.fixture(scope="session")
 def client():
-    load_dotenv()
-    return NotionClient()
-
-
-@pytest.fixture(scope="session")
-def mapper(client):
-
-    return Mapper(client)
+    return NotionClient("secret-token")
 
 
 @pytest.fixture
-def db_dict():
-    sample_db_file = Path(__file__).parent / "samples/db.json"
-    with open(sample_db_file, "r") as f:
-        return json.load(f)
+def options():
+
+    return [cp.Option(f"Option {str(i)}", str(i), Colors.BLUE) for i in range(5)]
+
+
+@pytest.fixture
+def rich_text_list():
+
+    one = cp.Text("A text")
+    two = cp.Text("with", annotations=cp.Annotations(bold=True))
+    three = cp.Text("styling", annotations=cp.Annotations(code=True, color=Colors.RED))
+    return [one, two, three]

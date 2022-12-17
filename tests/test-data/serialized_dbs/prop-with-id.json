@@ -1,0 +1,181 @@
+{
+    "is_inline": true,
+    "archived": false,
+    "properties": {
+        "13": {
+            "rich_text": {},
+            "name": "Text"
+        },
+        "title": {
+            "title": {},
+            "name": "Title"
+        },
+        "5": {
+            "files": {},
+            "name": "Files"
+        },
+        "11": {
+            "phone_number": {},
+            "name": "Phone"
+        },
+        "6": {
+            "formula": {
+                "expression": "add(1, 2)"
+            },
+            "name": "Formula"
+        },
+        "12": {
+            "select": {
+                "options": [
+                    {
+                        "name": "Option 2",
+                        "color": "blue"
+                    },
+                    {
+                        "name": "Option 3",
+                        "color": "blue"
+                    }
+                ]
+            },
+            "name": "Select"
+        },
+        "0": {
+            "checkbox": {},
+            "name": "Checkbox"
+        },
+        "10": {
+            "number": {
+                "format": "rupee"
+            },
+            "name": "Number"
+        },
+        "9": {
+            "multi_select": {
+                "options": [
+                    {
+                        "name": "Option 0",
+                        "color": "blue"
+                    },
+                    {
+                        "name": "Option 1",
+                        "color": "blue"
+                    }
+                ]
+            },
+            "name": "Multi select"
+        },
+        "14": {
+            "url": {},
+            "name": "Url"
+        },
+        "3": {
+            "date": {},
+            "name": "Date"
+        },
+        "4": {
+            "email": {},
+            "name": "Email"
+        }
+    },
+    "parent": {
+        "page_id": "page-id",
+        "type": "page_id"
+    },
+    "icon": {
+        "emoji": "some emoji"
+    },
+    "cover": {
+        "type": "external",
+        "external": {
+            "url": "some url"
+        }
+    },
+    "title": [
+        {
+            "type": "text",
+            "text": {
+                "content": "A text "
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            }
+        },
+        {
+            "type": "text",
+            "text": {
+                "content": "with "
+            },
+            "annotations": {
+                "bold": true,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            }
+        },
+        {
+            "type": "text",
+            "text": {
+                "content": "styling"
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": true,
+                "color": "red"
+            }
+        }
+    ],
+    "description": [
+        {
+            "type": "text",
+            "text": {
+                "content": "A text "
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            }
+        },
+        {
+            "type": "text",
+            "text": {
+                "content": "with "
+            },
+            "annotations": {
+                "bold": true,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            }
+        },
+        {
+            "type": "text",
+            "text": {
+                "content": "styling"
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": true,
+                "color": "red"
+            }
+        }
+    ]
+}

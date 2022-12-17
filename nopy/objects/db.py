@@ -10,12 +10,13 @@ from typing import Optional
 from typing import Set
 from typing import Union
 
+from ..enums import PropTypes
 from ..helpers import TextDescriptor
+from ..helpers import serialize_text_list
 from ..properties.base import BaseProperty
 from ..properties.common_properties import Emoji
 from ..properties.common_properties import File
 from ..properties.common_properties import Text
-from ..properties.prop_enums import PropTypes
 from ..query.query import Query
 from .notion_object import NotionObject
 from .properties import Properties
@@ -209,7 +210,7 @@ class Database(NotionObject):
         serialized: dict[str, Any] = {
             "is_inline": self.is_inline,
             "archived": self.archived,
-            "properties": self._serialize_props(),
+            "properties": Properties.serialize(self.properties, self._og_props),
         }
 
         for key in ("parent", "icon", "cover"):
@@ -217,8 +218,8 @@ class Database(NotionObject):
             if attr:
                 serialized[key] = attr.serialize()
 
-        serialized["title"] = [t.serialize() for t in self.rich_title]
-        serialized["description"] = [t.serialize() for t in self.rich_description]
+        serialized["title"] = serialize_text_list(self.rich_title)
+        serialized["description"] = serialize_text_list(self.rich_description)
 
         return serialized
 

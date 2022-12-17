@@ -40,7 +40,7 @@ expand-star-imports = true
 remove-all-unused-imports = true
 
 [tool.pyright]
-ignore = ["tests/**"]
+# ignore = ["tests/**"]
 
 [build-system]
 requires = ["poetry-core"]

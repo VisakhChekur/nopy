@@ -1,0 +1,228 @@
+{
+    "object": "database",
+    "id": "db-id",
+    "cover": {
+        "type": "external",
+        "external": {
+            "url": "https://www.notion.so/images/page-cover/solid_red.png"
+        }
+    },
+    "icon": {
+        "type": "emoji",
+        "emoji": "\ud83d\udcdd"
+    },
+    "created_time": "2022-12-08T03:16:00.000Z",
+    "created_by": {
+        "object": "user",
+        "id": "user-id"
+    },
+    "last_edited_by": {
+        "object": "user",
+        "id": "user-id"
+    },
+    "last_edited_time": "2022-12-16T20:02:00.000Z",
+    "title": [
+        {
+            "type": "text",
+            "text": {
+                "content": "Created DB",
+                "link": {
+                    "url": "www.google.com"
+                }
+            },
+            "annotations": {
+                "bold": true,
+                "italic": false,
+                "strikethrough": false,
+                "underline": true,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "Created DB",
+            "href": "www.google.com"
+        }
+    ],
+    "description": [
+        {
+            "type": "text",
+            "text": {
+                "content": "Created with nopy",
+                "link": {
+                    "url": "www.google.com"
+                }
+            },
+            "annotations": {
+                "bold": true,
+                "italic": false,
+                "strikethrough": false,
+                "underline": true,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "Created with nopy",
+            "href": "www.google.com"
+        }
+    ],
+    "is_inline": true,
+    "properties": {
+        "Multi-select": {
+            "id": "%3Be%3B%3B",
+            "name": "Multi-select",
+            "type": "multi_select",
+            "multi_select": {
+                "options": []
+            }
+        },
+        "URL": {
+            "id": "GKe~",
+            "name": "URL",
+            "type": "url",
+            "url": {}
+        },
+        "Email": {
+            "id": "Hk%7D%5B",
+            "name": "Email",
+            "type": "email",
+            "email": {}
+        },
+        "Checkbox": {
+            "id": "IaD%7B",
+            "name": "Checkbox",
+            "type": "checkbox",
+            "checkbox": {}
+        },
+        "Text": {
+            "id": "KyLP",
+            "name": "Text",
+            "type": "rich_text",
+            "rich_text": {}
+        },
+        "Last edited time": {
+            "id": "P%5C%3F%7D",
+            "name": "Last edited time",
+            "type": "last_edited_time",
+            "last_edited_time": {}
+        },
+        "Select": {
+            "id": "QFd%7D",
+            "name": "Select",
+            "type": "select",
+            "select": {
+                "options": [
+                    {
+                        "id": "]qMs",
+                        "name": "Option Two",
+                        "color": "brown"
+                    },
+                    {
+                        "id": "awLe",
+                        "name": "Option One",
+                        "color": "orange"
+                    }
+                ]
+            }
+        },
+        "Formula": {
+            "id": "QJyZ",
+            "name": "Formula",
+            "type": "formula",
+            "formula": {
+                "expression": "add(1, 2)"
+            }
+        },
+        "Date": {
+            "id": "Uqyc",
+            "name": "Date",
+            "type": "date",
+            "date": {}
+        },
+        "Files & media": {
+            "id": "X%5BIX",
+            "name": "Files & media",
+            "type": "files",
+            "files": {}
+        },
+        "Status": {
+            "id": "ZEsx",
+            "name": "Status",
+            "type": "status",
+            "status": {
+                "options": [
+                    {
+                        "id": "d8bdc387-814e-4329-957e-002040b165b0",
+                        "name": "Not started",
+                        "color": "default"
+                    },
+                    {
+                        "id": "95a73d8d-6d8b-4ae0-ae94-618ddba17d9d",
+                        "name": "In progress",
+                        "color": "blue"
+                    },
+                    {
+                        "id": "a8f17f85-b64d-4648-bec6-9de225ae970a",
+                        "name": "Done",
+                        "color": "green"
+                    }
+                ],
+                "groups": [
+                    {
+                        "id": "12453c6d-9507-4d82-999e-5effeb2fbcff",
+                        "name": "To-do",
+                        "color": "gray",
+                        "option_ids": [
+                            "d8bdc387-814e-4329-957e-002040b165b0"
+                        ]
+                    },
+                    {
+                        "id": "13cf3083-66a9-4a35-851f-a92a70911b93",
+                        "name": "In progress",
+                        "color": "blue",
+                        "option_ids": [
+                            "95a73d8d-6d8b-4ae0-ae94-618ddba17d9d"
+                        ]
+                    },
+                    {
+                        "id": "c12e4526-c54a-4d6f-b6ca-add0cc6bdab2",
+                        "name": "Complete",
+                        "color": "green",
+                        "option_ids": [
+                            "a8f17f85-b64d-4648-bec6-9de225ae970a"
+                        ]
+                    }
+                ]
+            }
+        },
+        "Created time": {
+            "id": "_SS%3F",
+            "name": "Created time",
+            "type": "created_time",
+            "created_time": {}
+        },
+        "Phone": {
+            "id": "zKww",
+            "name": "Phone",
+            "type": "phone_number",
+            "phone_number": {}
+        },
+        "Number": {
+            "id": "ztFu",
+            "name": "Number",
+            "type": "number",
+            "number": {
+                "format": "number"
+            }
+        },
+        "Created DB": {
+            "id": "title",
+            "name": "Created DB",
+            "type": "title",
+            "title": {}
+        }
+    },
+    "parent": {
+        "type": "page_id",
+        "page_id": "page-id"
+    },
+    "url": "https://www.example.com",
+    "archived": false
+}

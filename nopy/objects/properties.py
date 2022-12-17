@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 from collections.abc import Collection
+from typing import Any
+from typing import Optional
 from typing import Set
 
 from nopy.exceptions import PropertyExistsError
 from nopy.exceptions import PropertyNotFoundError
+from nopy.exceptions import UnsupportedError
 from nopy.typings import Props
 
 
@@ -31,6 +36,9 @@ class Properties(Collection[Props]):
         Raises:
             PropertyExistsError: Property with same id or name already exists.
         """
+
+        if not prop.id and not prop.name:
+            raise ValueError("'prop' must have a name or an id")
 
         if prop in self:
             raise PropertyExistsError("property with same id or name already exists")
@@ -71,6 +79,30 @@ class Properties(Collection[Props]):
 
         self._props.remove(popped)
         return popped
+
+    @staticmethod
+    def serialize(props: Properties, og_props: Optional[Set[str]] = None):
+
+        serialized: dict[str, Any] = {}
+        for prop in props._props:
+
+            try:
+                if prop.id:
+                    serialized[prop.id] = prop.serialize()
+                else:
+                    serialized[prop.name] = prop.serialize()
+            except UnsupportedError:
+                continue
+
+        # Handling deleted properties
+        if og_props:
+            # Finding the deleted properties
+            curr_ids = set(props._ids.keys())
+            deleted_prop_ids = og_props.difference(curr_ids)
+            deleted_props = {prop_id: None for prop_id in deleted_prop_ids}
+            serialized.update(deleted_props)
+
+        return serialized
 
     # ----- Dunder Methods -----
 

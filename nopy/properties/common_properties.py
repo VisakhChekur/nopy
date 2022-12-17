@@ -8,15 +8,13 @@ from typing import Optional
 from typing import Type
 from zoneinfo import ZoneInfo
 
-import dateutil.parser as date_parser
-
+from ..enums import Colors
+from ..enums import EmojiTypes
+from ..enums import FileTypes
+from ..enums import ParentTypes
+from ..enums import RichTextTypes
 from ..exceptions import UnsupportedError
 from .base import BaseProperty
-from .prop_enums import Colors
-from .prop_enums import EmojiTypes
-from .prop_enums import FileTypes
-from .prop_enums import ParentTypes
-from .prop_enums import RichTextTypes
 
 
 @dataclass
@@ -76,9 +74,9 @@ class Date(BaseProperty):
     @classmethod
     def from_dict(cls: Type[Date], args: dict[str, Any]) -> Date:
 
-        new_args: dict[str, Any] = {"start": date_parser.parse(args["start"])}
+        new_args: dict[str, Any] = {"start": datetime.fromisoformat(args["start"])}
         if args["end"]:
-            new_args["end"] = date_parser.parse(args["end"])
+            new_args["end"] = datetime.fromisoformat(args["end"])
         if args["time_zone"]:
             new_args["time_zone"] = ZoneInfo(args["time_zone"])
 
@@ -134,7 +132,7 @@ class File(BaseProperty):
 
         file_type = args["type"]
         expiry = args[file_type].get("expiry_time", None)
-        expiry_time = date_parser.parse(expiry) if expiry else None
+        expiry_time = datetime.fromisoformat(expiry) if expiry else None
         new_args: dict[str, Any] = {
             "type": FileTypes[file_type.upper()],
             "url": args[file_type]["url"],
@@ -145,6 +143,7 @@ class File(BaseProperty):
         return File(**new_args)
 
 
+@dataclass
 class Link(BaseProperty):
     """A representation of a 'Link' object.
 
@@ -152,8 +151,7 @@ class Link(BaseProperty):
         url: The url.
     """
 
-    def __init__(self, url: str):
-        self.url = url
+    url: str
 
     @classmethod
     def from_dict(cls: Type[Link], args: dict[str, Any]) -> Link:

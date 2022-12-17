@@ -21,6 +21,7 @@ nav:
       - Query: api_reference/querying/query.md
       - Filters: api_reference/querying/filters.md
       - Sorts: api_reference/querying/sorts.md
+      - Enums: api_reference/enums.md
       - Types: api_reference/typings.md
       - Exceptions: api_reference/exceptions.md
 

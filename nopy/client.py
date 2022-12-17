@@ -22,7 +22,8 @@ from .exceptions import FormatError
 from .exceptions import NotFoundError
 from .exceptions import NotionAPIError
 from .exceptions import NotionError
-from .mapper import Mapper
+from .mappers import map_to_db
+from .mappers import map_to_page
 from .objects.db import Database
 from .objects.page import Page
 
@@ -86,7 +87,6 @@ class NotionClient:
                 "Token not provided and not found from environment variables with the name `NOTION_TOKEN`"
             )
 
-        self._mapper = Mapper(self)
         self._db_cache: dict[str, Database] = {}
 
         self._retry = retry
@@ -135,7 +135,7 @@ class NotionClient:
         if save_to_fp:
             self._save_to_fp(db_dict, Path(save_to_fp))
 
-        db = self._mapper.map_to_db(db_dict)
+        db = map_to_db(db_dict, self)
         self._db_cache[db.id] = db
 
         return db
@@ -219,7 +219,7 @@ class NotionClient:
         resp = self._post_request(endpoint, query_dict)
 
         db = self.retrieve_db(db_id)
-        return [self._mapper.map_to_page(p, db) for p in resp["results"]]
+        return [map_to_page(p, db, self) for p in resp["results"]]
 
     def query_db_raw(self, db_id: str, query_dict: dict[str, Any]) -> dict[str, Any]:
         """Qeuries the database.
@@ -274,7 +274,7 @@ class NotionClient:
         if page_dict["parent"]["type"] == "database_id":
             db = self.retrieve_db(page_dict["parent"]["database_id"])
 
-        return self._mapper.map_to_page(page_dict, db)
+        return map_to_page(page_dict, db, self)
 
     def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
         """Retrieves the page from Notion.

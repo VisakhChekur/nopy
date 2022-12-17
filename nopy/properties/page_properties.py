@@ -10,8 +10,8 @@ from typing import Optional
 from typing import Type
 from typing import Union
 
-import dateutil.parser as date_parser
-
+from ..enums import FormulaTypes
+from ..enums import PropTypes
 from ..helpers import TextDescriptor
 from ..helpers import get_plain_text
 from .base import BaseProperty
@@ -19,8 +19,6 @@ from .common_properties import Date
 from .common_properties import File
 from .common_properties import Option
 from .common_properties import Text
-from .prop_enums import FormulaTypes
-from .prop_enums import PropTypes
 
 
 @dataclass(eq=False)
@@ -474,7 +472,7 @@ class PCreatedTime(PProp):
         new_args: dict[str, Any] = {
             "name": args.get("name", ""),
             "id": args["id"],
-            "created_time": date_parser.parse(args["created_time"]),
+            "created_time": datetime.fromisoformat(args["created_time"]),
         }
         return PCreatedTime(**new_args)
 
@@ -504,6 +502,6 @@ class PLastEditedTime(PProp):
         new_args: dict[str, Any] = {
             "name": args.get("name", ""),
             "id": args["id"],
-            "last_edited_time": date_parser.parse(args["last_edited_time"]),
+            "last_edited_time": datetime.fromisoformat(args["last_edited_time"]),
         }
         return PLastEditedTime(**new_args)

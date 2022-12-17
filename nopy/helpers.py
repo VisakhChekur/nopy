@@ -1,3 +1,4 @@
+from typing import Any
 from typing import Iterable
 
 from .properties.common_properties import RichText
@@ -8,6 +9,16 @@ def get_plain_text(rich_texts: Iterable[RichText]) -> str:
     """Returns the combined plain text from a list of rich text objects."""
 
     return " ".join((txt.plain_text for txt in rich_texts))
+
+
+def serialize_text_list(text: list[Text]) -> list[dict[str, Any]]:
+
+    # If the space is not added here, then no space shows up in the database
+    # name as well
+    serialized: list[dict[str, Any]] = [t.serialize() for t in text]
+    for t in serialized[:-1]:
+        t["text"]["content"] += " "
+    return serialized
 
 
 class TextDescriptor:
