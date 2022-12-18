@@ -1,0 +1,214 @@
+from dataclasses import dataclass
+from json import JSONDecodeError
+import logging
+import os
+from nopy.errors import APIResponseError, HTTPError, TokenNotFoundError
+from nopy.objects.page import Page
+from nopy.util import make_logger
+from nopy.constants import API_BASE_URL, API_VERSION, APIEndpoints
+import httpx
+
+from nopy.objects import Database, Page, User, Comment, Block 
+
+from typing import Any, Literal, Optional, Union
+
+@dataclass
+class ClientConfig:
+    """Configuration options for the `Client`.
+    
+    Attributes:
+        base_url: The base url.
+        api_version: The version of the Notion API.
+        timeout: 
+            The number of seconds to wait before raising an error.
+        retries:
+            The number of retries to make before raising an error.
+        log_level: The level of the logging.
+        logger: The logger to use when logging.
+    """
+
+    base_url: str = API_BASE_URL
+    api_version: str = API_VERSION
+    timeout: int = 5
+    retries: int = 0
+    log_level: int = logging.WARNING
+    logger: Optional[logging.Logger] = None
+
+
+class NotionClient:
+    """The client that can be used to interact with the Notion API."""
+
+    def __init__(self, token: str="", config: Optional[Union[dict[str, Any], ClientConfig]]=None):
+        """Constructor for `NotionClient`.
+        
+        Args:
+            token: 
+                The Notion integration token. If it's not provided,
+                then the token is looked for in the environment variables
+                with the name 'NOTION_TOKEN'.
+            config: 
+                The options to use to configure the client with. If not
+                provided, then the base configurations are used.
+        
+        Raises:
+            AuthenticationError:
+                Raised if the Notion token wasn't provided and it wasn't
+                found from the environment variables.
+        """
+
+        self.token = token or os.environ.get("NOTION_TOKEN")
+        if not self.token:
+            msg = "token not provided and not found with key 'NOTION_TOKEN' from the environment variables"
+            raise TokenNotFoundError(msg)
+        
+        if isinstance(config, dict):
+            self._config = ClientConfig(**config)
+        else:
+            self._config = config or ClientConfig()
+
+        self._client: httpx.Client = self._get_client()
+        self._logger: logging.Logger = self._get_logger()
+    
+    # ------ Database related endpoints ------
+
+    def retrieve_db(self, db_id: str):
+
+        db_dict = self.retrieve_db_raw(db_id)
+        return Database.from_dict(db_dict)
+
+    def retrieve_db_raw(self, db_id: str) -> dict[str, Any]:
+
+        endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
+        return self._make_request(endpoint)
+
+    def query_db(self, query: dict[str, Any]) -> list[Page]:
+        
+        query_results_dict = self.query_db_raw(query)
+        return [Page.from_dict(page) for page in query_results_dict["results"]]
+
+    def query_db_raw(self, query: dict[str, Any]) -> dict[str, Any]:
+        
+        raise NotImplementedError("querying databases isn't implemented yet")
+
+    def create_db(self, db: dict[str, Any]) -> dict[str, Any]:
+        
+        raise NotImplementedError("creating databases isn't implemented yet")
+
+
+    def update_db(self, db: dict[str, Any]) -> dict[str, Any]:
+        
+        raise NotImplementedError("updating databases isn't implemented yet")
+
+    
+    # ----- Page related endpoints -----
+
+    def retrieve_page(self, page_id: str) -> Page:
+
+        page_dict = self.retrieve_page_raw(page_id)
+        return Page.from_dict(page_dict)
+
+    def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
+
+        raise NotImplementedError("retrieval of pages isn't implemented yet")
+
+    def create_page(self, page: dict[str,Any]) -> dict[str, Any]:
+        
+        raise NotImplementedError()
+
+    def update_page(self, page: dict[str, Any]) -> dict[str, Any]:
+        
+        raise NotImplementedError()
+
+    # ---- Block related endpoints -----
+
+    def retrieve_block(self, block_id: str) -> Block:
+        raise NotImplementedError()
+
+    def retrieve_block_raw(self, block_id: str) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    def update_block(self, block: dict[str, Any]) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    def retrieve_block_children_raw(self, block_id: str) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    def append_block_child(self, block: str) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    def delete_block(self, block_id: str) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    # ----- Comment related endpoints -----
+
+    def retrieve_comment(self, comment_id: str) -> Comment:
+        raise NotImplementedError()
+
+    def create_comment(self, comment: dict[str, Any]) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    # ----- User related endpoints -----
+    
+    def retrieve_user(self, user_id: str) -> User:
+        raise NotImplementedError()
+
+    def list_users(self) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    # ----- Search -----
+
+    def search(self) -> dict[str, Any]:
+        raise NotImplementedError()
+
+    # ----- Private Methods -----
+
+    def _make_request(self, endpoint: str, method: Literal["get", "post", "put", "patch", "delete"]="get", data: Optional[dict[Any, Any]]=None, query_params: Optional[dict[str, str]]=None):
+        
+        if method == "get":
+            resp = self._client.get(endpoint, params=query_params)
+        elif method == "post":
+            resp = self._client.post(endpoint, data=data, params=query_params)
+        elif method == "put":
+            resp = self._client.put(endpoint, data=data, params=query_params)
+        elif method == "patch":
+            resp = self._client.patch(endpoint, data=data, params=query_params)
+        else:
+            resp = self._client.delete(endpoint, params=query_params)
+
+        return self._parse_response(resp)
+
+    def _parse_response(self, resp: httpx.Response) -> dict[str, Any]:
+
+        try:
+            resp.raise_for_status()
+        except httpx.HTTPStatusError as error:
+            try:
+                body = error.response.json()
+                raise APIResponseError(error.response, body["code"], body["message"])
+            except JSONDecodeError:
+                raise HTTPError(error.response)
+        return resp.json()
+
+    def _get_client(self) -> httpx.Client:
+
+        base_headers: dict[str, str] = {
+            "Authorization": f"Bearer {self.token}",
+            "Notion-Version": self._config.api_version,
+        }
+        transport = httpx.HTTPTransport(retries=self._config.retries)
+        
+        return httpx.Client(
+            transport=transport,
+            timeout=self._config.timeout,
+            headers=base_headers,
+            base_url=self._config.base_url,
+        )
+    
+    def _get_logger(self) -> logging.Logger:
+
+        if self._config.logger:
+            return self._config.logger
+        
+        logger = make_logger()
+        logger.setLevel(self._config.log_level)
+        return logger
