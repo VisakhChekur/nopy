@@ -71,8 +71,9 @@ class NotionClient:
                 found from the environment variables.
         """
 
-        self.token = token or os.environ.get("NOTION_TOKEN")
-        if not self.token:
+        try:
+            self.token = token or os.environ["NOTION_TOKEN"]
+        except KeyError:
             msg = "token not provided and not found with key 'NOTION_TOKEN' from the environment variables"
             raise TokenNotFoundError(msg)
 
