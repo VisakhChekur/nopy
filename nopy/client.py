@@ -1,6 +1,7 @@
 import logging
 import os
 from dataclasses import dataclass
+from functools import lru_cache
 from json import JSONDecodeError
 from types import TracebackType
 from typing import Any
@@ -89,15 +90,18 @@ class NotionClient:
 
     # ------ Database related endpoints ------
 
-    def retrieve_db(self, db_id: str):
+    def retrieve_db(self, db_id: str, use_cache: bool = True) -> Database:
 
-        db_dict = self.retrieve_db_raw(db_id)
+        db_dict = self.retrieve_db_raw(db_id, use_cache)
+        self._logger.info(" Mapping response to a Database instance")
         return Database.from_dict(db_dict)
 
-    def retrieve_db_raw(self, db_id: str) -> dict[str, Any]:
-
+    def retrieve_db_raw(self, db_id: str, use_cache: bool = True) -> dict[str, Any]:
         self._logger.info(f" Retrieving database {db_id}")
         endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
+
+        if not use_cache:
+            return self._make_request.__wrapped__(endpoint)
         return self._make_request(endpoint)
 
     def query_db(self, query: dict[str, Any]) -> list[Page]:
@@ -195,8 +199,19 @@ class NotionClient:
 
         self._client.close()
 
+    def clear_cache(self):
+        """Clears the cache."""
+
+        self._make_request.cache_clear()
+
+    def cache_info(self):
+        """Returns the cache information."""
+
+        return self._make_request.cache_info()
+
     # ----- Private Methods -----
 
+    @lru_cache(maxsize=128)
     def _make_request(
         self,
         endpoint: str,
