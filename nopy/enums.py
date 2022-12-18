@@ -1,210 +1,186 @@
 from enum import Enum
 
 
-class ObjectType(Enum):
-    """The different types of objects in Notion."""
-
-    DATABASE = "database"
-    """A database object."""
-
-    PAGE = "page"
-    """A page object."""
-
-    BLOCK = "block"
-    """A block object."""
-
-    COMMENT = "comment"
-    """A comment object."""
-
-    USER = "user"
-    """A user object."""
-
-    UNSUPPORTED = "unsupported"
-    """An unsupported object."""
-
-
-class PropTypes(Enum):
-    """The different types of properties."""
-
-    UNSUPPORTED = "unsupported"
-    """An unsupported property type."""
-
-    CHECKBOX = "checkbox"
-    """A checkbox property type."""
-
-    CREATED_BY = "created_by"
-    """A created by property type."""
-
-    CREATED_TIME = "created_time"
-    """A created time property type."""
-
-    DATE = "date"
-    """A date property type."""
-
-    EMAIL = "email"
-    """A email property type."""
-
-    FILES = "files"
-    """A files property type."""
-
-    FORMULA = "formula"
-    """A formula property type."""
-
-    LAST_EDITED_BY = "last_edited_by"
-    """A last edited by property type."""
-
-    LAST_EDITED_TIME = "last_edited_time"
-    """A last edited time property type."""
-
-    MULTI_SELECT = "multi_select"
-    """A multi select property type."""
-
-    NUMBER = "number"
-    """A number property type."""
-
-    PEOPLE = "people"
-    """A people property type."""
-
-    PHONE_NUMBER = "phone_number"
-    """A phone number property type."""
-
-    RELATION = "relation"
-    """A relation property type."""
-
-    ROLLUP = "rollup"
-    """A rollup property type."""
-
-    RICH_TEXT = "rich_text"
-    """A rich text property type."""
-
-    SELECT = "select"
-    """A select property type."""
-
-    STATUS = "status"
-    """A status property type."""
-
-    TITLE = "title"
-    """A title property type."""
-
-    URL = "url"
-    """A url property type."""
-
-
 class Colors(Enum):
-    """The possible colors."""
+    """The different colors.
+
+    Attributes:
+
+        DEFAULT: The default color.
+        GRAY: A gray color.
+        BROWN: A brown color.
+        ORANGE: A orange color.
+        YELLOW: A yellow color.
+        GREEN: A green color.
+        BLUE: A blue color.
+        PURPLE: A purple color.
+        PINK: A pink color.
+        RED: A red color.
+        GRAY_BACKGROUND: A gray background color.
+        BROWN_BACKGROUND: A brown background color.
+        ORANGE_BACKGROUND: A orange background color.
+        YELLOW_BACKGROUND: A yellow background color.
+        GREEN_BACKGROUND: A green background color.
+        BLUE_BACKGROUND: A blue background color.
+        PURPLE_BACKGROUND: A purple background color.
+        PINK_BACKGROUND: A pink background color.
+        RED_BACKGROUND: A red background color.
+    """
 
     DEFAULT = "default"
-    """The default color."""
-
     GRAY = "gray"
-    """A gray color."""
-
     BROWN = "brown"
-    """A brown color."""
-
     ORANGE = "orange"
-    """A orange color."""
-
     YELLOW = "yellow"
-    """A yellow color."""
-
     GREEN = "green"
-    """A green color."""
-
     BLUE = "blue"
-    """A blue color."""
-
     PURPLE = "purple"
-    """A purple color."""
-
     PINK = "pink"
-    """A pink color."""
-
     RED = "red"
-    """A red color."""
-
     GRAY_BACKGROUND = "gray_background"
-    """A gray background color."""
-
     BROWN_BACKGROUND = "brown_background"
-    """A brown background color."""
-
     ORANGE_BACKGROUND = "orange_background"
-    """A orange background color."""
-
     YELLOW_BACKGROUND = "yellow_background"
-    """A yellow background color."""
-
     GREEN_BACKGROUND = "green_background"
-    """A green background color."""
-
     BLUE_BACKGROUND = "blue_background"
-    """A blue background color."""
-
     PURPLE_BACKGROUND = "purple_background"
-    """A purple background color."""
-
     PINK_BACKGROUND = "pink_background"
-    """A pink background color."""
-
     RED_BACKGROUND = "red_background"
-    """A red background color."""
-
-
-class RichTextTypes(Enum):
-
-    UNSUPPORTED = "unsupported"
-    """An unsupported rich text type."""
-
-    TEXT = "text"
-    """A 'text' rich text."""
-
-    MENTION = "mention"
-    """A 'mention' rich text."""
-
-    EQUATION = "equation"
-    """An 'equation' rich text."""
-
-
-class MentionTypes(Enum):
-    """The mention types."""
-
-    UNSUPPORTED = "unsupported"
-    """An unsupported mention type."""
-
-    USER = "user"
-    """A user mention."""
-
-    PAGE = "page"
-    """A page mention."""
-
-    DATABASE = "database"
-    """A database mention."""
-
-    DATE = "date"
-    """A date mention."""
-
-    LINK_PREVIEW = "link_preview"
-    """A link preview mention."""
-
-
-class UserType(Enum):
-
-    UNSPPORTED = "unsupported"
-    """An unsupported user type."""
-
-    PERSON = "person"
-    """A 'person' type user."""
-
-    BOT = "bot"
-    """A 'bot' type user."""
 
 
 class FileTypes(Enum):
-    """The file types."""
+    """The different file types.
+
+    Attributes:
+
+        FILE: A file hosted by Notion.
+        EXTERNAL: A file hosted externally, but rendered by Notion.
+    """
 
     FILE = "file"
-    """A file hosted by Notion."""
-
     EXTERNAL = "external"
-    """A file hosted externally, but rendered by Notion."""
+
+
+class MentionTypes(Enum):
+    """The different mention types.
+
+    Attributes:
+
+        UNSUPPORTED: An unsupported mention type.
+        USER: A user mention.
+        PAGE: A page mention.
+        DATABASE: A database mention.
+        DATE: A date mention.
+        LINK_PREVIEW: A link preview mention.
+    """
+
+    UNSUPPORTED = "unsupported"
+    USER = "user"
+    PAGE = "page"
+    DATABASE = "database"
+    DATE = "date"
+    LINK_PREVIEW = "link_preview"
+
+
+class ObjectTypes(Enum):
+    """The different object types.
+
+    Attributes:
+
+        DATABASE: A database object.
+        PAGE: A page object.
+        BLOCK: A block object.
+        COMMENT: A comment object.
+        USER: A user object.
+        UNSUPPORTED: An unsupported object.
+    """
+
+    DATABASE = "database"
+    PAGE = "page"
+    BLOCK = "block"
+    COMMENT = "comment"
+    USER = "user"
+    UNSUPPORTED = "unsupported"
+
+
+class PropTypes(Enum):
+    """The different prop types.
+
+    Attributes:
+
+        UNSUPPORTED: An unsupported property type.
+        CHECKBOX: A checkbox property type.
+        CREATED_BY: A created by property type.
+        CREATED_TIME: A created time property type.
+        DATE: A date property type.
+        EMAIL: A email property type.
+        FILES: A files property type.
+        FORMULA: A formula property type.
+        LAST_EDITED_BY: A last edited by property type.
+        LAST_EDITED_TIME: A last edited time property type.
+        MULTI_SELECT: A multi select property type.
+        NUMBER: A number property type.
+        PEOPLE: A people property type.
+        PHONE_NUMBER: A phone number property type.
+        RELATION: A relation property type.
+        ROLLUP: A rollup property type.
+        RICH_TEXT: A rich text property type.
+        SELECT: A select property type.
+        STATUS: A status property type.
+        TITLE: A title property type.
+        URL: A url property type.
+    """
+
+    UNSUPPORTED = "unsupported"
+    CHECKBOX = "checkbox"
+    CREATED_BY = "created_by"
+    CREATED_TIME = "created_time"
+    DATE = "date"
+    EMAIL = "email"
+    FILES = "files"
+    FORMULA = "formula"
+    LAST_EDITED_BY = "last_edited_by"
+    LAST_EDITED_TIME = "last_edited_time"
+    MULTI_SELECT = "multi_select"
+    NUMBER = "number"
+    PEOPLE = "people"
+    PHONE_NUMBER = "phone_number"
+    RELATION = "relation"
+    ROLLUP = "rollup"
+    RICH_TEXT = "rich_text"
+    SELECT = "select"
+    STATUS = "status"
+    TITLE = "title"
+    URL = "url"
+
+
+class RichTextTypes(Enum):
+    """The different rich text types.
+
+    Attributes:
+
+        UNSUPPORTED: An unsupported rich text type.
+        TEXT: A 'text' rich text.
+        MENTION: A 'mention' rich text.
+        EQUATION: An 'equation' rich text.
+    """
+
+    UNSUPPORTED = "unsupported"
+    TEXT = "text"
+    MENTION = "mention"
+    EQUATION = "equation"
+
+
+class UserTypes(Enum):
+    """The different user types.
+
+    Attributes:
+
+        UNSPPORTED: An unsupported user type.
+        PERSON: A 'person' type user.
+        BOT: A 'bot' type user.
+    """
+
+    UNSPPORTED = "unsupported"
+    PERSON = "person"
+    BOT = "bot"

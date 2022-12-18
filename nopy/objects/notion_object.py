@@ -8,7 +8,7 @@ from typing import Any
 from typing import Optional
 from typing import Type
 
-from nopy.enums import ObjectType
+from nopy.enums import ObjectTypes
 
 if TYPE_CHECKING:
     from nopy.client import NotionClient
@@ -32,7 +32,7 @@ class BaseObject:
 
     def __post_init__(self, client: Optional["NotionClient"]):
 
-        self._type = ObjectType.UNSUPPORTED
+        self._type = ObjectTypes.UNSUPPORTED
         self._client = client
 
     @property

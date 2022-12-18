@@ -1,0 +1,3 @@
+# Common Properties
+
+::: props.common

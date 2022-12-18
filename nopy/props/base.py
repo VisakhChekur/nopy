@@ -17,7 +17,10 @@ class BaseProperty:
 
     @classmethod
     def from_dict(cls: Type[BaseProperty], args: dict[str, Any]) -> BaseProperty:
+        """Creates an instance of the object from the given dictionary.
 
+        The dictionary MUST follow the format given by Notion.
+        """
         raise NotImplementedError("to be implemented by subclass")
 
 

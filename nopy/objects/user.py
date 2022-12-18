@@ -7,8 +7,8 @@ from typing import Literal
 from typing import Optional
 from typing import Type
 
-from nopy.enums import ObjectType
-from nopy.enums import UserType
+from nopy.enums import ObjectTypes
+from nopy.enums import UserTypes
 from nopy.objects.notion_object import NotionObject
 
 if TYPE_CHECKING:
@@ -25,8 +25,8 @@ class User(NotionObject):
     def __post_init__(self, client: Optional["NotionClient"]):
 
         super().__post_init__(client)
-        self._type = ObjectType.USER
-        self._user_type = UserType.UNSPPORTED
+        self._type = ObjectTypes.USER
+        self._user_type = UserTypes.UNSPPORTED
 
     @property
     def user_type(self):
@@ -58,7 +58,7 @@ class Person(User):
     def __post_init__(self, client: Optional["NotionClient"]):
 
         super().__post_init__(client)
-        self._user_type = UserType.PERSON
+        self._user_type = UserTypes.PERSON
 
     @classmethod
     def from_dict(cls: Type[Person], args: dict[str, Any]) -> Person:
@@ -68,7 +68,7 @@ class Person(User):
             "name": args.get("name", None),
             "avatar_url": args.get("avatar_url", None),
         }
-        person = args.get(UserType.PERSON.value, None)
+        person = args.get(UserTypes.PERSON.value, None)
         if person:
             new_args["email"] = person.get("email", None)
 
@@ -95,7 +95,7 @@ class Bot(User):
     def __post_init__(self, client: Optional["NotionClient"]):
 
         super().__post_init__(client)
-        self._user_type = UserType.BOT
+        self._user_type = UserTypes.BOT
 
     @classmethod
     def from_dict(cls: Type[Bot], args: dict[str, Any]) -> Bot:
@@ -105,7 +105,7 @@ class Bot(User):
             "name": args.get("name", None),
             "avatar_url": args.get("avatar_url", None),
         }
-        bot = args.get(UserType.BOT.value, None)
+        bot = args.get(UserTypes.BOT.value, None)
         if bot:
             new_args["owner"] = bot["owner"]["type"]
             new_args["workspace_name"] = bot.get("workspace_name", None)

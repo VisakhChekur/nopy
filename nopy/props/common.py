@@ -37,10 +37,7 @@ class Annotations(BaseProperty):
 
     @classmethod
     def from_dict(cls: Type[Annotations], args: dict[str, Any]) -> Annotations:
-        """Creates an instance of `Annotations` from the given dictionary.
 
-        The dictionary MUST follow Notion's format.
-        """
         new_args: dict[str, Any] = args.copy()
         new_args["color"] = Colors[new_args["color"].upper()]
         return Annotations(**new_args)
@@ -48,6 +45,13 @@ class Annotations(BaseProperty):
 
 @dataclass
 class Date(BaseProperty):
+    """A representation of a date in Notion.
+
+    Attributes:
+        start: The start date and time.
+        end: The end date and time, if any.
+        time_zone: The time zone, if any.
+    """
 
     start: datetime
     end: Optional[datetime] = None
@@ -69,6 +73,11 @@ class Date(BaseProperty):
 
 @dataclass
 class Link(BaseProperty):
+    """A representation of a link object.
+
+    Attributes:
+        url: The URL.
+    """
 
     url: str
 
