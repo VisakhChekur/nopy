@@ -33,9 +33,9 @@ class HTTPError(NopyError):
             message = f"Request to the Notion API failed with status code: {response.status_code}"
 
         super().__init__(message)
-        self.status_code = response.status_code
-        self.message = response.text
-        self.body = response.headers
+        self.status_code: int = response.status_code
+        self.message: str = response.text
+        self.body: httpx.Headers = response.headers
 
 
 class APIResponseError(HTTPError):
@@ -51,8 +51,8 @@ class APIResponseError(HTTPError):
         error_message = f"{code.upper()} - {message}"
         super().__init__(response, error_message)
 
-        self.code = code
-        self.message = message
+        self.code: str = code
+        self.message: str = message
 
 
 class UnuspportedError(NopyError):
