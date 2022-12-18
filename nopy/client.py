@@ -93,6 +93,7 @@ class NotionClient:
 
     def retrieve_db_raw(self, db_id: str) -> dict[str, Any]:
 
+        self._logger.info(f" Retrieving database {db_id}")
         endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
         return self._make_request(endpoint)
 
@@ -195,6 +196,13 @@ class NotionClient:
         query_params: Optional[dict[str, str]] = None,
     ):
 
+        log_msg = (
+            f" {method.upper()} request to {str(self._client.base_url) + endpoint}"
+        )
+        self._logger.debug(log_msg)
+        self._logger.debug(f" Data: {data}")
+        self._logger.debug(f" Query Params: {query_params}")
+
         if method == "get":
             resp = self._client.get(endpoint, params=query_params)
         elif method == "post":
@@ -218,7 +226,10 @@ class NotionClient:
                 raise APIResponseError(error.response, body["code"], body["message"])
             except JSONDecodeError:
                 raise HTTPError(error.response)
-        return resp.json()
+
+        response_dict = resp.json()
+        self._logger.debug(f" Response: {response_dict}")
+        return response_dict
 
     def _get_client(self) -> httpx.Client:
 
