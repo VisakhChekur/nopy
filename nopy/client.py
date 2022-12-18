@@ -91,12 +91,41 @@ class NotionClient:
     # ------ Database related endpoints ------
 
     def retrieve_db(self, db_id: str, use_cache: bool = True) -> Database:
+        """Retreives the database.
+
+        Attributes:
+            db_id: The id of the database to retrieve.
+
+        Returns:
+            The database.
+
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
 
         db_dict = self.retrieve_db_raw(db_id, use_cache)
         self._logger.info(" Mapping response to a Database instance")
         return Database.from_dict(db_dict)
 
     def retrieve_db_raw(self, db_id: str, use_cache: bool = True) -> dict[str, Any]:
+        """Retreives the database and returns the raw response.
+
+        Attributes:
+            db_id: The id of the database to retrieve.
+
+        Returns:
+            The raw database.
+
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
+
         self._logger.info(f" Retrieving database {db_id}")
         endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
 

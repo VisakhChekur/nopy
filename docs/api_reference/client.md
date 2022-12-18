@@ -1,0 +1,3 @@
+# Notion Client
+
+::: nopy.client
