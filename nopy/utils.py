@@ -1,5 +1,5 @@
-from logging import getLogger
 import logging
+from logging import getLogger
 
 
 def make_logger() -> logging.Logger:

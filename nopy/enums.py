@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ObjectType(Enum):
     """The different types of objects in Notion."""
 
