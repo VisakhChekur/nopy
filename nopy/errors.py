@@ -53,3 +53,31 @@ class APIResponseError(HTTPError):
 
         self.code = code
         self.message = message
+
+
+class UnuspportedError(NopyError):
+    """An error raised when the user tries to do something that's not
+    supported by the library or via the Notion API."""
+
+    def __init__(self, message: str):
+
+        super().__init__(message)
+
+
+class UnsupportedByLibraryError(UnuspportedError):
+    """An error raised when the user tries to do something that's not
+    supported by the library currently."""
+
+    def __init__(self, message: str):
+
+        message += " is currently unsupported by the library"
+        super().__init__(message)
+
+
+class UnsupportedByNotion(UnuspportedError):
+    """An error raised when the user tries to do something that's not
+    supported by the Notion API currently."""
+
+    def __init__(self, message: str):
+        message += " is currently unsupported by the Notion API"
+        super().__init__(message)

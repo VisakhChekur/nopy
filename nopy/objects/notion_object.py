@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+from dataclasses import InitVar
 from dataclasses import dataclass
 from datetime import datetime
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
 from typing import Type
 
 from nopy.enums import ObjectType
+
+if TYPE_CHECKING:
+    from nopy.client import NotionClient
 
 
 @dataclass
@@ -23,10 +28,12 @@ class BaseObject:
     """
 
     id: str = ""
+    client: InitVar[Optional["NotionClient"]] = None
 
-    def __post_init__(self):
+    def __post_init__(self, client: Optional["NotionClient"]):
 
         self._type = ObjectType.UNSUPPORTED
+        self._client = client
 
     @property
     def type(self):

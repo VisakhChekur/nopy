@@ -138,7 +138,9 @@ class NotionClient:
         raise NotImplementedError()
 
     def retrieve_block_raw(self, block_id: str) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        endpoint = APIEndpoints.BLOCK_RETRIEVE.value.format(block_id)
+        return self._make_request(endpoint)
 
     def update_block(self, block: dict[str, Any]) -> dict[str, Any]:
         raise NotImplementedError()
@@ -165,8 +167,18 @@ class NotionClient:
     def retrieve_user(self, user_id: str) -> User:
         raise NotImplementedError()
 
+    def retrieve_user_raw(self, user_id: str) -> dict[str, Any]:
+
+        endpoint = APIEndpoints.USER_RETRIEVE.value.format(user_id)
+        return self._make_request(endpoint)
+
     def list_users(self) -> dict[str, Any]:
         raise NotImplementedError()
+
+    def retrieve_me_raw(self) -> dict[str, Any]:
+
+        endpoint = APIEndpoints.USER_TOKEN_BOT.value
+        return self._make_request(endpoint)
 
     # ----- Search -----
 
