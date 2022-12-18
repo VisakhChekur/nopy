@@ -1,0 +1,3 @@
+# Exceptions
+
+::: nopy.errors
