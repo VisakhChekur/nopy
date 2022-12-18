@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "nopy"
+version = "0.1.0"
+description = ""
+authors = ["Visakh Unnikrishnan <visakhcu96@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+mkdocs = "^1.4.2"
+mkdocstrings-python = "^0.8.2"
+black = "^22.12.0"
+isort = "^5.11.3"
+pytest = "^7.2.0"
+flake8 = "^6.0.0"
+autoflake = "^2.0.0"
+pre-commit = "^2.20.0"
+mkdocs-material = "^8.5.11"
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+float_to_top = true
+skip_gitignore = true
+
+[tool.black]
+max-line-length = 88
+
+[tool.autoflake]
+recursive = true
+ignore-init-module-imports = true
+exclude = "trial.py"
+ignore-pass-after-docstring = true
+expand-star-imports = true
+remove-all-unused-imports = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
