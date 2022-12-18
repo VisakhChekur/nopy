@@ -2,9 +2,11 @@ import logging
 import os
 from dataclasses import dataclass
 from json import JSONDecodeError
+from types import TracebackType
 from typing import Any
 from typing import Literal
 from typing import Optional
+from typing import Type
 from typing import Union
 
 import httpx
@@ -187,6 +189,12 @@ class NotionClient:
     def search(self) -> dict[str, Any]:
         raise NotImplementedError()
 
+    # ----- Miscellaneous -----
+    def close(self):
+        """Closes the client and cleans up all the resources."""
+
+        self._client.close()
+
     # ----- Private Methods -----
 
     def _make_request(
@@ -255,3 +263,19 @@ class NotionClient:
         logger = make_logger()
         logger.setLevel(self._config.log_level)
         return logger
+
+    # ----- Context Managers -----
+
+    def __enter__(self):
+
+        self._client.__enter__()
+        return self
+
+    def __exit__(
+        self,
+        exc_type: Type[BaseException],
+        exc_value: BaseException,
+        traceback: TracebackType,
+    ):
+
+        self._client.__exit__(exc_type, exc_value, traceback)
