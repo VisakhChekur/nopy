@@ -106,8 +106,10 @@ class NotionClient:
         """
 
         db_dict = self.retrieve_db_raw(db_id, use_cache)
-        self._logger.info(" Mapping response to a Database instance")
-        return Database.from_dict(db_dict)
+        self._logger.info(f" Mapping '{db_id}' to a Database instance")
+        db = Database.from_dict(db_dict)
+        db._client = self  # type: ignore
+        return db
 
     def retrieve_db_raw(self, db_id: str, use_cache: bool = True) -> dict[str, Any]:
         """Retreives the database and returns the raw response.

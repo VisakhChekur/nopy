@@ -1,0 +1,220 @@
+{
+    "object": "database",
+    "id": "db-id",
+    "cover": {
+        "type": "file",
+        "file": {
+            "url": "www.someurl.com",
+            "expiry_time": "2022-12-18T16:11:41.373Z"
+        }
+    },
+    "icon": {
+        "type": "emoji",
+        "emoji": "\ud83c\udf8a"
+    },
+    "created_time": "2022-12-18T07:28:00.000Z",
+    "created_by": {
+        "object": "user",
+        "id": "user-id"
+    },
+    "last_edited_by": {
+        "object": "user",
+        "id": "user-id"
+    },
+    "last_edited_time": "2022-12-18T15:11:00.000Z",
+    "title": [
+        {
+            "type": "text",
+            "text": {
+                "content": "Database Example",
+                "link": null
+            },
+            "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+            },
+            "plain_text": "Database Example",
+            "href": null
+        }
+    ],
+    "description": [],
+    "is_inline": true,
+    "properties": {
+        "Multi-select": {
+            "id": "%3BFCu",
+            "name": "Multi-select",
+            "type": "multi_select",
+            "multi_select": {
+                "options": []
+            }
+        },
+        "URL": {
+            "id": "%3BIa%40",
+            "name": "URL",
+            "type": "url",
+            "url": {}
+        },
+        "Status": {
+            "id": "%3CxiG",
+            "name": "Status",
+            "type": "status",
+            "status": {
+                "options": [
+                    {
+                        "id": "6cc94d90-8cca-41b7-a5a5-7daddb58cf19",
+                        "name": "Not started",
+                        "color": "default"
+                    },
+                    {
+                        "id": "32cf2fce-3890-40f6-b928-833cc4f6a594",
+                        "name": "In progress",
+                        "color": "blue"
+                    },
+                    {
+                        "id": "3581bdb8-8f6c-4481-af7b-fad2f8abafcd",
+                        "name": "Done",
+                        "color": "green"
+                    }
+                ],
+                "groups": [
+                    {
+                        "id": "56d4e66c-c40e-4909-9619-d179602b381e",
+                        "name": "To-do",
+                        "color": "gray",
+                        "option_ids": [
+                            "6cc94d90-8cca-41b7-a5a5-7daddb58cf19"
+                        ]
+                    },
+                    {
+                        "id": "282ae3f5-0225-46ab-9f94-669511bbddae",
+                        "name": "In progress",
+                        "color": "blue",
+                        "option_ids": [
+                            "32cf2fce-3890-40f6-b928-833cc4f6a594"
+                        ]
+                    },
+                    {
+                        "id": "8a20bce3-ff12-4162-a5bc-2e7e129b7b3f",
+                        "name": "Complete",
+                        "color": "green",
+                        "option_ids": [
+                            "3581bdb8-8f6c-4481-af7b-fad2f8abafcd"
+                        ]
+                    }
+                ]
+            }
+        },
+        "Text": {
+            "id": "%3Cy%3A%5B",
+            "name": "Text",
+            "type": "rich_text",
+            "rich_text": {}
+        },
+        "Files & media": {
+            "id": "%3EK%7Bc",
+            "name": "Files & media",
+            "type": "files",
+            "files": {}
+        },
+        "Last edited by": {
+            "id": "DLsP",
+            "name": "Last edited by",
+            "type": "last_edited_by",
+            "last_edited_by": {}
+        },
+        "Formula": {
+            "id": "FjRK",
+            "name": "Formula",
+            "type": "formula",
+            "formula": {
+                "expression": "prop(\"Name\") + \"hi\""
+            }
+        },
+        "Checkbox": {
+            "id": "K~Bk",
+            "name": "Checkbox",
+            "type": "checkbox",
+            "checkbox": {}
+        },
+        "Email": {
+            "id": "OUC%60",
+            "name": "Email",
+            "type": "email",
+            "email": {}
+        },
+        "Person": {
+            "id": "R%5BgU",
+            "name": "Person",
+            "type": "people",
+            "people": {}
+        },
+        "Phone": {
+            "id": "SOCX",
+            "name": "Phone",
+            "type": "phone_number",
+            "phone_number": {}
+        },
+        "Date": {
+            "id": "S%60%5Es",
+            "name": "Date",
+            "type": "date",
+            "date": {}
+        },
+        "Number": {
+            "id": "TqZn",
+            "name": "Number",
+            "type": "number",
+            "number": {
+                "format": "number"
+            }
+        },
+        "Created by": {
+            "id": "a%5E%40%3B",
+            "name": "Created by",
+            "type": "created_by",
+            "created_by": {}
+        },
+        "Last edited time": {
+            "id": "a%60gC",
+            "name": "Last edited time",
+            "type": "last_edited_time",
+            "last_edited_time": {}
+        },
+        "Select": {
+            "id": "ewCq",
+            "name": "Select",
+            "type": "select",
+            "select": {
+                "options": [
+                    {
+                        "id": "e`gS",
+                        "name": "Option One",
+                        "color": "yellow"
+                    }
+                ]
+            }
+        },
+        "Created time": {
+            "id": "jGDv",
+            "name": "Created time",
+            "type": "created_time",
+            "created_time": {}
+        },
+        "Name": {
+            "id": "title",
+            "name": "Name",
+            "type": "title",
+            "title": {}
+        }
+    },
+    "parent": {
+        "type": "page_id",
+        "page_id": "page-id"
+    },
+    "url": "https://www.notion.so/db-id",
+    "archived": false
+}

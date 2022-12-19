@@ -13,6 +13,7 @@ from nopy.props.common import Parent
 
 if TYPE_CHECKING:
     from nopy.client import NotionClient
+    from nopy.objects.user import User
 
 
 @dataclass
@@ -54,6 +55,6 @@ class NotionObject(BaseObject):
     created_time: Optional[datetime] = None
     last_edited_time: Optional[datetime] = None
     archived: bool = False
-    created_by: Any = None
-    last_edited_by: Any = None
+    created_by: Optional[User] = None
+    last_edited_by: Optional[User] = None
     parent: Optional[Parent] = None

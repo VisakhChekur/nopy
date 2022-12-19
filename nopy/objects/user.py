@@ -35,6 +35,11 @@ class User(NotionObject):
     @classmethod
     def from_dict(cls: Type[User], args: dict[str, Any]) -> User:
 
+        # This means it's a partial user as returned
+        # in `created_by` etc.
+        if "type" not in args:
+            return User(args["id"])
+
         if args["type"] == "person":
             return Person.from_dict(args)
         return Bot.from_dict(args)

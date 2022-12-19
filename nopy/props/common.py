@@ -106,6 +106,8 @@ class RichText(BaseProperty):
 
     def __post_init__(self):
 
+        # Notion adds spaces within the plain text
+        self.plain_text = self.plain_text.strip()
         self._type: RichTextTypes = RichTextTypes.UNSUPPORTED
 
     @property
@@ -113,7 +115,7 @@ class RichText(BaseProperty):
         return self._type
 
     @classmethod
-    def from_dict(cls: Type[BaseProperty], args: dict[str, Any]) -> BaseProperty:
+    def from_dict(cls: Type[RichText], args: dict[str, Any]) -> RichText:
 
         try:
             rich_text_type = RichTextTypes[args["type"].upper()]
@@ -361,7 +363,8 @@ class Parent(BaseProperty):
     def from_dict(cls: Type[Parent], args: dict[str, Any]) -> Parent:
 
         try:
-            parent_type = ParentTypes[args["type"].upper()]
+            type_key = args["type"].split("_")[0]
+            parent_type = ParentTypes[type_key.upper()]
         except KeyError:
             parent_type = ParentTypes.UNSUPPORTED
 

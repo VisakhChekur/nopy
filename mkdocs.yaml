@@ -15,6 +15,8 @@ nav:
           - Property Types: api_reference/enums/prop_types.md
           - Rich Text Types: api_reference/enums/rich_text_types.md
           - User Types: api_reference/enums/user_type.md
+      - Notion Objects:
+          - Database: api_reference/notion_objects/database.md
       - Properties:
           - Base: api_reference/properties/base.md
           - Common Properties: api_reference/properties/common.md
@@ -61,5 +63,5 @@ plugins:
             show_root_full_path: false
             show_root_toc_entry: false
             members_order: source
-          import:
-            - https://docs.python.org/3/objects.inv
+          # import:
+          #   - https://docs.python.org/3/objects.inv

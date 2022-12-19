@@ -1,3 +1,4 @@
+import json
 import socket
 from pathlib import Path
 from typing import Any
@@ -9,6 +10,8 @@ from nopy.client import NotionClient
 
 ENV_PATH = Path(__file__).parent / "../.env"
 load_dotenv(ENV_PATH)
+
+DATA_DIR = Path(__file__).parent / "data"
 
 
 # Disabling network access
@@ -23,4 +26,14 @@ socket.socket = block_network
 @pytest.fixture(scope="session")
 def client():
 
-    return NotionClient()
+    client = NotionClient()
+    yield client
+    client.close()
+
+
+@pytest.fixture
+def full_db():
+
+    fp = DATA_DIR / "test_database" / "full_db.json"
+    with open(fp, "r") as f:
+        return json.load(f)
