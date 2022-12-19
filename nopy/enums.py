@@ -184,3 +184,21 @@ class UserTypes(Enum):
     UNSPPORTED = "unsupported"
     PERSON = "person"
     BOT = "bot"
+
+
+class ParentTypes(Enum):
+    """The different parent types.
+
+    Attributes:
+        DATABASE (ParentTypes): A database parent.
+        PAGE (ParentTypes): A page parent.
+        BLOCK (ParentTypes): A block parent.
+        WORKSPACE (ParentTypes): A workspace parent.
+        UNSUPPORTED (ParentTypes): An unsupported parent.
+    """
+
+    DATABASE = "database_id"
+    PAGE = "page_id"
+    BLOCK = "block_id"
+    WORKSPACE = "workspace"
+    UNSUPPORTED = "unsupported"

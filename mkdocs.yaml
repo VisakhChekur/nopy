@@ -10,7 +10,8 @@ nav:
           - Colors: api_reference/enums/colors.md
           - File Types: api_reference/enums/file_types.md
           - Mention Types: api_reference/enums/mention_types.md
-          - Object Typs: api_reference/enums/object_type.md
+          - Object Types: api_reference/enums/object_type.md
+          - Parent Types: api_reference/enums/parent_types.md
           - Property Types: api_reference/enums/prop_types.md
           - Rich Text Types: api_reference/enums/rich_text_types.md
           - User Types: api_reference/enums/user_type.md

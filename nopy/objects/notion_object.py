@@ -9,6 +9,7 @@ from typing import Optional
 from typing import Type
 
 from nopy.enums import ObjectTypes
+from nopy.props.common import Parent
 
 if TYPE_CHECKING:
     from nopy.client import NotionClient
@@ -24,7 +25,7 @@ class BaseObject:
 
     Attributes:
         id: The id of the Notion object.
-        type (ObjectType): The type of the Notion object.
+        type (ObjectTypes): The type of the Notion object.
     """
 
     id: str = ""
@@ -55,4 +56,4 @@ class NotionObject(BaseObject):
     archived: bool = False
     created_by: Any = None
     last_edited_by: Any = None
-    parent: Any = None
+    parent: Optional[Parent] = None

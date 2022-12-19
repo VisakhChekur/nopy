@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 from nopy.enums import Colors
 from nopy.enums import FileTypes
 from nopy.enums import MentionTypes
+from nopy.enums import ParentTypes
 from nopy.enums import RichTextTypes
 from nopy.props.base import BaseProperty
 
@@ -336,6 +337,121 @@ class Emoji(BaseProperty):
     @classmethod
     def from_dict(cls: Type[Emoji], args: dict[str, Any]) -> Emoji:
         return Emoji(args["emoji"])
+
+
+@dataclass
+class Parent(BaseProperty):
+    """A representation of a parent of a Notion object.
+
+    The base parent class from which all parent objects inherit.
+
+    Attributes:
+        id: The id of the parent.
+        type (ParentTypes):
+            The type of the parent which will always be
+            `ParentTypes.UNSUPPORTED`.
+    """
+
+    id: str = ""
+
+    def __post_init__(self):
+        self._type = ParentTypes.UNSUPPORTED
+
+    @classmethod
+    def from_dict(cls: Type[Parent], args: dict[str, Any]) -> Parent:
+
+        try:
+            parent_type = ParentTypes[args["type"].upper()]
+        except KeyError:
+            parent_type = ParentTypes.UNSUPPORTED
+
+        if parent_type == ParentTypes.DATABASE:
+            return DatabaseParent.from_dict(args)
+        if parent_type == ParentTypes.PAGE:
+            return PageParent.from_dict(args)
+        if parent_type == ParentTypes.BLOCK:
+            return BlockParent.from_dict(args)
+        if parent_type == ParentTypes.WORKSPACE:
+            return WorkspaceParent.from_dict(args)
+
+        return Parent("")
+
+
+@dataclass
+class DatabaseParent(Parent):
+    """A representation of a database parent of a Notion object.
+
+    Attributes:
+        id (str): The id of the database.
+        type (ParentTypes):
+            The type of the parent which will always
+            be `ParentTypes.DATABASE`.
+    """
+
+    def __post_init__(self):
+        self._type = ParentTypes.DATABASE
+
+    @classmethod
+    def from_dict(cls: Type[DatabaseParent], args: dict[str, Any]) -> DatabaseParent:
+        return DatabaseParent(args[ParentTypes.DATABASE.value])
+
+
+@dataclass
+class PageParent(Parent):
+    """A representation of a page parent of a Notion object.
+
+    Attributes:
+        id (str): The id of the page.
+        type (ParentTypes): The type of the parent which will always
+        be `ParentTypes.PAGE`.
+    """
+
+    def __post_init__(self):
+        self._type = ParentTypes.PAGE
+
+    @classmethod
+    def from_dict(cls: Type[PageParent], args: dict[str, Any]) -> PageParent:
+        return PageParent(args[ParentTypes.PAGE.value])
+
+
+@dataclass
+class WorkspaceParent(Parent):
+    """A representation of a workspace parent of a Notion object.
+
+    Attributes:
+        id (str): The id of the workspace.
+        type (ParentType): The type of the parent which will always
+        be `ParentTypes.WORKSPACE`.
+    """
+
+    id: str = ParentTypes.WORKSPACE.value
+
+    def __post_init__(self):
+        self._type = ParentTypes.WORKSPACE
+        # For workspace parents, the id is marked as `True`
+        # by the Notion API whereas all the otther parents IDs are strings.
+
+    @classmethod
+    def from_dict(cls: Type[WorkspaceParent], args: dict[str, Any]) -> WorkspaceParent:
+        return WorkspaceParent(args[ParentTypes.WORKSPACE.value])
+
+
+@dataclass
+class BlockParent(Parent):
+    """A representation of a block parent of a Notion object.
+
+    Attributes:
+        id (str): The id of the block.
+        type (ParentTypes): The type of the parent which will always
+        be `ParentTypes.BLOCK`.
+    """
+
+    def __post_init__(self):
+        self._type = ParentTypes.BLOCK
+
+    @classmethod
+    def from_dict(cls: Type[BlockParent], args: dict[str, Any]) -> BlockParent:
+        return BlockParent(args[ParentTypes.BLOCK.value])
 
 
 # ----- Helper functions for `from_dict` -----
