@@ -6,13 +6,23 @@ class NopyError(Exception):
 
     This exception can be caught to catch all possible errors
     that may take place via the package.
+
+    Attributes:
+        message: The error message.
     """
 
-    pass
+    def __init__(self, message: str):
+
+        self.message: str = message
+        super().__init__(message)
 
 
 class TokenNotFoundError(NopyError):
-    """Error raised when no Notion token was found."""
+    """Error raised when no Notion token was found.
+
+    Attributes:
+        message (str): The error message.
+    """
 
     pass
 
@@ -22,6 +32,7 @@ class HTTPError(NopyError):
     request to the Notion API.
 
     Attributes:
+        message (str): The error message.
         status_code: The status code of the response.
         headers: The headers returned by the response.
         body: The body of the response as a string.
@@ -43,7 +54,7 @@ class APIResponseError(HTTPError):
 
     Attributes:
         code: The error code returned by Notion.
-        message: The error message returned by Notion.
+        message (str): The error message returned by Notion.
     """
 
     def __init__(self, response: httpx.Response, code: str, message: str):
@@ -57,16 +68,22 @@ class APIResponseError(HTTPError):
 
 class UnuspportedError(NopyError):
     """An error raised when the user tries to do something that's not
-    supported by the library or via the Notion API."""
+    supported by the library or via the Notion API.
 
-    def __init__(self, message: str):
+    Attributes:
+        message (str): The error message.
+    """
 
-        super().__init__(message)
+    pass
 
 
 class UnsupportedByLibraryError(UnuspportedError):
     """An error raised when the user tries to do something that's not
-    supported by the library currently."""
+    supported by the library currently.
+
+    Attributes:
+        message (str): The error message.
+    """
 
     def __init__(self, message: str):
 
@@ -76,7 +93,11 @@ class UnsupportedByLibraryError(UnuspportedError):
 
 class UnsupportedByNotion(UnuspportedError):
     """An error raised when the user tries to do something that's not
-    supported by the Notion API currently."""
+    supported by the Notion API currently.
+
+    Attributes:
+        message (str): The error message.
+    """
 
     def __init__(self, message: str):
         message += " is currently unsupported by the Notion API"
