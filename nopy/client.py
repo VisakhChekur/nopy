@@ -85,8 +85,7 @@ class NotionClient:
         else:
             self._config = config or ClientConfig()
 
-        self._client: httpx.Client = self._get_client()
-        self._logger: logging.Logger = self._get_logger()
+        self._configure_client()
 
     # ------ Database related endpoints ------
 
@@ -299,14 +298,26 @@ class NotionClient:
             base_url=self._config.base_url,
         )
 
-    def _get_logger(self) -> logging.Logger:
+    def _configure_client(self):
 
+        # Configuring the logger
         if self._config.logger:
-            return self._config.logger
+            self._logger = self._config.logger
+        else:
+            self._logger = make_logger(self._config.log_level)
 
-        logger = make_logger()
-        logger.setLevel(self._config.log_level)
-        return logger
+        # Configuring the httpx client
+        base_headers: dict[str, str] = {
+            "Authorization": f"Bearer {self.token}",
+            "Notion-Version": self._config.api_version,
+        }
+        transport = httpx.HTTPTransport(retries=self._config.retries)
+        self._client = httpx.Client(
+            transport=transport,
+            timeout=self._config.timeout,
+            headers=base_headers,
+            base_url=self._config.base_url,
+        )
 
     # ----- Context Managers -----
 
