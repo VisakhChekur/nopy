@@ -1,6 +1,7 @@
 import logging
 import os
 from dataclasses import dataclass
+from functools import lru_cache
 from json import JSONDecodeError
 from types import TracebackType
 from typing import Any
@@ -87,7 +88,7 @@ class NotionClient:
 
     # ------ Database related endpoints ------
 
-    def retrieve_db(self, db_id: str, use_cache: bool = True) -> Database:
+    def retrieve_db(self, db_id: str, cache: bool = True) -> Database:
         """Retreives the database.
 
         Attributes:
@@ -103,13 +104,13 @@ class NotionClient:
                 Raised when there's some error when making the API call.
         """
 
-        db_dict = self.retrieve_db_raw(db_id, use_cache)
+        db_dict = self.retrieve_db_raw(db_id, cache)
         self._logger.info(f" Mapping '{db_id}' to a Database instance")
         db = Database.from_dict(db_dict)
         db._client = self  # type: ignore
         return db
 
-    def retrieve_db_raw(self, db_id: str, use_cache: bool = True) -> dict[str, Any]:
+    def retrieve_db_raw(self, db_id: str, cache: bool = True) -> dict[str, Any]:
         """Retreives the database and returns the raw response.
 
         Attributes:
@@ -128,9 +129,9 @@ class NotionClient:
         self._logger.info(f" Retrieving database {db_id}")
         endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
 
-        if not use_cache:
+        if not cache:
             return self._make_request(endpoint)
-        return self._make_request(endpoint)
+        return self._get_object(endpoint)
 
     def query_db(self, db_id: str, query: dict[str, Any]) -> list[Page]:
 
@@ -153,15 +154,17 @@ class NotionClient:
 
     # ----- Page related endpoints -----
 
-    def retrieve_page(self, page_id: str) -> Page:
+    def retrieve_page(self, page_id: str, cache: bool = True) -> Page:
 
-        page_dict = self.retrieve_page_raw(page_id)
+        page_dict = self.retrieve_page_raw(page_id, cache)
         return Page.from_dict(page_dict)
 
-    def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
+    def retrieve_page_raw(self, page_id: str, cache: bool = False) -> dict[str, Any]:
 
         endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
-        return self._make_request(endpoint)
+        if not cache:
+            return self._make_request(endpoint)
+        return self._get_object(endpoint)
 
     def create_page(self, page: dict[str, Any]) -> dict[str, Any]:
 
@@ -276,6 +279,12 @@ class NotionClient:
         response_dict = resp.json()
         self._logger.debug(f" Response: {response_dict}")
         return response_dict
+
+    @lru_cache(maxsize=256)
+    def _get_object(self, endpoint: str, query_params: Optional[dict[str, Any]]):
+        # This is just a wrapper to ensure that only `GET` requests
+        # are cached.
+        return self._make_request(endpoint, query_params=query_params)
 
     def _get_client(self) -> httpx.Client:
 
