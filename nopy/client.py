@@ -233,15 +233,15 @@ class NotionClient:
 
         self._client.close()
 
-    # def clear_cache(self):
-    #     """Clears the cache."""
+    def clear_cache(self):
+        """Clears the cache."""
 
-    #     self._make_request.cache_clear()
+        self._get_object.cache_clear()
 
-    # def cache_info(self):
-    #     """Returns the cache information."""
+    def cache_info(self):
+        """Returns the cache information."""
 
-    #     return self._make_request.cache_info()
+        return self._get_object.cache_info()
 
     # ----- Private Methods -----
 
