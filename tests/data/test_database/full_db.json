@@ -65,44 +65,44 @@
             "status": {
                 "options": [
                     {
-                        "id": "6cc94d90-8cca-41b7-a5a5-7daddb58cf19",
+                        "id": "option-one",
                         "name": "Not started",
                         "color": "default"
                     },
                     {
-                        "id": "32cf2fce-3890-40f6-b928-833cc4f6a594",
+                        "id": "option-two",
                         "name": "In progress",
                         "color": "blue"
                     },
                     {
-                        "id": "3581bdb8-8f6c-4481-af7b-fad2f8abafcd",
+                        "id": "option-three",
                         "name": "Done",
                         "color": "green"
                     }
                 ],
                 "groups": [
                     {
-                        "id": "56d4e66c-c40e-4909-9619-d179602b381e",
+                        "id": "group-one",
                         "name": "To-do",
                         "color": "gray",
                         "option_ids": [
-                            "6cc94d90-8cca-41b7-a5a5-7daddb58cf19"
+                            "option-one"
                         ]
                     },
                     {
-                        "id": "282ae3f5-0225-46ab-9f94-669511bbddae",
+                        "id": "group-two",
                         "name": "In progress",
                         "color": "blue",
                         "option_ids": [
-                            "32cf2fce-3890-40f6-b928-833cc4f6a594"
+                            "option-two"
                         ]
                     },
                     {
-                        "id": "8a20bce3-ff12-4162-a5bc-2e7e129b7b3f",
+                        "id": "group-three",
                         "name": "Complete",
                         "color": "green",
                         "option_ids": [
-                            "3581bdb8-8f6c-4481-af7b-fad2f8abafcd"
+                            "option-three"
                         ]
                     }
                 ]
@@ -209,6 +209,28 @@
             "name": "Name",
             "type": "title",
             "title": {}
+        },
+        "Related Some Database": {
+            "id": "tnQq",
+            "name": "Related Some Database",
+            "type": "relation",
+            "relation": {
+                "database_id": "db-id",
+                "type": "single_property",
+                "single_property": {}
+            }
+        },
+        "Rollup": {
+            "id": "%7C%3Fd%3A",
+            "name": "Rollup",
+            "type": "rollup",
+            "rollup": {
+                "rollup_property_name": "Name",
+                "relation_property_name": "Related Some Database",
+                "rollup_property_id": "title",
+                "relation_property_id": "tnQq",
+                "function": "count"
+            }
         }
     },
     "parent": {

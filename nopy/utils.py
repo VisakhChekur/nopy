@@ -150,3 +150,11 @@ def get_cover(cover: Optional[dict[str, Any]]) -> Optional[File]:
     if not cover:
         return None
     return File.from_dict(cover)
+
+
+def base_db_prop_args(args: dict[str, Any]):
+
+    return {
+        "id": args["id"],
+        "name": args["name"],
+    }

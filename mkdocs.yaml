@@ -21,6 +21,7 @@ nav:
       - Properties:
           - Base: api_reference/properties/base.md
           - Common Properties: api_reference/properties/common.md
+          - Database Properties: api_reference/properties/db_props.md
       - Exceptions: api_reference/errors.md
 
 theme:

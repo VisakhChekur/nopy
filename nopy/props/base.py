@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
+from typing import ClassVar
 from typing import Type
 
 from nopy.enums import PropTypes
@@ -24,14 +26,21 @@ class BaseProperty:
         raise NotImplementedError("to be implemented by subclass")
 
 
+@dataclass
 class ObjectProperty(BaseProperty):
     """The base class from which all properties directly available
     on databases and pages inherit."""
 
-    def __init__(self):
+    _type: ClassVar[PropTypes] = PropTypes.UNSUPPORTED
 
-        self._type: PropTypes = PropTypes.UNSUPPORTED
+    id: str = ""
+    name: str = ""
 
     @property
     def type(self) -> PropTypes:
         return self._type
+
+    @classmethod
+    def from_dict(cls: Type[ObjectProperty], args: dict[str, Any]) -> ObjectProperty:
+
+        return cls(name=args.get("name", ""), id=args["id"])
