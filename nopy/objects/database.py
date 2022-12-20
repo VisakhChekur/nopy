@@ -5,12 +5,15 @@ from dataclasses import field
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
+from typing import Generator
 from typing import Optional
 from typing import Type
 from typing import Union
 
 from nopy.enums import ObjectTypes
+from nopy.errors import NoClientFoundError
 from nopy.objects.notion_object import NotionObject
+from nopy.objects.page import Page
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
@@ -18,6 +21,7 @@ from nopy.utils import TextDescriptor
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
 from nopy.utils import get_icon
+from nopy.utils import paginate
 from nopy.utils import rich_text_list
 
 if TYPE_CHECKING:
@@ -77,6 +81,29 @@ class Database(NotionObject):
     def __post_init__(self, client: Optional["NotionClient"]):
         super().__post_init__(client)
         self._type = ObjectTypes.DATABASE
+
+    def get_pages(
+        self, max_pages: int = 0, page_size: int = 100
+    ) -> Generator[Page, None, None]:
+        """Returns a generator that yields a single page at a time.
+
+        Args:
+            max_pages: The maximum number of pages to return.
+            page_size:
+                The number of pages to get from the Notion API per
+                API call.
+
+        Returns:
+            A generator that yields a single page at a time.
+        """
+        if not self._client:
+            raise NoClientFoundError("database")
+
+        api_call = self._client.query_db_raw
+        extract = Page.from_dict
+        return paginate(
+            api_call, extract, page_size=page_size, max_pages=max_pages, db_id=self.id
+        )
 
     @classmethod
     def from_dict(cls: Type[Database], args: dict[str, Any]) -> Database:

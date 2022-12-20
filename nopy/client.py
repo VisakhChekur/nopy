@@ -1,7 +1,6 @@
 import logging
 import os
 from dataclasses import dataclass
-from functools import lru_cache
 from json import JSONDecodeError
 from types import TracebackType
 from typing import Any
@@ -130,17 +129,19 @@ class NotionClient:
         endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
 
         if not use_cache:
-            return self._make_request.__wrapped__(endpoint)
+            return self._make_request(endpoint)
         return self._make_request(endpoint)
 
-    def query_db(self, query: dict[str, Any]) -> list[Page]:
+    def query_db(self, db_id: str, query: dict[str, Any]) -> list[Page]:
 
-        query_results_dict = self.query_db_raw(query)
+        query_results_dict = self.query_db_raw(query, db_id)
         return [Page.from_dict(page) for page in query_results_dict["results"]]
 
-    def query_db_raw(self, query: dict[str, Any]) -> dict[str, Any]:
+    def query_db_raw(self, query: dict[str, Any], db_id: str) -> dict[str, Any]:
 
-        raise NotImplementedError("querying databases isn't implemented yet")
+        self._logger.info(f" Querying '{db_id}'")
+        endpoint = APIEndpoints.DB_QUERY.value.format(db_id)
+        return self._make_request(endpoint, "post", data=query)
 
     def create_db(self, db: dict[str, Any]) -> dict[str, Any]:
 
@@ -229,19 +230,18 @@ class NotionClient:
 
         self._client.close()
 
-    def clear_cache(self):
-        """Clears the cache."""
+    # def clear_cache(self):
+    #     """Clears the cache."""
 
-        self._make_request.cache_clear()
+    #     self._make_request.cache_clear()
 
-    def cache_info(self):
-        """Returns the cache information."""
+    # def cache_info(self):
+    #     """Returns the cache information."""
 
-        return self._make_request.cache_info()
+    #     return self._make_request.cache_info()
 
     # ----- Private Methods -----
 
-    @lru_cache(maxsize=128)
     def _make_request(
         self,
         endpoint: str,
@@ -251,11 +251,11 @@ class NotionClient:
     ):
 
         request = self._client.build_request(
-            method, endpoint, data=data, params=query_params
+            method, endpoint, json=data, params=query_params
         )
 
         log_msg = f" {request.method} request to {request.url}"
-        self._logger.debug(log_msg)
+        self._logger.info(log_msg)
         self._logger.debug(f" Data: {data}")
         self._logger.debug(f" Query Params: {query_params}")
 

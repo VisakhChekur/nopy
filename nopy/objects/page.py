@@ -72,7 +72,15 @@ class Page(NotionObject):
     @classmethod
     def from_dict(cls: Type[Page], args: dict[str, Any]) -> Page:
 
-        title_list = args["properties"]["title"]["title"]
+        # This is needed because a Page object returned by Notion
+        # doesn't have the page title directly accessible like in a
+        # Database. The title has to be accessed from the `properties`.
+        # Also if the page is part of a database, then the keys of the
+        # properties are not the ids, but rather the name of the property.
+        props = args["properties"].values()
+        title_gen = (prop for prop in props if prop["id"] == "title")
+        title_list: list[dict[str, Any]] = next(title_gen)["title"]
+
         new_args: dict[str, Any] = {
             "rich_title": rich_text_list(title_list),
             "icon": get_icon(args["icon"]),

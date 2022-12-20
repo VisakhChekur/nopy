@@ -102,3 +102,17 @@ class UnsupportedByNotion(UnuspportedError):
     def __init__(self, message: str):
         message += " is currently unsupported by the Notion API"
         super().__init__(message)
+
+
+class NoClientFoundError(NopyError):
+    """An error raised when the user tries to make an API call
+    via a Notion Object that doesn't have a client.
+
+    Attributes:
+        message (str): The error message.
+    """
+
+    def __init__(self, message: str):
+
+        message += " has no client set"
+        super().__init__(message)

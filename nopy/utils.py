@@ -2,7 +2,10 @@ import logging
 from datetime import datetime
 from logging import getLogger
 from typing import Any
+from typing import Callable
+from typing import Generator
 from typing import Optional
+from typing import TypeVar
 from typing import Union
 
 from nopy.objects.user import User
@@ -11,6 +14,10 @@ from nopy.props.common import File
 from nopy.props.common import Parent
 from nopy.props.common import RichText
 from nopy.props.common import Text
+
+# ----- TYPES ------
+API_CALL = Callable[..., dict[str, Any]]
+T = TypeVar("T")
 
 
 def make_logger(log_level: int) -> logging.Logger:
@@ -48,6 +55,43 @@ class TextDescriptor:
         assert isinstance(value, str), msg
 
         instance.__dict__[self.storage_name] = [Text(value)]
+
+
+def paginate(
+    api_call: API_CALL,
+    map_func: Callable[..., T],
+    data: Optional[dict[str, Any]] = None,
+    page_size: int = 100,
+    max_pages: int = 0,
+    **kwargs: Any,
+) -> Generator[T, None, None]:
+    """Handles calls that require pagination to get the full results.
+
+    All keyword arguments that are not explicitly expressed in the signature
+    are passed to the `api_call` callable. Furthermore, the first argument the
+    `api_call` callable takes must be a dictionary that is the `data` argument.
+    """
+
+    pages = 0
+    if max_pages and max_pages < page_size:
+        page_size = max_pages
+    if not data:
+        data = {"page_size": page_size}
+
+    while True:
+
+        results = api_call(data, **kwargs)
+
+        for res in results["results"]:
+            yield map_func(res)
+            pages += 1
+            # Early exit if specified.
+            if max_pages and pages > max_pages:
+                return
+
+        if not results["has_more"]:
+            break
+        data["start_cursor"] = results["next_cursor"]
 
 
 # ----- Mapping Utilities -----
