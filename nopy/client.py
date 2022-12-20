@@ -281,7 +281,7 @@ class NotionClient:
         return response_dict
 
     @lru_cache(maxsize=256)
-    def _get_object(self, endpoint: str, query_params: Optional[dict[str, Any]]):
+    def _get_object(self, endpoint: str, query_params: Optional[dict[str, Any]] = None):
         # This is just a wrapper to ensure that only `GET` requests
         # are cached.
         return self._make_request(endpoint, query_params=query_params)
