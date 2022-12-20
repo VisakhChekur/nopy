@@ -1,0 +1,3 @@
+# Page
+
+::: objects.page.Page

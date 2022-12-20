@@ -17,6 +17,7 @@ nav:
           - User Types: api_reference/enums/user_type.md
       - Notion Objects:
           - Database: api_reference/notion_objects/database.md
+          - Page: api_reference/notion_objects/page.md
       - Properties:
           - Base: api_reference/properties/base.md
           - Common Properties: api_reference/properties/common.md

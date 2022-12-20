@@ -159,7 +159,8 @@ class NotionClient:
 
     def retrieve_page_raw(self, page_id: str) -> dict[str, Any]:
 
-        raise NotImplementedError("retrieval of pages isn't implemented yet")
+        endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
+        return self._make_request(endpoint)
 
     def create_page(self, page: dict[str, Any]) -> dict[str, Any]:
 

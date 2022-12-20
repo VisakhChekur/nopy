@@ -37,3 +37,11 @@ def full_db():
     fp = DATA_DIR / "test_database" / "full_db.json"
     with open(fp, "r") as f:
         return json.load(f)
+
+
+@pytest.fixture
+def normal_page():
+
+    fp = DATA_DIR / "normal-page.json"
+    with open(fp, "r") as f:
+        return json.load(f)
