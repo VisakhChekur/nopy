@@ -63,6 +63,7 @@ def paginate(
     data: Optional[dict[str, Any]] = None,
     page_size: int = 100,
     max_pages: int = 0,
+    map_args: Optional[dict[str, Any]] = None,
     **kwargs: Any,
 ) -> Generator[T, None, None]:
     """Handles calls that require pagination to get the full results.
@@ -70,20 +71,23 @@ def paginate(
     All keyword arguments that are not explicitly expressed in the signature
     are passed to the `api_call` callable. Furthermore, the first argument the
     `api_call` callable takes must be a dictionary that is the `data` argument.
+
+    All `map_args` are passed to the `map_func` when calling it along with the
+    result. The result is the first argument that's passed in.
     """
 
     pages = 0
     if max_pages and max_pages < page_size:
         page_size = max_pages
-    if not data:
-        data = {"page_size": page_size}
+    data = data or {"page_size": page_size}
+    map_args = map_args or {}
 
     while True:
 
         results = api_call(data, **kwargs)
 
         for res in results["results"]:
-            yield map_func(res)
+            yield map_func(res, **map_args)
             pages += 1
             # Early exit if specified.
             if max_pages and pages > max_pages:
