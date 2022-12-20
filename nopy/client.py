@@ -5,7 +5,6 @@ from functools import lru_cache
 from json import JSONDecodeError
 from types import TracebackType
 from typing import Any
-from typing import Literal
 from typing import Optional
 from typing import Type
 from typing import Union
@@ -245,29 +244,21 @@ class NotionClient:
     def _make_request(
         self,
         endpoint: str,
-        method: Literal["get", "post", "put", "patch", "delete"] = "get",
+        method: str = "get",
         data: Optional[dict[Any, Any]] = None,
         query_params: Optional[dict[str, str]] = None,
     ):
 
-        log_msg = (
-            f" {method.upper()} request to {str(self._client.base_url) + endpoint}"
+        request = self._client.build_request(
+            method, endpoint, data=data, params=query_params
         )
+
+        log_msg = f" {request.method} request to {request.url}"
         self._logger.debug(log_msg)
         self._logger.debug(f" Data: {data}")
         self._logger.debug(f" Query Params: {query_params}")
 
-        if method == "get":
-            resp = self._client.get(endpoint, params=query_params)
-        elif method == "post":
-            resp = self._client.post(endpoint, data=data, params=query_params)
-        elif method == "put":
-            resp = self._client.put(endpoint, data=data, params=query_params)
-        elif method == "patch":
-            resp = self._client.patch(endpoint, data=data, params=query_params)
-        else:
-            resp = self._client.delete(endpoint, params=query_params)
-
+        resp = self._client.send(request)
         return self._parse_response(resp)
 
     def _parse_response(self, resp: httpx.Response) -> dict[str, Any]:
