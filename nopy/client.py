@@ -137,7 +137,7 @@ class NotionClient:
         """
 
         return paginate(
-            self._client._query_db,  # type: ignore
+            self._query_db_raw,  # type: ignore
             Page.from_dict,
             max_pages=max_pages,
             db_id=db_id,
@@ -338,21 +338,6 @@ class NotionClient:
         response_dict = resp.json()
         self._logger.debug(f" Response: {response_dict}")
         return response_dict
-
-    def _get_client(self) -> httpx.Client:
-
-        base_headers: dict[str, str] = {
-            "Authorization": f"Bearer {self.token}",
-            "Notion-Version": self._config.api_version,
-        }
-        transport = httpx.HTTPTransport(retries=self._config.retries)
-
-        return httpx.Client(
-            transport=transport,
-            timeout=self._config.timeout,
-            headers=base_headers,
-            base_url=self._config.base_url,
-        )
 
     def _configure_client(self):
 
