@@ -1,7 +1,6 @@
 import logging
 import os
 from dataclasses import dataclass
-from functools import lru_cache
 from json import JSONDecodeError
 from types import TracebackType
 from typing import Any
@@ -88,7 +87,7 @@ class NotionClient:
 
     # ------ Database related endpoints ------
 
-    def retrieve_db(self, db_id: str, cache: bool = True) -> Database:
+    def retrieve_db(self, db_id: str) -> Database:
         """Retreives the database.
 
         Attributes:
@@ -104,45 +103,24 @@ class NotionClient:
                 Raised when there's some error when making the API call.
         """
 
-        db_dict = self.retrieve_db_raw(db_id, cache)
-        self._logger.info(f" Mapping '{db_id}' to a Database instance")
+        self._logger.info(f"Retrieving database {db_id}")
+        endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
+        db_dict = self._make_request(endpoint)
+
         db = Database.from_dict(db_dict)
         db._client = self  # type: ignore
         return db
 
-    def retrieve_db_raw(self, db_id: str, cache: bool = True) -> dict[str, Any]:
-        """Retreives the database and returns the raw response.
-
-        Attributes:
-            db_id: The id of the database to retrieve.
-
-        Returns:
-            The raw database.
-
-        Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
-        """
-
-        self._logger.info(f" Retrieving database {db_id}")
-        endpoint = APIEndpoints.DB_RETRIEVE.value.format(db_id)
-
-        if not cache:
-            return self._make_request(endpoint)
-        return self._get_object(endpoint)
-
     def query_db(self, db_id: str, query: dict[str, Any]) -> list[Page]:
 
-        query_results_dict = self.query_db_raw(query, db_id)
-        return [Page.from_dict(page) for page in query_results_dict["results"]]
+        query_results_dict = self._query_db_raw(query, db_id)
 
-    def query_db_raw(self, query: dict[str, Any], db_id: str) -> dict[str, Any]:
+        pages: list[Page] = []
+        for res in query_results_dict["results"]:
+            page = Page.from_dict(res)
+            page._client = self  # type: ignore
 
-        self._logger.info(f" Querying '{db_id}'")
-        endpoint = APIEndpoints.DB_QUERY.value.format(db_id)
-        return self._make_request(endpoint, "post", data=query)
+        return pages
 
     def create_db(self, db: dict[str, Any]) -> dict[str, Any]:
 
@@ -154,17 +132,12 @@ class NotionClient:
 
     # ----- Page related endpoints -----
 
-    def retrieve_page(self, page_id: str, cache: bool = True) -> Page:
+    def retrieve_page(self, page_id: str) -> Page:
 
-        page_dict = self.retrieve_page_raw(page_id, cache)
-        return Page.from_dict(page_dict)
-
-    def retrieve_page_raw(self, page_id: str, cache: bool = False) -> dict[str, Any]:
-
+        self._logger.info(f"Retrieving page {page_id}")
         endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
-        if not cache:
-            return self._make_request(endpoint)
-        return self._get_object(endpoint)
+        page = self._make_request(endpoint)
+        return Page.from_dict(page)
 
     def create_page(self, page: dict[str, Any]) -> dict[str, Any]:
 
@@ -179,15 +152,11 @@ class NotionClient:
     def retrieve_block(self, block_id: str) -> Block:
         raise NotImplementedError()
 
-    def retrieve_block_raw(self, block_id: str) -> dict[str, Any]:
-
-        endpoint = APIEndpoints.BLOCK_RETRIEVE.value.format(block_id)
-        return self._make_request(endpoint)
-
     def update_block(self, block: dict[str, Any]) -> dict[str, Any]:
         raise NotImplementedError()
 
-    def retrieve_block_children_raw(self, block_id: str) -> dict[str, Any]:
+    def retrieve_block_children(self, block_id: str) -> list[Block]:
+
         raise NotImplementedError()
 
     def append_block_child(self, block: str) -> dict[str, Any]:
@@ -209,15 +178,11 @@ class NotionClient:
     def retrieve_user(self, user_id: str) -> User:
         raise NotImplementedError()
 
-    def retrieve_user_raw(self, user_id: str) -> dict[str, Any]:
+    def list_users(self) -> list[User]:
 
-        endpoint = APIEndpoints.USER_RETRIEVE.value.format(user_id)
-        return self._make_request(endpoint)
-
-    def list_users(self) -> dict[str, Any]:
         raise NotImplementedError()
 
-    def retrieve_me_raw(self) -> dict[str, Any]:
+    def retrieve_me(self) -> dict[str, Any]:
 
         endpoint = APIEndpoints.USER_TOKEN_BOT.value
         return self._make_request(endpoint)
@@ -233,17 +198,13 @@ class NotionClient:
 
         self._client.close()
 
-    def clear_cache(self):
-        """Clears the cache."""
-
-        self._get_object.cache_clear()
-
-    def cache_info(self):
-        """Returns the cache information."""
-
-        return self._get_object.cache_info()
-
     # ----- Private Methods -----
+
+    def _query_db_raw(self, query: dict[str, Any], db_id: str) -> dict[str, Any]:
+
+        self._logger.info(f" Querying '{db_id}'")
+        endpoint = APIEndpoints.DB_QUERY.value.format(db_id)
+        return self._make_request(endpoint, "post", data=query)
 
     def _make_request(
         self,
@@ -279,12 +240,6 @@ class NotionClient:
         response_dict = resp.json()
         self._logger.debug(f" Response: {response_dict}")
         return response_dict
-
-    @lru_cache(maxsize=256)
-    def _get_object(self, endpoint: str, query_params: Optional[dict[str, Any]] = None):
-        # This is just a wrapper to ensure that only `GET` requests
-        # are cached.
-        return self._make_request(endpoint, query_params=query_params)
 
     def _get_client(self) -> httpx.Client:
 
