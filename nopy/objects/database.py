@@ -99,10 +99,13 @@ class Database(NotionObject):
         if not self._client:
             raise NoClientFoundError("database")
 
-        api_call = self._client._query_db_raw  # type: ignore
-        extract = Page.from_dict
         return paginate(
-            api_call, extract, page_size=page_size, max_pages=max_pages, db_id=self.id
+            self._client._query_db,  # type: ignore
+            Page.from_dict,
+            page_size=page_size,
+            max_pages=max_pages,
+            db_id=self.id,
+            client=self._client,
         )
 
     @classmethod

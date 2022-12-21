@@ -9,14 +9,14 @@ from typing import Type
 
 from nopy.enums import ObjectTypes
 from nopy.enums import UserTypes
-from nopy.objects.notion_object import NotionObject
+from nopy.objects.notion_object import BaseObject
 
 if TYPE_CHECKING:
     from nopy.client import NotionClient
 
 
 @dataclass
-class User(NotionObject):
+class User(BaseObject):
     """The base class for a user in Notion."""
 
     name: Optional[str] = None

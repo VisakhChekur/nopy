@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from logging import getLogger
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
 from typing import Generator
@@ -14,6 +15,10 @@ from nopy.props.common import File
 from nopy.props.common import Parent
 from nopy.props.common import RichText
 from nopy.props.common import Text
+
+if TYPE_CHECKING:
+    from nopy.client import NotionClient
+
 
 # ----- TYPES ------
 API_CALL = Callable[..., dict[str, Any]]
@@ -60,42 +65,41 @@ class TextDescriptor:
 def paginate(
     api_call: API_CALL,
     map_func: Callable[..., T],
-    data: Optional[dict[str, Any]] = None,
-    page_size: int = 100,
     max_pages: int = 0,
     map_args: Optional[dict[str, Any]] = None,
+    client: Optional["NotionClient"] = None,
     **kwargs: Any,
 ) -> Generator[T, None, None]:
     """Handles calls that require pagination to get the full results.
 
     All keyword arguments that are not explicitly expressed in the signature
-    are passed to the `api_call` callable. Furthermore, the first argument the
-    `api_call` callable takes must be a dictionary that is the `data` argument.
+    are passed to the `api_call` callable.
 
     All `map_args` are passed to the `map_func` when calling it along with the
     result. The result is the first argument that's passed in.
     """
 
     pages = 0
-    if max_pages and max_pages < page_size:
-        page_size = max_pages
-    data = data or {"page_size": page_size}
+    next_cursor = None
     map_args = map_args or {}
 
     while True:
 
-        results = api_call(data, **kwargs)
+        results = api_call(**kwargs, start_cursor=next_cursor)
 
         for res in results["results"]:
-            yield map_func(res, **map_args)
+            notion_obj = map_func(res, **map_args)
+            if hasattr(notion_obj, "_client"):
+                notion_obj._client = client  # type: ignore
+            yield notion_obj
             pages += 1
             # Early exit if specified.
             if max_pages and pages > max_pages:
                 return
 
         if not results["has_more"]:
-            break
-        data["start_cursor"] = results["next_cursor"]
+            return
+        next_cursor = results["next_cursor"]
 
 
 # ----- Mapping Utilities -----

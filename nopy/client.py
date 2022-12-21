@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from json import JSONDecodeError
 from types import TracebackType
 from typing import Any
+from typing import Generator
 from typing import Optional
 from typing import Type
 from typing import Union
@@ -21,7 +22,9 @@ from nopy.objects import Comment
 from nopy.objects import Database
 from nopy.objects import Page
 from nopy.objects import User
+from nopy.objects.user import Bot
 from nopy.utils import make_logger
+from nopy.utils import paginate
 
 
 @dataclass
@@ -94,7 +97,7 @@ class NotionClient:
             db_id: The id of the database to retrieve.
 
         Returns:
-            The database.
+            A `Database` instance.
 
         Raises:
             APIResponseError:
@@ -111,16 +114,36 @@ class NotionClient:
         db._client = self  # type: ignore
         return db
 
-    def query_db(self, db_id: str, query: dict[str, Any]) -> list[Page]:
+    def query_db(
+        self, db_id: str, query: dict[str, Any], max_pages: int = 0
+    ) -> Generator[Page, None, None]:
+        """Query a database.
 
-        query_results_dict = self._query_db_raw(query, db_id)
+        Attributes:
+            db_id: The id of the database to query.
+            query: The query in the Notion format.
+            max_pages:
+                The maximum number of pages to return. If the value is 0,
+                then all pages are returned.
 
-        pages: list[Page] = []
-        for res in query_results_dict["results"]:
-            page = Page.from_dict(res)
-            page._client = self  # type: ignore
+        Returns:
+            A generator that yields a single `Page` instance at a time.
 
-        return pages
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
+
+        return paginate(
+            self._client._query_db,  # type: ignore
+            Page.from_dict,
+            max_pages=max_pages,
+            db_id=db_id,
+            client=self,
+            query=query,
+        )
 
     def create_db(self, db: dict[str, Any]) -> dict[str, Any]:
 
@@ -133,7 +156,20 @@ class NotionClient:
     # ----- Page related endpoints -----
 
     def retrieve_page(self, page_id: str) -> Page:
+        """Retrieves a page.
 
+        Attributes:
+            page_id: The id of the page to retrieve.
+
+        Returns:
+            An instance of `Page`.
+
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
         self._logger.info(f"Retrieving page {page_id}")
         endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
         page = self._make_request(endpoint)
@@ -176,16 +212,59 @@ class NotionClient:
     # ----- User related endpoints -----
 
     def retrieve_user(self, user_id: str) -> User:
-        raise NotImplementedError()
+        """Retrieves the user with the given id.
 
-    def list_users(self) -> list[User]:
+        Attributes:
+            user_id: The id of the user being retrieved.
 
-        raise NotImplementedError()
+        Returns:
+            An instance of `User` or one of it's subclasses.
 
-    def retrieve_me(self) -> dict[str, Any]:
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
 
-        endpoint = APIEndpoints.USER_TOKEN_BOT.value
-        return self._make_request(endpoint)
+        self._logger.info(f"Retrieving user '{user_id}'")
+        endpoint = APIEndpoints.USER_RETRIEVE.value.format(user_id)
+        user_dict = self._make_request(endpoint)
+        return User.from_dict(user_dict)
+
+    def list_users(self) -> Generator[User, None, None]:
+        """Lists all the users.
+
+        Returns:
+            A generator that yields an instance of a `User` or one of it's
+            sbuclasses.
+
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
+
+        self._logger.info("Listing users...")
+        return paginate(self._list_users_raw, User.from_dict)
+
+    def retrieve_me(self) -> Bot:
+        """Retrieves the user associated with the given `NOTION_TOKEN`.
+
+        Returns:
+            An instance of `Bot`.
+
+        Raises:
+            APIResponseError:
+                Raised when the Notion API returns a status code that's not 2xx.
+            HTTPError:
+                Raised when there's some error when making the API call.
+        """
+
+        self._logger.info("Retreiving 'me'")
+        bot_dict = self._make_request(APIEndpoints.USER_TOKEN_BOT.value)
+        return Bot.from_dict(bot_dict)
 
     # ----- Search -----
 
@@ -200,11 +279,30 @@ class NotionClient:
 
     # ----- Private Methods -----
 
-    def _query_db_raw(self, query: dict[str, Any], db_id: str) -> dict[str, Any]:
+    def _query_db_raw(
+        self,
+        db_id: str,
+        query: Optional[dict[str, Any]] = None,
+        start_cursor: Optional[str] = None,
+        page_size: int = 100,
+    ) -> dict[str, Any]:
 
         self._logger.info(f" Querying '{db_id}'")
+
+        query = query or {}
+        query["page_size"] = page_size
+        if start_cursor:
+            query["start_cursor"] = start_cursor
+
         endpoint = APIEndpoints.DB_QUERY.value.format(db_id)
         return self._make_request(endpoint, "post", data=query)
+
+    def _list_users_raw(self, start_cursor: Optional[str] = None):
+
+        query_params = {"start_cursor": start_cursor} if start_cursor else {}
+        return self._make_request(
+            APIEndpoints.USER_LIST.value, query_params=query_params
+        )
 
     def _make_request(
         self,
