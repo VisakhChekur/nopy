@@ -26,7 +26,7 @@ class BaseProperty:
         raise NotImplementedError("to be implemented by subclass")
 
 
-@dataclass
+@dataclass(eq=False)
 class ObjectProperty(BaseProperty):
     """The base class from which all properties directly available
     on databases and pages inherit."""

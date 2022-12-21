@@ -18,10 +18,11 @@ nav:
       - Notion Objects:
           - Database: api_reference/notion_objects/database.md
           - Page: api_reference/notion_objects/page.md
-      - Properties:
-          - Base: api_reference/properties/base.md
+      - Object Properties:
+          # - Base: api_reference/properties/base.md
           - Common Properties: api_reference/properties/common.md
           - Database Properties: api_reference/properties/db_props.md
+      - Properties: api_reference/properties.md
       - Exceptions: api_reference/errors.md
 
 theme:

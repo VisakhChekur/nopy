@@ -116,3 +116,15 @@ class NoClientFoundError(NopyError):
 
         message += " has no client set"
         super().__init__(message)
+
+
+class PropertyExistsError(NopyError):
+    """Raised when the property already exists."""
+
+    pass
+
+
+class PropertyNotFoundError(NopyError):
+    """Raised when the property is not found."""
+
+    pass

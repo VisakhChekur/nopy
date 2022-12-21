@@ -2,3 +2,4 @@
 
 from .client import ClientConfig
 from .client import NotionClient
+from .properties import Properties

@@ -17,7 +17,7 @@ from nopy.props.common import Option
 from nopy.props.common import StatusGroup
 
 
-@dataclass
+@dataclass(eq=False)
 class DBText(ObjectProperty):
     """A representation of a 'Text' property on a database.
 
@@ -32,7 +32,7 @@ class DBText(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.RICH_TEXT
 
 
-@dataclass
+@dataclass(eq=False)
 class DBNumber(ObjectProperty):
     """A representation of a number property on a database.
 
@@ -58,7 +58,7 @@ class DBNumber(ObjectProperty):
         )
 
 
-@dataclass
+@dataclass(eq=False)
 class DBSelect(ObjectProperty):
     """A representation of a select property on a database.
 
@@ -83,7 +83,7 @@ class DBSelect(ObjectProperty):
         return DBSelect(name=args["name"], id=args["id"], options=options)
 
 
-@dataclass
+@dataclass(eq=False)
 class DBStatus(ObjectProperty):
     """A representation of a status property on a database.
 
@@ -114,7 +114,7 @@ class DBStatus(ObjectProperty):
         )
 
 
-@dataclass
+@dataclass(eq=False)
 class DBMultiSelect(ObjectProperty):
     """A representation of a multi select property on a database.
 
@@ -141,7 +141,7 @@ class DBMultiSelect(ObjectProperty):
         return DBMultiSelect(name=args["name"], id=args["id"], options=options)
 
 
-@dataclass
+@dataclass(eq=False)
 class DBDate(ObjectProperty):
     """A representation of a date property on a database.
 
@@ -157,7 +157,7 @@ class DBDate(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.DATE
 
 
-@dataclass
+@dataclass(eq=False)
 class DBPeople(ObjectProperty):
     """A representation of a people property on a database.
 
@@ -173,7 +173,7 @@ class DBPeople(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.PEOPLE
 
 
-@dataclass
+@dataclass(eq=False)
 class DBFiles(ObjectProperty):
     """A representation of a files property on a database.
 
@@ -189,7 +189,7 @@ class DBFiles(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.FILES
 
 
-@dataclass
+@dataclass(eq=False)
 class DBCheckbox(ObjectProperty):
     """A representation of a checkbox property on a database.
 
@@ -205,7 +205,7 @@ class DBCheckbox(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.CHECKBOX
 
 
-@dataclass
+@dataclass(eq=False)
 class DBUrl(ObjectProperty):
     """A representation of a url property on a database.
 
@@ -221,7 +221,7 @@ class DBUrl(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.URL
 
 
-@dataclass
+@dataclass(eq=False)
 class DBEmail(ObjectProperty):
     """A representation of a email property on a database.
 
@@ -237,7 +237,7 @@ class DBEmail(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.EMAIL
 
 
-@dataclass
+@dataclass(eq=False)
 class DBPhoneNumber(ObjectProperty):
     """A representation of a phone number property on a database.
 
@@ -253,7 +253,7 @@ class DBPhoneNumber(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.PHONE_NUMBER
 
 
-@dataclass
+@dataclass(eq=False)
 class DBFormula(ObjectProperty):
     """A representation of a formula property on a database.
 
@@ -281,7 +281,7 @@ class DBFormula(ObjectProperty):
         )
 
 
-@dataclass
+@dataclass(eq=False)
 class DBRelation(ObjectProperty):
     """A representation of a relation property on a database.
 
@@ -318,7 +318,7 @@ class DBRelation(ObjectProperty):
         return DBRelation(id=args["id"], name=args["name"], **relation)
 
 
-@dataclass
+@dataclass(eq=False)
 class DBRollup(ObjectProperty):
     """A representation of a rollup property on a database.
 
@@ -361,7 +361,7 @@ class DBRollup(ObjectProperty):
         return DBRollup(id=args["id"], name=args["name"], **rollup_details)
 
 
-@dataclass
+@dataclass(eq=False)
 class DBCreatedTime(ObjectProperty):
     """A representation of a created time property on a database.
 
@@ -377,7 +377,7 @@ class DBCreatedTime(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.CREATED_TIME
 
 
-@dataclass
+@dataclass(eq=False)
 class DBCreatedBy(ObjectProperty):
     """A representation of a created by property on a database.
 
@@ -393,7 +393,7 @@ class DBCreatedBy(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.CREATED_BY
 
 
-@dataclass
+@dataclass(eq=False)
 class DBLastEditedTime(ObjectProperty):
     """A representation of a last edited time property on a database.
 
@@ -409,7 +409,7 @@ class DBLastEditedTime(ObjectProperty):
     _type: ClassVar[PropTypes] = PropTypes.LAST_EDITED_TIME
 
 
-@dataclass
+@dataclass(eq=False)
 class DBLastEditedBy(ObjectProperty):
     """A representation of a last edited by property on a database.
 
