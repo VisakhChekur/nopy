@@ -3,6 +3,7 @@
 from typing import Union
 
 import nopy.props.db_props as dbp
+from nopy.props.base import ObjectProperty
 
 DBProps = Union[
     dbp.DBText,
@@ -28,5 +29,5 @@ DBProps = Union[
 """All the database properties."""
 
 # This is going to include page properties when they're implemented as well.
-Props = DBProps
+Props = Union[DBProps, ObjectProperty]
 """All the properties."""

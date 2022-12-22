@@ -9,7 +9,10 @@ from typing import Optional
 from typing import TypeVar
 from typing import Union
 
+from nopy.constants import DB_PROPS_REVERSE_MAP
 from nopy.objects.user import User
+from nopy.properties import Properties
+from nopy.props.base import ObjectProperty
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import Parent
@@ -162,3 +165,19 @@ def base_db_prop_args(args: dict[str, Any]):
         "id": args["id"],
         "name": args["name"],
     }
+
+
+def get_props(props: dict[str, Any]) -> Properties:
+
+    properties = Properties()
+    for prop in props.values():
+
+        prop_type = prop["type"]
+        if prop_type == "title":
+            continue
+
+        prop_class = DB_PROPS_REVERSE_MAP.get(prop_type, ObjectProperty)
+        prop_instance = prop_class.from_dict(prop)
+        properties.add(prop_instance)
+
+    return properties

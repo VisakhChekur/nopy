@@ -12,8 +12,6 @@ def test_full_db(full_db: dict[str, Any]):
 
     db = Database.from_dict(full_db)
 
-    db = Database.from_dict(full_db)
-
     assert db.id == "db-id"
     assert db.type == ObjectTypes.DATABASE
 
@@ -29,6 +27,24 @@ def test_full_db(full_db: dict[str, Any]):
     assert isinstance(db.icon, Emoji)
     assert db.is_inline is True
     assert db.url == "https://www.notion.so/db-id"
+
+
+def test_db_properties(full_db: dict[str, Any]):
+
+    db = Database.from_dict(full_db)
+    db_props = full_db["properties"]
+
+    # Subtracting 1 to deal with `title` property.
+    assert len(db_props) - 1 == len(db.properties)
+
+    for prop in db_props.values():
+
+        prop_type = prop["type"]
+        if prop_type == "title":
+            continue
+
+        assert prop["id"] in db.properties
+        assert prop_type == db.properties[prop["id"]].type.value
 
 
 def test_no_cover(full_db: dict[str, Any]):

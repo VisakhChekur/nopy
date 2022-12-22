@@ -50,7 +50,7 @@ class DBNumber(ObjectProperty):
     format: NumberFormat = NumberFormat.NUMBER
 
     @classmethod
-    def from_dict(cls: Type[ObjectProperty], args: dict[str, Any]) -> ObjectProperty:
+    def from_dict(cls: Type[DBNumber], args: dict[str, Any]) -> DBNumber:
 
         format = args[DBNumber._type.value]["format"]
         return DBNumber(
@@ -272,7 +272,7 @@ class DBFormula(ObjectProperty):
     expression: str = ""
 
     @classmethod
-    def from_dict(cls: Type[ObjectProperty], args: dict[str, Any]) -> ObjectProperty:
+    def from_dict(cls: Type[DBFormula], args: dict[str, Any]) -> DBFormula:
 
         return DBFormula(
             name=args["name"],
@@ -355,7 +355,7 @@ class DBRollup(ObjectProperty):
     function: RollupFunctions = RollupFunctions.COUNT
 
     @classmethod
-    def from_dict(cls: Type[ObjectProperty], args: dict[str, Any]) -> ObjectProperty:
+    def from_dict(cls: Type[DBRollup], args: dict[str, Any]) -> DBRollup:
 
         rollup_details = args[DBRollup._type.value]
         return DBRollup(id=args["id"], name=args["name"], **rollup_details)

@@ -14,6 +14,7 @@ from nopy.enums import ObjectTypes
 from nopy.errors import NoClientFoundError
 from nopy.objects.notion_object import NotionObject
 from nopy.objects.page import Page
+from nopy.properties import Properties
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
@@ -21,6 +22,7 @@ from nopy.utils import TextDescriptor
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
 from nopy.utils import get_icon
+from nopy.utils import get_props
 from nopy.utils import paginate
 from nopy.utils import rich_text_list
 
@@ -41,6 +43,8 @@ class Database(NotionObject):
 
         rich_description:
             The description of the database with sytle information.
+
+        properties: The properties of the database.
 
         icon: The icon of the database, if any.
 
@@ -71,6 +75,7 @@ class Database(NotionObject):
     title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
     description: ClassVar[TextDescriptor] = TextDescriptor("rich_description")
 
+    properties: Properties = field(default_factory=Properties)
     rich_title: list[RichText] = field(default_factory=list)
     rich_description: list[RichText] = field(default_factory=list)
     icon: Optional[Union[File, Emoji]] = None
@@ -118,6 +123,7 @@ class Database(NotionObject):
             "cover": get_cover(args["cover"]),
             "is_inline": args["is_inline"],
             "url": args["url"],
+            "properties": get_props(args["properties"]),
         }
         new_args.update(base_obj_args(args))
 
