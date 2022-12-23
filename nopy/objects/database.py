@@ -7,6 +7,7 @@ from typing import Any
 from typing import ClassVar
 from typing import Generator
 from typing import Optional
+from typing import Set
 from typing import Type
 from typing import Union
 
@@ -85,7 +86,11 @@ class Database(NotionObject):
 
     def __post_init__(self, client: Optional["NotionClient"]):
         super().__post_init__(client)
+
         self._type = ObjectTypes.DATABASE
+        # Storing the ids of the original properties to handle
+        # deleted properties.
+        self._og_props = set(self.properties._ids.keys())  # type: ignore
 
     def get_pages(
         self, max_pages: int = 0, page_size: int = 100
@@ -112,6 +117,66 @@ class Database(NotionObject):
             db_id=self.id,
             client=self._client,
         )
+
+    def update(self, in_place: bool = False) -> Database:
+        """Updates the database.
+
+        Attributes:
+            in_place:
+                If `True`, then this instance is updated in place.
+
+        Returns:
+            The updated Database instance. Returns `self` if `in_place` is
+            `True`.
+        """
+
+        if not self._client:
+            raise NoClientFoundError("no client is associated with this instance")
+
+        db = self.serialize()
+        # Parent should not be present when updating
+        db.pop("parent")
+
+        updated_db = self._client.update_db(self.id, db)
+        # Deleted properties have to be sent as a different update
+        # request. Sending the deleted properties in one request does NOT
+        # work.
+        deleted_props = self._find_deleted_props()
+        if deleted_props:
+            db["properties"] = {prop_id: None for prop_id in deleted_props}
+            updated_db = self._client.update_db(self.id, db)
+
+        if not in_place:
+            return updated_db
+        self.__dict__.clear()
+        self.__dict__ = updated_db.__dict__
+        return self
+
+    def serialize(self) -> dict[str, Any]:
+
+        serialized: dict[str, Any] = {
+            "is_inline": self.is_inline,
+            "archived": self.archived,
+            "properties": self.properties.serialize(),
+        }
+
+        # Serialize only if they're not None
+        for attr in ("parent", "icon", "cover"):
+            value = self.__dict__.get(attr, None)
+            serialized[attr] = value if value is None else value.serialize()
+
+        serialized["title"] = [rt.serialize() for rt in self.rich_title]
+        serialized["description"] = [rt.serialize() for rt in self.rich_description]
+
+        # Title needs to be added to the properties as well
+        serialized["properties"]["title"] = {"title": {}}
+
+        return serialized
+
+    def _find_deleted_props(self) -> Set[str]:
+
+        curr_props = set(self.properties._ids.keys())  # type: ignore
+        return self._og_props.difference(curr_props)
 
     @classmethod
     def from_dict(cls: Type[Database], args: dict[str, Any]) -> Database:

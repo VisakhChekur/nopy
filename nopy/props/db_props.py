@@ -12,13 +12,25 @@ from typing import Type
 from nopy.enums import NumberFormat
 from nopy.enums import PropTypes
 from nopy.enums import RollupFunctions
+from nopy.errors import SerializationError
+from nopy.errors import UnsupportedByNotion
 from nopy.props.base import ObjectProperty
 from nopy.props.common import Option
 from nopy.props.common import StatusGroup
 
 
 @dataclass(eq=False)
-class DBText(ObjectProperty):
+class DBProp(ObjectProperty):
+    def serialize(self) -> dict[str, Any]:
+
+        if self._type == PropTypes.UNSUPPORTED:
+            return super().serialize()
+
+        return {self._type.value: {}, "name": self.name}
+
+
+@dataclass(eq=False)
+class DBText(DBProp):
     """A representation of a 'Text' property on a database.
 
     Attributes:
@@ -33,7 +45,7 @@ class DBText(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBNumber(ObjectProperty):
+class DBNumber(DBProp):
     """A representation of a number property on a database.
 
     Attributes:
@@ -59,7 +71,7 @@ class DBNumber(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBSelect(ObjectProperty):
+class DBSelect(DBProp):
     """A representation of a select property on a database.
 
     Attributes:
@@ -82,9 +94,15 @@ class DBSelect(ObjectProperty):
         options = [Option.from_dict(rt) for rt in args[DBSelect._type.value]["options"]]
         return DBSelect(name=args["name"], id=args["id"], options=options)
 
+    def serialize(self) -> dict[str, Any]:
+
+        return {
+            self._type.value: {"options": [opt.serialize() for opt in self.options]}
+        }
+
 
 @dataclass(eq=False)
-class DBStatus(ObjectProperty):
+class DBStatus(DBProp):
     """A representation of a status property on a database.
 
     Attributes:
@@ -113,9 +131,14 @@ class DBStatus(ObjectProperty):
             name=args["name"], id=args["id"], options=options, groups=groups
         )
 
+    def serialize(self) -> dict[str, Any]:
+
+        msg = "creating/updating status via the API"
+        raise UnsupportedByNotion(msg)
+
 
 @dataclass(eq=False)
-class DBMultiSelect(ObjectProperty):
+class DBMultiSelect(DBProp):
     """A representation of a multi select property on a database.
 
     Attributes:
@@ -140,9 +163,14 @@ class DBMultiSelect(ObjectProperty):
         ]
         return DBMultiSelect(name=args["name"], id=args["id"], options=options)
 
+    def serialize(self) -> dict[str, Any]:
+        return {
+            self._type.value: {"options": [opt.serialize() for opt in self.options]}
+        }
+
 
 @dataclass(eq=False)
-class DBDate(ObjectProperty):
+class DBDate(DBProp):
     """A representation of a date property on a database.
 
     Attributes:
@@ -158,7 +186,7 @@ class DBDate(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBPeople(ObjectProperty):
+class DBPeople(DBProp):
     """A representation of a people property on a database.
 
     Attributes:
@@ -174,7 +202,7 @@ class DBPeople(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBFiles(ObjectProperty):
+class DBFiles(DBProp):
     """A representation of a files property on a database.
 
     Attributes:
@@ -190,7 +218,7 @@ class DBFiles(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBCheckbox(ObjectProperty):
+class DBCheckbox(DBProp):
     """A representation of a checkbox property on a database.
 
     Attributes:
@@ -206,7 +234,7 @@ class DBCheckbox(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBUrl(ObjectProperty):
+class DBUrl(DBProp):
     """A representation of a url property on a database.
 
     Attributes:
@@ -222,7 +250,7 @@ class DBUrl(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBEmail(ObjectProperty):
+class DBEmail(DBProp):
     """A representation of a email property on a database.
 
     Attributes:
@@ -238,7 +266,7 @@ class DBEmail(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBPhoneNumber(ObjectProperty):
+class DBPhoneNumber(DBProp):
     """A representation of a phone number property on a database.
 
     Attributes:
@@ -254,7 +282,7 @@ class DBPhoneNumber(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBFormula(ObjectProperty):
+class DBFormula(DBProp):
     """A representation of a formula property on a database.
 
     Attributes:
@@ -282,7 +310,7 @@ class DBFormula(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBRelation(ObjectProperty):
+class DBRelation(DBProp):
     """A representation of a relation property on a database.
 
     Attributes:
@@ -317,9 +345,23 @@ class DBRelation(ObjectProperty):
 
         return DBRelation(id=args["id"], name=args["name"], **relation)
 
+    def serialize(self) -> dict[str, Any]:
+
+        if not self.database_id:
+            raise SerializationError("database_id must be provided", self)
+
+        return {
+            self._type.value: {
+                "database_id": self.database_id,
+                "type": self.relation_type,
+                self.relation_type: {},
+            },
+            "name": self.name,
+        }
+
 
 @dataclass(eq=False)
-class DBRollup(ObjectProperty):
+class DBRollup(DBProp):
     """A representation of a rollup property on a database.
 
     Attributes:
@@ -358,11 +400,36 @@ class DBRollup(ObjectProperty):
     def from_dict(cls: Type[DBRollup], args: dict[str, Any]) -> DBRollup:
 
         rollup_details = args[DBRollup._type.value]
+        rollup_details["function"] = RollupFunctions[rollup_details["function"].upper()]
         return DBRollup(id=args["id"], name=args["name"], **rollup_details)
+
+    def serialize(self) -> dict[str, Any]:
+
+        rollup_details: dict[str, Any] = {"function": self.function.value}
+
+        if self.relation_property_id:
+            rollup_details["relation_property_id"] = self.relation_property_id
+        elif self.relation_property_name:
+            rollup_details["relation_property_name"] = self.relation_property_name
+        else:
+            msg = (
+                "one of relation_property_name or relation_property_id must be provided"
+            )
+            raise SerializationError(msg, self)
+
+        if self.rollup_property_id:
+            rollup_details["rollup_property_id"] = self.rollup_property_id
+        elif self.rollup_property_name:
+            rollup_details["rollup_property_name"] = self.rollup_property_name
+        else:
+            msg = "one of rollup_property_name or rollup_property_id must be provided"
+            raise SerializationError(msg, self)
+
+        return {self._type.value: rollup_details, "name": self.name}
 
 
 @dataclass(eq=False)
-class DBCreatedTime(ObjectProperty):
+class DBCreatedTime(DBProp):
     """A representation of a created time property on a database.
 
     Attributes:
@@ -378,7 +445,7 @@ class DBCreatedTime(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBCreatedBy(ObjectProperty):
+class DBCreatedBy(DBProp):
     """A representation of a created by property on a database.
 
     Attributes:
@@ -394,7 +461,7 @@ class DBCreatedBy(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBLastEditedTime(ObjectProperty):
+class DBLastEditedTime(DBProp):
     """A representation of a last edited time property on a database.
 
     Attributes:
@@ -410,7 +477,7 @@ class DBLastEditedTime(ObjectProperty):
 
 
 @dataclass(eq=False)
-class DBLastEditedBy(ObjectProperty):
+class DBLastEditedBy(DBProp):
     """A representation of a last edited by property on a database.
 
     Attributes:

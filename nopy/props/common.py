@@ -13,6 +13,7 @@ from nopy.enums import FileTypes
 from nopy.enums import MentionTypes
 from nopy.enums import ParentTypes
 from nopy.enums import RichTextTypes
+from nopy.errors import UnsupportedByNotion
 from nopy.props.base import BaseProperty
 
 
@@ -42,6 +43,12 @@ class Annotations(BaseProperty):
         new_args: dict[str, Any] = args.copy()
         new_args["color"] = Colors[new_args["color"].upper()]
         return Annotations(**new_args)
+
+    def serialize(self) -> dict[str, Any]:
+
+        serialized = self.__dict__.copy()
+        serialized["color"] = self.color.value
+        return serialized
 
 
 @dataclass
@@ -86,6 +93,9 @@ class Link(BaseProperty):
     def from_dict(cls: Type[Link], args: dict[str, Any]) -> Link:
         return Link(args["url"])
 
+    def serialize(self) -> dict[str, Any]:
+        return {"url": self.url}
+
 
 @dataclass
 class RichText(BaseProperty):
@@ -102,7 +112,7 @@ class RichText(BaseProperty):
 
     plain_text: str = ""
     href: str = ""
-    annotations: Optional[Annotations] = field(default_factory=Annotations)
+    annotations: Annotations = field(default_factory=Annotations)
 
     def __post_init__(self):
 
@@ -151,6 +161,7 @@ class Text(RichText):
 
     def __post_init__(self):
 
+        self.plain_text = self.plain_text.strip()
         self._type = RichTextTypes.TEXT
 
     @classmethod
@@ -161,6 +172,19 @@ class Text(RichText):
         if link:
             new_args["link"] = Link.from_dict(link)
         return Text(**new_args)
+
+    def serialize(self) -> dict[str, Any]:
+
+        serialized: dict[str, Any] = {
+            "type": self._type.value,
+            self._type.value: {
+                "content": self.plain_text + " ",
+            },
+            "annotations": self.annotations.serialize(),
+        }
+        if self.link:
+            serialized["link"] = self.link.serialize()
+        return serialized
 
 
 @dataclass
@@ -189,6 +213,7 @@ class Mention(RichText):
 
     def __post_init__(self):
 
+        super().__init__()
         self._type = RichTextTypes.MENTION
 
     @classmethod
@@ -232,6 +257,7 @@ class Equation(RichText):
 
     def __post_init__(self):
 
+        super().__init__()
         self._type = RichTextTypes.EQUATION
 
     @classmethod
@@ -278,6 +304,19 @@ class File(BaseProperty):
 
         return File(**new_args)
 
+    def serialize(self) -> dict[str, Any]:
+
+        if self.type == FileTypes.FILE:
+            msg = "uploading local files"
+            raise UnsupportedByNotion(msg)
+
+        return {
+            "type": self.type.value,
+            self.type.value: {
+                "url": self.url,
+            },
+        }
+
 
 @dataclass
 class Option(BaseProperty):
@@ -300,6 +339,9 @@ class Option(BaseProperty):
     def from_dict(cls: Type[Option], args: dict[str, Any]) -> Option:
         args["color"] = Colors[args["color"].upper()]
         return Option(**args)
+
+    def serialize(self) -> dict[str, Any]:
+        return {"name": self.name, "color": self.color.value}
 
 
 @dataclass
@@ -340,6 +382,9 @@ class Emoji(BaseProperty):
     def from_dict(cls: Type[Emoji], args: dict[str, Any]) -> Emoji:
         return Emoji(args["emoji"])
 
+    def serialize(self) -> dict[str, Any]:
+        return {"emoji": self.emoji, "type": "emoji"}
+
 
 @dataclass
 class Parent(BaseProperty):
@@ -378,6 +423,16 @@ class Parent(BaseProperty):
             return WorkspaceParent.from_dict(args)
 
         return Parent("")
+
+    def serialize(self) -> dict[str, Any]:
+
+        if self._type == ParentTypes.UNSUPPORTED:
+            return super().serialize()
+
+        return {
+            "type": self._type.value,
+            self._type.value: self.id,
+        }
 
 
 @dataclass

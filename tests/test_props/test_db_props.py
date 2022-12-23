@@ -3,6 +3,7 @@ from typing import Any
 import nopy.props.db_props as dbp
 from nopy.enums import NumberFormat
 from nopy.enums import PropTypes
+from nopy.enums import RollupFunctions
 
 
 def test_checkbox():
@@ -269,7 +270,7 @@ def test_rollup():
     assert rollup.rollup_property_name == "Name"
     assert rollup.relation_property_id == "tnQq"
     assert rollup.relation_property_name == "Related Some Database"
-    assert rollup.function == "count"
+    assert rollup.function == RollupFunctions.COUNT
 
 
 def test_rich_text():

@@ -145,13 +145,21 @@ class NotionClient:
             query=query,
         )
 
-    def create_db(self, db: dict[str, Any]) -> dict[str, Any]:
+    def create_db(self, db: dict[str, Any]) -> Database:
 
-        raise NotImplementedError("creating databases isn't implemented yet")
+        new_db_dict = self._make_request(APIEndpoints.DB_CREATE.value, "POST", db)
+        new_db = Database.from_dict(new_db_dict)
+        new_db._client = self
+        return new_db
 
-    def update_db(self, db: dict[str, Any]) -> dict[str, Any]:
+    def update_db(self, db_id: str, db: dict[str, Any]) -> Database:
 
-        raise NotImplementedError("updating databases isn't implemented yet")
+        self._logger.info(f"Updating '{db_id}' database")
+        endpoint = APIEndpoints.DB_UPDATE.value.format(db_id)
+        updated_db_dict = self._make_request(endpoint, "PATCH", db)
+        updated_db = Database.from_dict(updated_db_dict)
+        updated_db._client = self
+        return updated_db
 
     # ----- Page related endpoints -----
 

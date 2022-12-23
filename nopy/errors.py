@@ -1,4 +1,9 @@
+from typing import TYPE_CHECKING
+
 import httpx
+
+if TYPE_CHECKING:
+    from nopy.types import Props
 
 
 class NopyError(Exception):
@@ -128,3 +133,13 @@ class PropertyNotFoundError(NopyError):
     """Raised when the property is not found."""
 
     pass
+
+
+class SerializationError(NopyError):
+    """Raised when there's some error during serialization."""
+
+    def __init__(self, message: str, prop: "Props"):
+
+        self.prop: "Props" = prop
+        message += f" for '{prop.type.value}' properties"
+        super().__init__(message)

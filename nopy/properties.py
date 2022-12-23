@@ -1,4 +1,5 @@
 from collections.abc import Collection
+from typing import Any
 from typing import Iterable
 from typing import Iterator
 from typing import Optional
@@ -7,6 +8,7 @@ from typing import Union
 
 from nopy.errors import PropertyExistsError
 from nopy.errors import PropertyNotFoundError
+from nopy.errors import UnuspportedError
 from nopy.types import Props
 
 
@@ -84,6 +86,21 @@ class Properties(Collection[Props]):
         except (KeyError, PropertyNotFoundError):
             msg = f"'{prop}' not found"
             raise PropertyNotFoundError(msg)
+
+    def serialize(self) -> dict[str, Optional[dict[str, Any]]]:
+
+        serialized: dict[str, Optional[dict[str, Any]]] = {}
+
+        for prop in self._props:
+            if prop.id:
+                try:
+                    serialized[prop.id] = prop.serialize()
+                except UnuspportedError:
+                    continue
+            else:
+                serialized[prop.name] = prop.serialize()
+
+        return serialized
 
     # ----- Dunder Methods -----
 
