@@ -12,7 +12,7 @@ from nopy.enums import UserTypes
 from nopy.objects.notion_object import BaseObject
 
 if TYPE_CHECKING:
-    from nopy.client import NotionClient
+    pass
 
 
 @dataclass
@@ -22,9 +22,8 @@ class User(BaseObject):
     name: Optional[str] = None
     avatar_url: Optional[str] = None
 
-    def __post_init__(self, client: Optional["NotionClient"]):
+    def __post_init__(self):
 
-        super().__post_init__(client)
         self._type = ObjectTypes.USER
         self._user_type = UserTypes.UNSPPORTED
 
@@ -60,9 +59,9 @@ class Person(User):
 
     email: Optional[str] = None
 
-    def __post_init__(self, client: Optional["NotionClient"]):
+    def __post_init__(self):
 
-        super().__post_init__(client)
+        super().__post_init__()
         self._user_type = UserTypes.PERSON
 
     @classmethod
@@ -97,9 +96,9 @@ class Bot(User):
     owner: Literal["workspace", "user"] = "user"
     workspace_name: Optional[str] = None
 
-    def __post_init__(self, client: Optional["NotionClient"]):
+    def __post_init__(self):
 
-        super().__post_init__(client)
+        super().__post_init__()
         self._user_type = UserTypes.BOT
 
     @classmethod

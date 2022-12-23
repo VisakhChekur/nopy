@@ -21,7 +21,7 @@ from nopy.utils import get_icon
 from nopy.utils import rich_text_list
 
 if TYPE_CHECKING:
-    from nopy.client import NotionClient
+    pass
 
 
 @dataclass
@@ -65,8 +65,8 @@ class Page(NotionObject):
     is_inline: bool = False
     url: str = ""
 
-    def __post_init__(self, client: Optional["NotionClient"]):
-        super().__post_init__(client)
+    def __post_init__(self):
+
         self._type = ObjectTypes.PAGE
 
     @classmethod

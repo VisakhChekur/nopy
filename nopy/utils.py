@@ -92,8 +92,8 @@ def paginate(
 
         for res in results["results"]:
             notion_obj = map_func(res, **map_args)
-            if hasattr(notion_obj, "_client"):
-                notion_obj._client = client  # type: ignore
+            if hasattr(notion_obj, "set_client"):
+                notion_obj.set_client(client)  # type: ignore
             yield notion_obj
             pages += 1
             # Early exit if specified.

@@ -213,7 +213,7 @@ class Mention(RichText):
 
     def __post_init__(self):
 
-        super().__init__()
+        super().__post_init__()
         self._type = RichTextTypes.MENTION
 
     @classmethod
@@ -257,7 +257,7 @@ class Equation(RichText):
 
     def __post_init__(self):
 
-        super().__init__()
+        super().__post_init__()
         self._type = RichTextTypes.EQUATION
 
     @classmethod

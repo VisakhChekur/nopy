@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import InitVar
 from dataclasses import dataclass
 from datetime import datetime
 from typing import TYPE_CHECKING
@@ -30,11 +29,14 @@ class BaseObject:
     """
 
     id: str = ""
-    client: InitVar[Optional["NotionClient"]] = None
 
-    def __post_init__(self, client: Optional["NotionClient"]):
+    def __post_init__(self):
 
         self._type = ObjectTypes.UNSUPPORTED
+
+    def set_client(self, client: "NotionClient"):
+        """Sets the client."""
+
         self._client = client
 
     @property

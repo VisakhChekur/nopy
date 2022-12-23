@@ -149,7 +149,7 @@ class NotionClient:
 
         new_db_dict = self._make_request(APIEndpoints.DB_CREATE.value, "POST", db)
         new_db = Database.from_dict(new_db_dict)
-        new_db._client = self
+        new_db.set_client(self)
         return new_db
 
     def update_db(self, db_id: str, db: dict[str, Any]) -> Database:
@@ -158,7 +158,7 @@ class NotionClient:
         endpoint = APIEndpoints.DB_UPDATE.value.format(db_id)
         updated_db_dict = self._make_request(endpoint, "PATCH", db)
         updated_db = Database.from_dict(updated_db_dict)
-        updated_db._client = self
+        updated_db.set_client(self)
         return updated_db
 
     # ----- Page related endpoints -----

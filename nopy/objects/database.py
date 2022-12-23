@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from dataclasses import field
-from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
 from typing import Generator
@@ -26,9 +25,6 @@ from nopy.utils import get_icon
 from nopy.utils import get_props
 from nopy.utils import paginate
 from nopy.utils import rich_text_list
-
-if TYPE_CHECKING:
-    from nopy.client import NotionClient
 
 
 @dataclass
@@ -84,8 +80,7 @@ class Database(NotionObject):
     is_inline: bool = False
     url: str = ""
 
-    def __post_init__(self, client: Optional["NotionClient"]):
-        super().__post_init__(client)
+    def __post_init__(self):
 
         self._type = ObjectTypes.DATABASE
         # Storing the ids of the original properties to handle
