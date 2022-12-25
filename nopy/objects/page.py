@@ -9,12 +9,16 @@ from typing import Optional
 from typing import Type
 from typing import Union
 
+import nopy.props.page_props as pgp
+from nopy._descriptors import TextDescriptor
 from nopy.enums import ObjectTypes
 from nopy.objects.notion_object import NotionObject
+from nopy.properties import Properties
+from nopy.props.base import ObjectProperty
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
-from nopy.utils import TextDescriptor
+from nopy.types import PageProps
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
 from nopy.utils import get_icon
@@ -32,6 +36,8 @@ class Page(NotionObject):
         title (str): The title of the datbase without styling.
 
         rich_title: The title of the page with style information.
+
+        properties: The properties of the page.
 
         icon: The icon of the page, if any.
 
@@ -57,9 +63,31 @@ class Page(NotionObject):
 
     """
 
+    _REVERSE_MAP: ClassVar[dict[str, Type["PageProps"]]] = {
+        "checkbox": pgp.PCheckbox,
+        "created_time": pgp.PCreatedTime,
+        "created_by": pgp.PCreatedby,
+        "date": pgp.PDate,
+        "email": pgp.PEmail,
+        "files": pgp.PFiles,
+        "formula": pgp.PFormula,
+        "last_edited_by": pgp.PLastEditedBy,
+        "last_edited_time": pgp.PLastEditedTime,
+        "multi_select": pgp.PMultiselect,
+        "number": pgp.PNumber,
+        "people": pgp.PPeople,
+        "phone_number": pgp.PPhonenumber,
+        "relation": pgp.PRelation,
+        "rich_text": pgp.PRichtext,
+        "rollup": pgp.PRollup,
+        "select": pgp.PSelect,
+        "status": pgp.PStatus,
+        "url": pgp.PUrl,
+    }
     title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
 
     rich_title: list[RichText] = field(default_factory=list)
+    properties: Properties = field(default_factory=Properties)
     icon: Optional[Union[File, Emoji]] = None
     cover: Optional[File] = None
     is_inline: bool = False
@@ -87,6 +115,20 @@ class Page(NotionObject):
             "cover": get_cover(args["cover"]),
             "url": args["url"],
         }
+        # Getting the database properties
+        properties = Properties()
+        for name, prop in args["properties"].items():
+
+            prop_type = prop["type"]
+            if prop_type == "title":
+                continue
+
+            prop_class = cls._REVERSE_MAP.get(prop_type, ObjectProperty)
+            prop["name"] = name
+            prop_instance = prop_class.from_dict(prop)
+            properties.add(prop_instance)
+
+        new_args["properties"] = properties
         new_args.update(base_obj_args(args))
 
         return Page(**new_args)

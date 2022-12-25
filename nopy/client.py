@@ -17,12 +17,12 @@ from nopy.constants import APIEndpoints
 from nopy.errors import APIResponseError
 from nopy.errors import HTTPError
 from nopy.errors import TokenNotFoundError
-from nopy.objects import Block
-from nopy.objects import Comment
-from nopy.objects import Database
-from nopy.objects import Page
-from nopy.objects import User
+from nopy.objects.block import Block
+from nopy.objects.comment import Comment
+from nopy.objects.database import Database
+from nopy.objects.page import Page
 from nopy.objects.user import Bot
+from nopy.objects.user import User
 from nopy.utils import make_logger
 from nopy.utils import paginate
 

@@ -9,15 +9,12 @@ from typing import Optional
 from typing import TypeVar
 from typing import Union
 
-from nopy.constants import DB_PROPS_REVERSE_MAP
+# from nopy.constants import DB_PROPS_REVERSE_MAP
 from nopy.objects.user import User
-from nopy.properties import Properties
-from nopy.props.base import ObjectProperty
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import Parent
 from nopy.props.common import RichText
-from nopy.props.common import Text
 
 if TYPE_CHECKING:
     from nopy.client import NotionClient
@@ -38,31 +35,6 @@ def make_logger(log_level: int) -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
-
-
-class TextDescriptor:
-    """Implementation of the descriptor protocol to handle attributes
-    of classes that deal with arrays of `Text` properties."""
-
-    def __init__(self, storage_name: str):
-
-        # storage_name is the name of the attribute within
-        # the class that holds the array which is to be used
-        # when finding the plain text or vice versa
-        self.storage_name = storage_name
-
-    def __get__(self, instance: object, _):
-        """Gets the combined plain text from a list of rich text."""
-
-        rich_text: list[RichText] = instance.__dict__[self.storage_name]
-        return " ".join(rt.plain_text for rt in rich_text)
-
-    def __set__(self, instance: object, value: str):
-
-        msg = f"value must be a string, use '{self.storage_name}' for adding text with style information"
-        assert isinstance(value, str), msg
-
-        instance.__dict__[self.storage_name] = [Text(value)]
 
 
 def paginate(
@@ -167,17 +139,16 @@ def base_db_prop_args(args: dict[str, Any]):
     }
 
 
-def get_props(props: dict[str, Any]) -> Properties:
+# def get_db_props(props: dict[str, Any]) -> Properties:
 
-    properties = Properties()
-    for prop in props.values():
 
-        prop_type = prop["type"]
-        if prop_type == "title":
-            continue
+#     return properties
 
-        prop_class = DB_PROPS_REVERSE_MAP.get(prop_type, ObjectProperty)
-        prop_instance = prop_class.from_dict(prop)
-        properties.add(prop_instance)
+# def get_page_props(props: dict[str, Any]) -> Properties:
 
-    return properties
+#     properties = Properties()
+#     for name, prop in props.values():
+
+#         prop_type = prop["type"]
+#         if prop_type == "title":
+#             continue

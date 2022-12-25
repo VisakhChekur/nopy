@@ -10,19 +10,23 @@ from typing import Set
 from typing import Type
 from typing import Union
 
+import nopy.props.db_props as dbp
+from nopy._descriptors import TextDescriptor
 from nopy.enums import ObjectTypes
 from nopy.errors import NoClientFoundError
 from nopy.objects.notion_object import NotionObject
 from nopy.objects.page import Page
 from nopy.properties import Properties
+from nopy.props.base import ObjectProperty
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
-from nopy.utils import TextDescriptor
+from nopy.types import DBProps
+
+# from nopy.utils import get_db_props
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
 from nopy.utils import get_icon
-from nopy.utils import get_props
 from nopy.utils import paginate
 from nopy.utils import rich_text_list
 
@@ -69,6 +73,27 @@ class Database(NotionObject):
 
     """
 
+    _REVERSE_MAP: ClassVar[dict[str, Type["DBProps"]]] = {
+        "checkbox": dbp.DBCheckbox,
+        "created_by": dbp.DBCreatedBy,
+        "created_time": dbp.DBCreatedTime,
+        "date": dbp.DBDate,
+        "email": dbp.DBEmail,
+        "files": dbp.DBFiles,
+        "formula": dbp.DBFormula,
+        "last_edited_by": dbp.DBLastEditedBy,
+        "last_edited_time": dbp.DBLastEditedTime,
+        "multi_select": dbp.DBMultiSelect,
+        "number": dbp.DBNumber,
+        "people": dbp.DBPeople,
+        "phone_number": dbp.DBPhoneNumber,
+        "relation": dbp.DBRelation,
+        "rollup": dbp.DBRollup,
+        "rich_text": dbp.DBText,
+        "select": dbp.DBSelect,
+        "status": dbp.DBStatus,
+        "url": dbp.DBUrl,
+    }
     title: ClassVar[TextDescriptor] = TextDescriptor("rich_title")
     description: ClassVar[TextDescriptor] = TextDescriptor("rich_description")
 
@@ -183,8 +208,21 @@ class Database(NotionObject):
             "cover": get_cover(args["cover"]),
             "is_inline": args["is_inline"],
             "url": args["url"],
-            "properties": get_props(args["properties"]),
         }
+
+        # Getting the database properties
+        properties = Properties()
+        for prop in args["properties"].values():
+
+            prop_type = prop["type"]
+            if prop_type == "title":
+                continue
+
+            prop_class = cls._REVERSE_MAP.get(prop_type, ObjectProperty)
+            prop_instance = prop_class.from_dict(prop)
+            properties.add(prop_instance)
+
+        new_args["properties"] = properties
         new_args.update(base_obj_args(args))
 
         return Database(**new_args)
