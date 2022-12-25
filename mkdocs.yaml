@@ -22,6 +22,7 @@ nav:
           # - Base: api_reference/properties/base.md
           - Common Properties: api_reference/properties/common.md
           - Database Properties: api_reference/properties/db_props.md
+          - Page Properties: api_reference/properties/page_props.md
       - Properties: api_reference/properties.md
       - Exceptions: api_reference/errors.md
 
