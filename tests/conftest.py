@@ -45,3 +45,11 @@ def normal_page():
     fp = DATA_DIR / "normal-page.json"
     with open(fp, "r") as f:
         return json.load(f)
+
+
+@pytest.fixture
+def full_page():
+
+    fp = DATA_DIR / "full-page.json"
+    with open(fp, "r") as f:
+        return json.load(f)

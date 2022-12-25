@@ -1,0 +1,238 @@
+{
+    "object": "page",
+    "id": "1852457f-edc8-4739-8e8d-e38a7fc5441a",
+    "created_time": "2022-12-23T08:50:00.000Z",
+    "last_edited_time": "2022-12-25T06:55:00.000Z",
+    "created_by": {
+        "object": "user",
+        "id": "user-id"
+    },
+    "last_edited_by": {
+        "object": "user",
+        "id": "user-id"
+    },
+    "cover": null,
+    "icon": null,
+    "parent": {
+        "type": "database_id",
+        "database_id": "db-id"
+    },
+    "archived": false,
+    "properties": {
+        "Files & media": {
+            "id": "%3CIjy",
+            "type": "files",
+            "files": [
+                {
+                    "name": "itachi-anbu.jpg",
+                    "type": "file",
+                    "file": {
+                        "url": "some url",
+                        "expiry_time": "2022-12-25T08:00:06.090Z"
+                    }
+                }
+            ]
+        },
+        "calculate": {
+            "id": "%40EE%7B",
+            "type": "formula",
+            "formula": {
+                "type": "number",
+                "number": 3
+            }
+        },
+        "Last edited time": {
+            "id": "GGxI",
+            "type": "last_edited_time",
+            "last_edited_time": "2022-12-25T06:55:00.000Z"
+        },
+        "Phone": {
+            "id": "HZkg",
+            "type": "phone_number",
+            "phone_number": "1234567890"
+        },
+        "Created time": {
+            "id": "I%40aJ",
+            "type": "created_time",
+            "created_time": "2022-12-23T08:50:00.000Z"
+        },
+        "Created select": {
+            "id": "JvoV",
+            "type": "select",
+            "select": {
+                "id": "4c11e437-d154-47f5-ba12-d50e1ea19620",
+                "name": "Option One",
+                "color": "default"
+            }
+        },
+        "URL": {
+            "id": "QgOu",
+            "type": "url",
+            "url": "www.google.com"
+        },
+        "Last edited by": {
+            "id": "Vz%3By",
+            "type": "last_edited_by",
+            "last_edited_by": {
+                "object": "user",
+                "id": "user-id",
+                "name": "guacs",
+                "avatar_url": "some url",
+                "type": "person",
+                "person": {
+                    "email": "user@awesome.com"
+                }
+            }
+        },
+        "Status": {
+            "id": "XTsR",
+            "type": "status",
+            "status": {
+                "id": "fa213733-dce4-4add-b952-2f482c4e0195",
+                "name": "Not started",
+                "color": "default"
+            }
+        },
+        "email me": {
+            "id": "YOM%7B",
+            "type": "email",
+            "email": "user@awesome.com"
+        },
+        "Date": {
+            "id": "%5B%3BFA",
+            "type": "date",
+            "date": {
+                "start": "2022-12-29T00:00:00.000+05:30",
+                "end": null,
+                "time_zone": null
+            }
+        },
+        "Multi select": {
+            "id": "%5BELZ",
+            "type": "multi_select",
+            "multi_select": [
+                {
+                    "id": "427ef136-4bf2-46f7-bb05-3b4d8039cdb0",
+                    "name": "Optio Two",
+                    "color": "blue"
+                },
+                {
+                    "id": "40bc2943-ff3e-473c-a9eb-cc3268d043cb",
+                    "name": "Option Three",
+                    "color": "green"
+                }
+            ]
+        },
+        "Checkbox": {
+            "id": "_PxG",
+            "type": "checkbox",
+            "checkbox": false
+        },
+        "Created text": {
+            "id": "eINr",
+            "type": "rich_text",
+            "rich_text": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": "some text",
+                        "link": null
+                    },
+                    "annotations": {
+                        "bold": false,
+                        "italic": false,
+                        "strikethrough": false,
+                        "underline": false,
+                        "code": false,
+                        "color": "default"
+                    },
+                    "plain_text": "some text",
+                    "href": null
+                }
+            ]
+        },
+        "Created by": {
+            "id": "iAaH",
+            "type": "created_by",
+            "created_by": {
+                "object": "user",
+                "id": "user-id",
+                "name": "guacs",
+                "avatar_url": "some url",
+                "type": "person",
+                "person": {
+                    "email": "user@awesome.com"
+                }
+            }
+        },
+        "Relate me": {
+            "id": "mr%3Bm",
+            "type": "relation",
+            "relation": [
+                {
+                    "id": "page-id"
+                }
+            ],
+            "has_more": false
+        },
+        "Files": {
+            "id": "nArL",
+            "type": "files",
+            "files": []
+        },
+        "Rollup": {
+            "id": "omRg",
+            "type": "rollup",
+            "rollup": {
+                "type": "number",
+                "number": 0,
+                "function": "checked"
+            }
+        },
+        "Created number": {
+            "id": "sXRE",
+            "type": "number",
+            "number": 123
+        },
+        "Peeps": {
+            "id": "zk%5Ec",
+            "type": "people",
+            "people": [
+                {
+                    "object": "user",
+                    "id": "user-id",
+                    "name": "guacs",
+                    "avatar_url": "some url",
+                    "type": "person",
+                    "person": {
+                        "email": "user@awesome.com"
+                    }
+                }
+            ]
+        },
+        "New DB": {
+            "id": "title",
+            "type": "title",
+            "title": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": "Page title",
+                        "link": null
+                    },
+                    "annotations": {
+                        "bold": false,
+                        "italic": false,
+                        "strikethrough": false,
+                        "underline": false,
+                        "code": false,
+                        "color": "default"
+                    },
+                    "plain_text": "Page title",
+                    "href": null
+                }
+            ]
+        }
+    },
+    "url": "https://www.notion.so/page-id"
+}

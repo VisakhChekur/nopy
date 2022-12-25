@@ -31,6 +31,25 @@ def test_normal_page(normal_page: dict[str, Any]):
     assert page.url == "https://www.notion.so/page-id"
 
 
+def test_page_properties(full_page: dict[str, Any]):
+
+    page = Page.from_dict(full_page)
+    page_props = full_page["properties"]
+
+    # Subtracting 1 to deal with `title` property.
+    assert len(page_props) - 1 == len(page.properties)
+
+    for name, prop in page_props.items():
+
+        prop_type = prop["type"]
+        if prop_type == "title":
+            continue
+
+        assert prop["id"] in page.properties
+        assert name in page.properties
+        assert prop_type == page.properties[prop["id"]].type.value
+
+
 def test_no_cover(normal_page: dict[str, Any]):
 
     normal_page["cover"] = None
