@@ -156,9 +156,9 @@ class Text(RichText):
     """A represenation of a text type of rich text.
 
     Attributes:
-        plain_text: The plain text without any annotations/styling.
-        href: The URL to the link, if any.
-        annotations: The annotations/styles applied on this text.
+        plain_text (str): The plain text without any annotations/styling.
+        href (str): The URL to the link, if any.
+        annotations (Annotations): The annotations/styles applied on this text.
         link: The link within the text, if any.
         type (RichTextTypes):
             The type of rich text which will always be
@@ -200,15 +200,15 @@ class Mention(RichText):
     """A represenation of a mention type of rich text.
 
     Attributes:
-        plain_text: The plain text without any annotations/styling.
+        plain_text (str): The plain text without any annotations/styling.
         mention_type:
             The type of the mention. Available attributes depend on this
             type.
         id: The id of the mention, if any.
         date: The date mentioned, if any.
         url: The URL mentioned, if any.
-        href: The URL to the link, if any.
-        annotations: The annotations/styles applied on this text.
+        href (str): The URL to the link, if any.
+        annotations (Annotations): The annotations/styles applied on this text.
         type (RichTextTypes):
             The type of rich text which will always be
             `RichText.UNSUPPORTED`.
@@ -252,10 +252,10 @@ class Equation(RichText):
     """A represenation of an equation type of rich text.
 
     Attributes:
-        plain_text: The plain text without any annotations/styling.
+        plain_text (str): The plain text without any annotations/styling.
         expression: The mathematical expression as a LaTeX string.
-        href: The URL to the link, if any.
-        annotations: The annotations/styles applied on this text.
+        href (str): The URL to the link, if any.
+        annotations (Annotations): The annotations/styles applied on this text.
         type (RichTextTypes):
             The type of rich text which will always be
             `RichText.UNSUPPORTED`.
@@ -468,8 +468,9 @@ class PageParent(Parent):
 
     Attributes:
         id (str): The id of the page.
-        type (ParentTypes): The type of the parent which will always
-        be `ParentTypes.PAGE`.
+        type (ParentTypes):
+            The type of the parent which will always
+            be `ParentTypes.PAGE`.
     """
 
     def __post_init__(self):
@@ -487,7 +488,7 @@ class WorkspaceParent(Parent):
     Attributes:
         id (str): The id of the workspace.
         type (ParentType): The type of the parent which will always
-        be `ParentTypes.WORKSPACE`.
+            be `ParentTypes.WORKSPACE`.
     """
 
     id: str = ParentTypes.WORKSPACE.value
@@ -509,7 +510,7 @@ class BlockParent(Parent):
     Attributes:
         id (str): The id of the block.
         type (ParentTypes): The type of the parent which will always
-        be `ParentTypes.BLOCK`.
+            be `ParentTypes.BLOCK`.
     """
 
     def __post_init__(self):

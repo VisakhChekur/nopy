@@ -142,7 +142,7 @@ class Database(NotionObject):
         """Creates a page within this database.
 
         Attributes:
-            page: The page to be created.
+            page (Union[Page, dict[str, Any]]): The page to be created.
 
         Returns:
             The instance of the created `Page`.
@@ -161,7 +161,7 @@ class Database(NotionObject):
         """Updates the database.
 
         Attributes:
-            in_place:
+            in_place (bool):
                 If `True`, then this instance is updated in place.
 
         Returns:

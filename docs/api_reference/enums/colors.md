@@ -1,3 +1,0 @@
-
-# Colors
-::: nopy.enums.Colors

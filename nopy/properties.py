@@ -32,14 +32,12 @@ class Properties(Collection[Props]):
         """Adds the given property.
 
         Attributes:
-            prop: The property to add.
+            prop (Props): The property to add.
 
         Raises:
-            ValueError:
-                Raised if property has neither name nor id.
-            PropertyExistsError:
-                Raised if a property that already exists is tried to be added
-                again.
+            ValueError: Raised if property has neither name nor id.
+            PropertyExistsError: Raised if a property that already exists
+                is tried to be added again.
         """
 
         if not prop.name and not prop.id:
@@ -57,7 +55,7 @@ class Properties(Collection[Props]):
         """Gets the property based on the given identifier.
 
         Attributes:
-            prop_identifier: The name or the id of the property.
+            prop_identifier (str): The name or the id of the property.
 
         Raises:
             KeyError: Raised if the property isn't found.
@@ -69,7 +67,7 @@ class Properties(Collection[Props]):
         """Deletes the property.
 
         Attributes:
-            prop: The property to be deleted or it's id or name.
+            prop (Union[str, Props]): The property to be deleted or it's id or name.
 
         Raises:
             KeyError: Raised if the property isn't found.

@@ -6,15 +6,16 @@ nav:
   - Home: index.md
   - API Reference:
       - Client: api_reference/client.md
-      - Enums:
-          - Colors: api_reference/enums/colors.md
-          - File Types: api_reference/enums/file_types.md
-          - Mention Types: api_reference/enums/mention_types.md
-          - Object Types: api_reference/enums/object_type.md
-          - Parent Types: api_reference/enums/parent_types.md
-          - Property Types: api_reference/enums/prop_types.md
-          - Rich Text Types: api_reference/enums/rich_text_types.md
-          - User Types: api_reference/enums/user_type.md
+      - Enums: api_reference/enums.md
+      # - Enums:
+      #     - Colors: api_reference/enums/colors.md
+      #     - File Types: api_reference/enums/file_types.md
+      #     - Mention Types: api_reference/enums/mention_types.md
+      #     - Object Types: api_reference/enums/object_type.md
+      #     - Parent Types: api_reference/enums/parent_types.md
+      #     - Property Types: api_reference/enums/prop_types.md
+      #     - Rich Text Types: api_reference/enums/rich_text_types.md
+      #     - User Types: api_reference/enums/user_type.md
       - Notion Objects:
           - Database: api_reference/notion_objects/database.md
           - Page: api_reference/notion_objects/page.md
@@ -67,5 +68,6 @@ plugins:
             show_root_full_path: false
             show_root_toc_entry: false
             members_order: source
+            merge_init_into_class: true
           # import:
           #   - https://docs.python.org/3/objects.inv

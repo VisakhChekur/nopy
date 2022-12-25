@@ -58,8 +58,7 @@ class NotionClient:
         token: str = "",
         config: Optional[Union[dict[str, Any], ClientConfig]] = None,
     ):
-        """Constructor for `NotionClient`.
-
+        """
         Args:
             token:
                 The Notion integration token. If it's not provided,
@@ -70,9 +69,8 @@ class NotionClient:
                 provided, then the base configurations are used.
 
         Raises:
-            AuthenticationError:
-                Raised if the Notion token wasn't provided and it wasn't
-                found from the environment variables.
+            AuthenticationError: Raised if the Notion token wasn't provided
+                and it wasn't found from the environment variables.
         """
 
         try:
@@ -100,10 +98,9 @@ class NotionClient:
             A `Database` instance.
 
         Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
         """
 
         self._logger.info(f"Retrieving database {db_id}")
@@ -130,10 +127,9 @@ class NotionClient:
             A generator that yields a single `Page` instance at a time.
 
         Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
         """
 
         return paginate(
@@ -146,6 +142,19 @@ class NotionClient:
         )
 
     def create_db(self, db: dict[str, Any]) -> Database:
+        """Creates a database.
+
+        Attributes:
+            db: The database as a dictionary in the Notion format.
+
+        Returns:
+            The newly created `Database` instance.
+
+        Raises:
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
+        """
 
         new_db_dict = self._make_request(APIEndpoints.DB_CREATE.value, "POST", db)
         new_db = Database.from_dict(new_db_dict)
@@ -153,7 +162,20 @@ class NotionClient:
         return new_db
 
     def update_db(self, db_id: str, db: dict[str, Any]) -> Database:
+        """Updates the given database.
 
+        Attributes:
+            db_id: The database id.
+            db: The database as a dictionary in the Notion format.
+
+        Returns:
+            The updated `Database` instance.
+
+        Raises:
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
+        """
         self._logger.info(f"Updating '{db_id}' database")
         endpoint = APIEndpoints.DB_UPDATE.value.format(db_id)
         updated_db_dict = self._make_request(endpoint, "PATCH", db)
@@ -173,11 +195,11 @@ class NotionClient:
             An instance of `Page`.
 
         Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
         """
+
         self._logger.info(f"Retrieving page {page_id}")
         endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
         page_dict = self._make_request(endpoint)
@@ -186,12 +208,38 @@ class NotionClient:
         return page
 
     def retrieve_page_property(self, page_id: str, prop_id: str) -> Any:
+        """Retrieves the page property.
+
+        Attributes:
+            page_id: The page id.
+            prop_id: The property id.
+
+        Returns:
+            The raw dictionary as returned by Notion.
+
+        Raises:
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
+        """
 
         endpoint = APIEndpoints.PAGE_PROP.value.format(page_id, prop_id)
-        # q_p = {"page_size": "2"}
-        return self._make_request(endpoint, query_params={})
+        return self._make_request(endpoint)
 
     def create_page(self, page: dict[str, Any]) -> Page:
+        """Creates a new page.
+
+        Attributes:
+            page: The page as a dictionary in the Notion format.
+
+        Returns:
+            The newly created `Page` instance.
+
+        Raises:
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
+        """
 
         new_page_dict = self._make_request(APIEndpoints.PAGE_CREATE.value, "post", page)
         new_page = Page.from_dict(new_page_dict)
@@ -199,6 +247,20 @@ class NotionClient:
         return new_page
 
     def update_page(self, page_id: str, page: dict[str, Any]) -> Page:
+        """Updates a page.
+
+        Attributes:
+            page_id: The page id.
+            page: The page as a dictionary in the Notion format.
+
+        Returns:
+            The updated `Page` instance.
+
+        Raises:
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
+        """
 
         endpoint = APIEndpoints.PAGE_UPDATE.value.format(page_id)
         page_dict = self._make_request(endpoint, "PATCH", page)
@@ -242,10 +304,9 @@ class NotionClient:
             An instance of `User` or one of it's subclasses.
 
         Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
         """
 
         self._logger.info(f"Retrieving user '{user_id}'")
@@ -261,10 +322,9 @@ class NotionClient:
             sbuclasses.
 
         Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
         """
 
         self._logger.info("Listing users...")
@@ -277,10 +337,9 @@ class NotionClient:
             An instance of `Bot`.
 
         Raises:
-            APIResponseError:
-                Raised when the Notion API returns a status code that's not 2xx.
-            HTTPError:
-                Raised when there's some error when making the API call.
+            APIResponseError: Raised when the Notion API returns a status code
+                that's not 2xx.
+            HTTPError: Raised when there's some error when making the API call.
         """
 
         self._logger.info("Retreiving 'me'")

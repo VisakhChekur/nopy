@@ -104,12 +104,12 @@ class Page(NotionObject):
         """Updates the page.
 
         Attributes:
-            in_place:
+            in_place (bool):
                 If `True`, then this instance is updated in place.
 
         Returns:
             The updated Page instance. Returns `self` if `in_place` is
-            `True`.
+                `True`.
         """
 
         if not self._client:
