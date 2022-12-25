@@ -10,7 +10,6 @@ from typing import Type
 from typing import Union
 
 import nopy.props.page_props as pgp
-from nopy._descriptors import TextDescriptor
 from nopy.enums import ObjectTypes
 from nopy.objects.notion_object import NotionObject
 from nopy.properties import Properties
@@ -19,6 +18,7 @@ from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
 from nopy.types import PageProps
+from nopy.utils import TextDescriptor
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
 from nopy.utils import get_icon

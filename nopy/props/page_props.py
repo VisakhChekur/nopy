@@ -10,7 +10,6 @@ from typing import Optional
 from typing import Type
 from typing import Union
 
-from nopy._descriptors import TextDescriptor
 from nopy.enums import PropTypes
 from nopy.enums import RollupFunctions
 from nopy.errors import UnsupportedByNotion
@@ -20,6 +19,7 @@ from nopy.props.common import Date
 from nopy.props.common import File
 from nopy.props.common import Option
 from nopy.props.common import RichText
+from nopy.utils import TextDescriptor
 
 
 @dataclass(eq=False)

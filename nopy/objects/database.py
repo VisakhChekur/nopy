@@ -11,7 +11,6 @@ from typing import Type
 from typing import Union
 
 import nopy.props.db_props as dbp
-from nopy._descriptors import TextDescriptor
 from nopy.enums import ObjectTypes
 from nopy.errors import NoClientFoundError
 from nopy.objects.notion_object import NotionObject
@@ -24,6 +23,7 @@ from nopy.props.common import RichText
 from nopy.types import DBProps
 
 # from nopy.utils import get_db_props
+from nopy.utils import TextDescriptor
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
 from nopy.utils import get_icon
