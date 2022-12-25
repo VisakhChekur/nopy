@@ -134,7 +134,7 @@ class NumberFilter(PropFilter):
 class CheckboxFilter(PropFilter):
     """A filter for checkbox properties.
 
-    Atrributes:
+    Attributes:
         equals: Property value matches the boolean.
         does_not_equal: Property value does not match the boolean.
     """
@@ -170,7 +170,7 @@ class SelectFilter(PropFilter):
 
 @dataclass
 class MultiSelectFilter(PropFilter):
-    """A filter for a select property.
+    """A filter for a multi select property.
 
     Attributes:
         contains: Property value contains the string.
@@ -191,7 +191,7 @@ class MultiSelectFilter(PropFilter):
 
 @dataclass
 class StatusFilter(PropFilter):
-    """A filter for a select property.
+    """A filter for a status property.
 
     Attributes:
         equals: Property value matches the string.
