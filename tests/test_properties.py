@@ -46,8 +46,9 @@ def test_add(props: Properties, prop: DBText):
     assert prop.id in props._ids
 
 
-def test_add_prop_no_name(props: Properties, prop_no_name: DBText):
+def test_add_prop_no_name_and_id(props: Properties, prop_no_name: DBText):
 
+    prop_no_name.id = ""
     with pytest.raises(ValueError):
         props.add(prop_no_name)
 

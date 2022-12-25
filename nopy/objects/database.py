@@ -17,12 +17,11 @@ from nopy.objects.notion_object import NotionObject
 from nopy.objects.page import Page
 from nopy.properties import Properties
 from nopy.props.base import ObjectProperty
+from nopy.props.common import DatabaseParent
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
 from nopy.types import DBProps
-
-# from nopy.utils import get_db_props
 from nopy.utils import TextDescriptor
 from nopy.utils import base_obj_args
 from nopy.utils import get_cover
@@ -138,6 +137,25 @@ class Database(NotionObject):
             db_id=self.id,
             client=self._client,
         )
+
+    def create_page(self, page: Union["Page", dict[str, Any]]) -> "Page":
+        """Creates a page within this database.
+
+        Attributes:
+            page: The page to be created.
+
+        Returns:
+            The instance of the created `Page`.
+        """
+
+        if not self._client:
+            raise NoClientFoundError("no client found")
+
+        if not isinstance(page, dict):
+            page = page.serialize()
+        page["parent"] = DatabaseParent(self.id).serialize()
+
+        return self._client.create_page(page)
 
     def update(self, in_place: bool = False) -> Database:
         """Updates the database.
