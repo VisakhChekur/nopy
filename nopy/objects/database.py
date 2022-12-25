@@ -107,6 +107,7 @@ class Database(NotionObject):
 
     def __post_init__(self):
 
+        super().__post_init__()
         self._type = ObjectTypes.DATABASE
         # Storing the ids of the original properties to handle
         # deleted properties.
@@ -180,7 +181,6 @@ class Database(NotionObject):
             "properties": self.properties.serialize(),
         }
 
-        # Serialize only if they're not None
         for attr in ("parent", "icon", "cover"):
             value = self.__dict__.get(attr, None)
             serialized[attr] = value if value is None else value.serialize()

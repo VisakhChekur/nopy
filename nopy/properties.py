@@ -36,14 +36,14 @@ class Properties(Collection[Props]):
 
         Raises:
             ValueError:
-                Raised if another property with the same name exists already.
+                Raised if property has neither name nor id.
             PropertyExistsError:
                 Raised if a property that already exists is tried to be added
                 again.
         """
 
-        if not prop.name:
-            raise ValueError("prop name can not be empty")
+        if not prop.name and not prop.id:
+            raise ValueError("either id or name must be provided")
         if prop.name in self._names or prop.id in self._ids or prop in self._props:
             raise PropertyExistsError("'prop' already exists")
 

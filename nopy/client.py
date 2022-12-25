@@ -180,16 +180,29 @@ class NotionClient:
         """
         self._logger.info(f"Retrieving page {page_id}")
         endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
-        page = self._make_request(endpoint)
-        return Page.from_dict(page)
+        page_dict = self._make_request(endpoint)
+        page = Page.from_dict(page_dict)
+        page.set_client(self)
+        return page
 
-    def create_page(self, page: dict[str, Any]) -> dict[str, Any]:
+    def retrieve_page_property(self, page_id: str, prop_id: str) -> Any:
 
-        raise NotImplementedError()
+        endpoint = APIEndpoints.PAGE_PROP.value.format(page_id, prop_id)
+        # q_p = {"page_size": "2"}
+        return self._make_request(endpoint, query_params={})
 
-    def update_page(self, page: dict[str, Any]) -> dict[str, Any]:
+    def create_page(self, page: dict[str, Any]) -> Page:
 
-        raise NotImplementedError()
+        new_page_dict = self._make_request(APIEndpoints.PAGE_CREATE.value, "post", page)
+        new_page = Page.from_dict(new_page_dict)
+        new_page.set_client(self)
+        return new_page
+
+    def update_page(self, page_id: str, page: dict[str, Any]) -> Page:
+
+        endpoint = APIEndpoints.PAGE_UPDATE.value.format(page_id)
+        page_dict = self._make_request(endpoint, "PATCH", page)
+        return Page.from_dict(page_dict)
 
     # ---- Block related endpoints -----
 

@@ -11,6 +11,7 @@ from typing import Union
 
 import nopy.props.page_props as pgp
 from nopy.enums import ObjectTypes
+from nopy.errors import NoClientFoundError
 from nopy.objects.notion_object import NotionObject
 from nopy.properties import Properties
 from nopy.props.base import ObjectProperty
@@ -95,7 +96,53 @@ class Page(NotionObject):
 
     def __post_init__(self):
 
+        super().__post_init__()
         self._type = ObjectTypes.PAGE
+        self._og_props = set(self.properties._ids.keys())  # type: ignore
+
+    def update(self, in_place: bool = False) -> Page:
+        """Updates the page.
+
+        Attributes:
+            in_place:
+                If `True`, then this instance is updated in place.
+
+        Returns:
+            The updated Page instance. Returns `self` if `in_place` is
+            `True`.
+        """
+
+        if not self._client:
+            raise NoClientFoundError("no client is associated with this instance")
+
+        page = self.serialize()
+        # Parent should not be present when updating
+        page.pop("parent")
+
+        updated_page = self._client.update_page(self.id, page)
+
+        if not in_place:
+            return updated_page
+        self.__dict__.clear()
+        self.__dict__ = updated_page.__dict__
+        return self
+
+    def serialize(self) -> dict[str, Any]:
+
+        serialized: dict[str, Any] = {
+            "archived": self.archived,
+            "properties": self.properties.serialize(),
+        }
+
+        for attr in ("parent", "icon", "cover"):
+            value = self.__dict__.get(attr, None)
+            serialized[attr] = value if value is None else value.serialize()
+
+        serialized["properties"]["title"] = {
+            "title": [rt.serialize() for rt in self.rich_title]
+        }
+
+        return serialized
 
     @classmethod
     def from_dict(cls: Type[Page], args: dict[str, Any]) -> Page:

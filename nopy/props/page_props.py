@@ -40,7 +40,8 @@ class PCheckbox(ObjectProperty):
     checked: bool = False
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: self.checked}
 
     @classmethod
     def from_dict(cls: Type[PCheckbox], args: dict[str, Any]) -> PCheckbox:
@@ -130,7 +131,9 @@ class PDate(ObjectProperty):
     date: Optional[Date] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        date = None if self.date is None else self.date.serialize()
+        return {self._type.value: date}
 
     @classmethod
     def from_dict(cls: Type[PDate], args: dict[str, Any]) -> PDate:
@@ -161,7 +164,8 @@ class PEmail(ObjectProperty):
     email: Optional[str] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: self.email}
 
     @classmethod
     def from_dict(cls: Type[PEmail], args: dict[str, Any]) -> PEmail:
@@ -190,7 +194,8 @@ class PFiles(ObjectProperty):
     files: list[File] = field(default_factory=list)
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: [f.serialize() for f in self.files]}
 
     @classmethod
     def from_dict(cls: Type[PFiles], args: dict[str, Any]) -> PFiles:
@@ -318,7 +323,8 @@ class PMultiselect(ObjectProperty):
     options: list[Option] = field(default_factory=list)
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: [o.serialize() for o in self.options]}
 
     @classmethod
     def from_dict(cls: Type[PMultiselect], args: dict[str, Any]) -> PMultiselect:
@@ -347,7 +353,8 @@ class PNumber(ObjectProperty):
     number: Optional[Union[int, float]] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: self.number}
 
     @classmethod
     def from_dict(cls: Type[PNumber], args: dict[str, Any]) -> PNumber:
@@ -376,7 +383,8 @@ class PPeople(ObjectProperty):
     people: list[User] = field(default_factory=list)
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: [p.serialize() for p in self.people]}
 
     @classmethod
     def from_dict(cls: Type[PPeople], args: dict[str, Any]) -> PPeople:
@@ -404,7 +412,8 @@ class PPhonenumber(ObjectProperty):
     phone_number: Optional[str] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: self.phone_number}
 
     @classmethod
     def from_dict(cls: Type[PPhonenumber], args: dict[str, Any]) -> PPhonenumber:
@@ -438,7 +447,8 @@ class PRelation(ObjectProperty):
     has_more: bool = False
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: [{"id": id} for id in self.relations]}
 
     @classmethod
     def from_dict(cls: Type[PRelation], args: dict[str, Any]) -> PRelation:
@@ -512,7 +522,8 @@ class PRichtext(ObjectProperty):
     rich_text: list[RichText] = field(default_factory=list)
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: [rt.serialize() for rt in self.rich_text]}
 
     @classmethod
     def from_dict(cls: Type[PRichtext], args: dict[str, Any]) -> PRichtext:
@@ -541,7 +552,9 @@ class PSelect(ObjectProperty):
     option: Optional[Option] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        option = None if self.option is None else self.option.serialize()
+        return {self._type.value: option}
 
     @classmethod
     def from_dict(cls: Type[PSelect], args: dict[str, Any]) -> PSelect:
@@ -572,7 +585,9 @@ class PStatus(ObjectProperty):
     status: Optional[Option] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        status = None if self.status is None else self.status.serialize()
+        return {self._type.value: status}
 
     @classmethod
     def from_dict(cls: Type[PStatus], args: dict[str, Any]) -> PStatus:
@@ -601,7 +616,8 @@ class PUrl(ObjectProperty):
     url: Optional[str] = None
 
     def serialize(self) -> dict[str, Any]:
-        raise NotImplementedError()
+
+        return {self._type.value: self.url}
 
     @classmethod
     def from_dict(cls: Type[PUrl], args: dict[str, Any]) -> PUrl:

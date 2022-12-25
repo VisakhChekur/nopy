@@ -65,6 +65,14 @@ class Date(BaseProperty):
     end: Optional[datetime] = None
     time_zone: Optional[ZoneInfo] = None
 
+    def serialize(self) -> dict[str, Any]:
+
+        return {
+            "start": self.start.isoformat(),
+            "end": None if self.end is None else self.end.isoformat(),
+            "time_zone": None if self.time_zone is None else str(self.time_zone),
+        }
+
     @classmethod
     def from_dict(cls: Type[Date], args: dict[str, Any]) -> Date:
 

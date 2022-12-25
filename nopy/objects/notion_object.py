@@ -33,6 +33,7 @@ class BaseObject:
     def __post_init__(self):
 
         self._type = ObjectTypes.UNSUPPORTED
+        self._client: Optional["NotionClient"] = None
 
     def set_client(self, client: "NotionClient"):
         """Sets the client."""

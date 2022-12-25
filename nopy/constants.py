@@ -16,6 +16,7 @@ class APIEndpoints(Enum):
     PAGE_CREATE = "pages"
     PAGE_RETRIEVE = "pages/{}"
     PAGE_UPDATE = "pages/{}"
+    PAGE_PROP = "pages/{}/properties/{}"
 
     # Block related endpoints
     BLOCK_CREATE = "blocks"
