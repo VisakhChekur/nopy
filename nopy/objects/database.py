@@ -21,6 +21,7 @@ from nopy.props.common import DatabaseParent
 from nopy.props.common import Emoji
 from nopy.props.common import File
 from nopy.props.common import RichText
+from nopy.query import Query
 from nopy.types import DBProps
 from nopy.utils import TextDescriptor
 from nopy.utils import base_obj_args
@@ -130,7 +131,7 @@ class Database(NotionObject):
             raise NoClientFoundError("database")
 
         return paginate(
-            self._client._query_db,  # type: ignore
+            self._client._query_db_raw,  # type: ignore
             Page.from_dict,
             page_size=page_size,
             max_pages=max_pages,
@@ -190,6 +191,25 @@ class Database(NotionObject):
         self.__dict__.clear()
         self.__dict__ = updated_db.__dict__
         return self
+
+    def query(
+        self, query: Union[Query, dict[str, Any]], max_pages: int = 0
+    ) -> Generator["Page", None, None]:
+
+        if not self._client:
+            raise NoClientFoundError("database")
+
+        if isinstance(query, Query):
+            query = query.serialize()
+
+        return paginate(
+            self._client._query_db_raw,  # type: ignore
+            Page.from_dict,
+            max_pages=max_pages,
+            db_id=self.id,
+            client=self._client,
+            query=query,
+        )
 
     def serialize(self) -> dict[str, Any]:
 
