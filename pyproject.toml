@@ -1,9 +1,11 @@
 [tool.poetry]
 name = "nopy-notion"
 version = "0.1.0"
+license = "MIT"
 description = "An unofficial OOP interface for the Notion API."
 authors = ["Visakh Unnikrishnan <visakhcu96@gmail.com>"]
 readme = "README.md"
+packages = [{ include = "nopy" }]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
