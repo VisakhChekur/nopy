@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "nopy"
 version = "0.1.0"
-description = ""
+description = "An unofficial OOP interface for the Notion API."
 authors = ["Visakh Unnikrishnan <visakhcu96@gmail.com>"]
 readme = "README.md"
 
@@ -23,6 +23,7 @@ pre-commit = "^2.20.0"
 mkdocs-material = "^8.5.11"
 python-dotenv = "^0.21.0"
 nox = "^2022.11.21"
+
 
 [tool.isort]
 profile = "black"
