@@ -14,6 +14,7 @@ from nopy.enums import MentionTypes
 from nopy.enums import ParentTypes
 from nopy.enums import RichTextTypes
 from nopy.errors import UnsupportedByNotion
+from nopy.objects.user import User
 from nopy.props.base import BaseProperty
 
 
@@ -205,6 +206,7 @@ class Mention(RichText):
             The type of the mention. Available attributes depend on this
             type.
         id: The id of the mention, if any.
+        user: The mention user, if any.
         date: The date mentioned, if any.
         url: The URL mentioned, if any.
         href (str): The URL to the link, if any.
@@ -215,6 +217,7 @@ class Mention(RichText):
     """
 
     mention_type: MentionTypes = MentionTypes.UNSUPPORTED
+    user: Optional[User] = None
     id: str = ""
     date: Optional[Date] = None
     url: Optional[str] = None
@@ -241,6 +244,8 @@ class Mention(RichText):
             new_args["date"] = Date.from_dict(mention_details["date"])
         elif mention_type == MentionTypes.LINK_PREVIEW:
             new_args["url"] = mention_details["url"]
+        elif mention_type == MentionTypes.USER:
+            new_args["user"] = User.from_dict(mention_details[mention_type.value])
         elif mention_type in (MentionTypes.DATABASE, MentionTypes.PAGE):
             new_args["id"] = mention_details[mention_type.value]["id"]
 

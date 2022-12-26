@@ -8,11 +8,11 @@ from typing import Optional
 from typing import Type
 
 from nopy.enums import ObjectTypes
-from nopy.props.common import Parent
 
 if TYPE_CHECKING:
     from nopy.client import NotionClient
     from nopy.objects.user import User
+    from nopy.props.common import Parent
 
 
 @dataclass
