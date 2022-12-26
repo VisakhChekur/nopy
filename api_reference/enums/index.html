@@ -1,0 +1,2301 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An unofficial OOP interface for the Notion API.">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>Enums - NoPy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.975780f9.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#enums" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="NoPy" class="md-header__button md-logo" aria-label="NoPy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NoPy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Enums
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/VisakhChekur/nopy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VisakhChekur/nopy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../client/" class="md-tabs__link md-tabs__link--active">
+        API Reference
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NoPy" class="md-nav__button md-logo" aria-label="NoPy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    NoPy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/VisakhChekur/nopy" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    VisakhChekur/nopy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Home" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_2" type="checkbox" id="__nav_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_2">
+          Usage
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Usage" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/database/" class="md-nav__link">
+        Databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/page/" class="md-nav__link">
+        Pages
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/properties/" class="md-nav__link">
+        Properties
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/" class="md-nav__link">
+        Supported Features
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client/" class="md-nav__link">
+        Client
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Enums
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Enums
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.Colors" class="md-nav__link">
+    Colors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.FileTypes" class="md-nav__link">
+    FileTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.MentionTypes" class="md-nav__link">
+    MentionTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.NumberFormat" class="md-nav__link">
+    NumberFormat
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.ObjectTypes" class="md-nav__link">
+    ObjectTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.ParentTypes" class="md-nav__link">
+    ParentTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.PropTypes" class="md-nav__link">
+    PropTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.RichTextTypes" class="md-nav__link">
+    RichTextTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.RollupFunctions" class="md-nav__link">
+    RollupFunctions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.UserTypes" class="md-nav__link">
+    UserTypes
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_3">
+          Notion Objects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notion Objects" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Notion Objects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notion_objects/database/" class="md-nav__link">
+        Database
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notion_objects/page/" class="md-nav__link">
+        Page
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4">
+          Object Properties
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Object Properties" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Object Properties
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../properties/common/" class="md-nav__link">
+        Common Properties
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../properties/db_props/" class="md-nav__link">
+        Database Properties
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../properties/page_props/" class="md-nav__link">
+        Page Properties
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../properties/" class="md-nav__link">
+        Properties
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query/" class="md-nav__link">
+        Queries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Exceptions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.Colors" class="md-nav__link">
+    Colors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.FileTypes" class="md-nav__link">
+    FileTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.MentionTypes" class="md-nav__link">
+    MentionTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.NumberFormat" class="md-nav__link">
+    NumberFormat
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.ObjectTypes" class="md-nav__link">
+    ObjectTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.ParentTypes" class="md-nav__link">
+    ParentTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.PropTypes" class="md-nav__link">
+    PropTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.RichTextTypes" class="md-nav__link">
+    RichTextTypes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.RollupFunctions" class="md-nav__link">
+    RollupFunctions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nopy.enums.UserTypes" class="md-nav__link">
+    UserTypes
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <a href="https://github.com/VisakhChekur/nopy/edit/master/docs/api_reference/enums.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+<h1 id="enums">Enums<a class="headerlink" href="#enums" title="Permanent link">&para;</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.Colors" class="doc doc-heading">
+        <code>Colors</code>
+
+
+<a href="#nopy.enums.Colors" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different colors.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>DEFAULT</code></td>
+          <td>
+          </td>
+          <td><p>The default color.</p></td>
+        </tr>
+        <tr>
+          <td><code>GRAY</code></td>
+          <td>
+          </td>
+          <td><p>A gray color.</p></td>
+        </tr>
+        <tr>
+          <td><code>BROWN</code></td>
+          <td>
+          </td>
+          <td><p>A brown color.</p></td>
+        </tr>
+        <tr>
+          <td><code>ORANGE</code></td>
+          <td>
+          </td>
+          <td><p>A orange color.</p></td>
+        </tr>
+        <tr>
+          <td><code>YELLOW</code></td>
+          <td>
+          </td>
+          <td><p>A yellow color.</p></td>
+        </tr>
+        <tr>
+          <td><code>GREEN</code></td>
+          <td>
+          </td>
+          <td><p>A green color.</p></td>
+        </tr>
+        <tr>
+          <td><code>BLUE</code></td>
+          <td>
+          </td>
+          <td><p>A blue color.</p></td>
+        </tr>
+        <tr>
+          <td><code>PURPLE</code></td>
+          <td>
+          </td>
+          <td><p>A purple color.</p></td>
+        </tr>
+        <tr>
+          <td><code>PINK</code></td>
+          <td>
+          </td>
+          <td><p>A pink color.</p></td>
+        </tr>
+        <tr>
+          <td><code>RED</code></td>
+          <td>
+          </td>
+          <td><p>A red color.</p></td>
+        </tr>
+        <tr>
+          <td><code>GRAY_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A gray background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>BROWN_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A brown background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>ORANGE_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A orange background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>YELLOW_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A yellow background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>GREEN_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A green background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>BLUE_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A blue background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>PURPLE_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A purple background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>PINK_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A pink background color.</p></td>
+        </tr>
+        <tr>
+          <td><code>RED_BACKGROUND</code></td>
+          <td>
+          </td>
+          <td><p>A red background color.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.FileTypes" class="doc doc-heading">
+        <code>FileTypes</code>
+
+
+<a href="#nopy.enums.FileTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different file types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>FILE</code></td>
+          <td>
+          </td>
+          <td><p>A file hosted by Notion.</p></td>
+        </tr>
+        <tr>
+          <td><code>EXTERNAL</code></td>
+          <td>
+          </td>
+          <td><p>A file hosted externally, but rendered by Notion.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.MentionTypes" class="doc doc-heading">
+        <code>MentionTypes</code>
+
+
+<a href="#nopy.enums.MentionTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different mention types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>UNSUPPORTED</code></td>
+          <td>
+          </td>
+          <td><p>An unsupported mention type.</p></td>
+        </tr>
+        <tr>
+          <td><code>USER</code></td>
+          <td>
+          </td>
+          <td><p>A user mention.</p></td>
+        </tr>
+        <tr>
+          <td><code>PAGE</code></td>
+          <td>
+          </td>
+          <td><p>A page mention.</p></td>
+        </tr>
+        <tr>
+          <td><code>DATABASE</code></td>
+          <td>
+          </td>
+          <td><p>A database mention.</p></td>
+        </tr>
+        <tr>
+          <td><code>DATE</code></td>
+          <td>
+          </td>
+          <td><p>A date mention.</p></td>
+        </tr>
+        <tr>
+          <td><code>LINK_PREVIEW</code></td>
+          <td>
+          </td>
+          <td><p>A link preview mention.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.NumberFormat" class="doc doc-heading">
+        <code>NumberFormat</code>
+
+
+<a href="#nopy.enums.NumberFormat" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different types of number formats possible.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>NUMBER</code></td>
+          <td>
+          </td>
+          <td><p>A number format.</p></td>
+        </tr>
+        <tr>
+          <td><code>NUMBER_WITH_COMMAS</code></td>
+          <td>
+          </td>
+          <td><p>A number with commas format.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERCENT</code></td>
+          <td>
+          </td>
+          <td><p>A percent format.</p></td>
+        </tr>
+        <tr>
+          <td><code>DOLLAR</code></td>
+          <td>
+          </td>
+          <td><p>A dollar format.</p></td>
+        </tr>
+        <tr>
+          <td><code>CANADIAN_DOLLAR</code></td>
+          <td>
+          </td>
+          <td><p>A canadian dollar format.</p></td>
+        </tr>
+        <tr>
+          <td><code>EURO</code></td>
+          <td>
+          </td>
+          <td><p>A euro format.</p></td>
+        </tr>
+        <tr>
+          <td><code>POUND</code></td>
+          <td>
+          </td>
+          <td><p>A pound format.</p></td>
+        </tr>
+        <tr>
+          <td><code>YEN</code></td>
+          <td>
+          </td>
+          <td><p>A yen format.</p></td>
+        </tr>
+        <tr>
+          <td><code>RUBLE</code></td>
+          <td>
+          </td>
+          <td><p>A ruble format.</p></td>
+        </tr>
+        <tr>
+          <td><code>RUPEE</code></td>
+          <td>
+          </td>
+          <td><p>A rupee format.</p></td>
+        </tr>
+        <tr>
+          <td><code>WON</code></td>
+          <td>
+          </td>
+          <td><p>A won format.</p></td>
+        </tr>
+        <tr>
+          <td><code>YUAN</code></td>
+          <td>
+          </td>
+          <td><p>A yuan format.</p></td>
+        </tr>
+        <tr>
+          <td><code>REAL</code></td>
+          <td>
+          </td>
+          <td><p>A real format.</p></td>
+        </tr>
+        <tr>
+          <td><code>LIRA</code></td>
+          <td>
+          </td>
+          <td><p>A lira format.</p></td>
+        </tr>
+        <tr>
+          <td><code>RUPIAH</code></td>
+          <td>
+          </td>
+          <td><p>A rupiah format.</p></td>
+        </tr>
+        <tr>
+          <td><code>FRANC</code></td>
+          <td>
+          </td>
+          <td><p>A franc format.</p></td>
+        </tr>
+        <tr>
+          <td><code>HONG_KONG_DOLLAR</code></td>
+          <td>
+          </td>
+          <td><p>A hong kong dollar format.</p></td>
+        </tr>
+        <tr>
+          <td><code>NEW_ZEALAND_DOLLAR</code></td>
+          <td>
+          </td>
+          <td><p>A new zealand dollar format.</p></td>
+        </tr>
+        <tr>
+          <td><code>KRONA</code></td>
+          <td>
+          </td>
+          <td><p>A krona format.</p></td>
+        </tr>
+        <tr>
+          <td><code>NORWEGIAN_KRONE</code></td>
+          <td>
+          </td>
+          <td><p>A norwegian krone format.</p></td>
+        </tr>
+        <tr>
+          <td><code>MEXICAN_PESO</code></td>
+          <td>
+          </td>
+          <td><p>A mexican peso format.</p></td>
+        </tr>
+        <tr>
+          <td><code>RAND</code></td>
+          <td>
+          </td>
+          <td><p>A rand format.</p></td>
+        </tr>
+        <tr>
+          <td><code>NEW_TAIWAN_DOLLAR</code></td>
+          <td>
+          </td>
+          <td><p>A new taiwan dollar format.</p></td>
+        </tr>
+        <tr>
+          <td><code>DANISH_KRONE</code></td>
+          <td>
+          </td>
+          <td><p>A danish krone format.</p></td>
+        </tr>
+        <tr>
+          <td><code>ZLOTY</code></td>
+          <td>
+          </td>
+          <td><p>A zloty format.</p></td>
+        </tr>
+        <tr>
+          <td><code>BAHT</code></td>
+          <td>
+          </td>
+          <td><p>A baht format.</p></td>
+        </tr>
+        <tr>
+          <td><code>FORINT</code></td>
+          <td>
+          </td>
+          <td><p>A forint format.</p></td>
+        </tr>
+        <tr>
+          <td><code>KORUNA</code></td>
+          <td>
+          </td>
+          <td><p>A koruna format.</p></td>
+        </tr>
+        <tr>
+          <td><code>SHEKEL</code></td>
+          <td>
+          </td>
+          <td><p>A shekel format.</p></td>
+        </tr>
+        <tr>
+          <td><code>CHILEAN_PESO</code></td>
+          <td>
+          </td>
+          <td><p>A chilean peso format.</p></td>
+        </tr>
+        <tr>
+          <td><code>PHILIPPINE_PESO</code></td>
+          <td>
+          </td>
+          <td><p>A philippine peso format.</p></td>
+        </tr>
+        <tr>
+          <td><code>DIRHAM</code></td>
+          <td>
+          </td>
+          <td><p>A dirham format.</p></td>
+        </tr>
+        <tr>
+          <td><code>COLOMBIAN_PESO</code></td>
+          <td>
+          </td>
+          <td><p>A colombian peso format.</p></td>
+        </tr>
+        <tr>
+          <td><code>RIYAL</code></td>
+          <td>
+          </td>
+          <td><p>A riyal format.</p></td>
+        </tr>
+        <tr>
+          <td><code>RINGGIT</code></td>
+          <td>
+          </td>
+          <td><p>A ringgit format.</p></td>
+        </tr>
+        <tr>
+          <td><code>LEU</code></td>
+          <td>
+          </td>
+          <td><p>A leu format.</p></td>
+        </tr>
+        <tr>
+          <td><code>ARGENTINE_PESO</code></td>
+          <td>
+          </td>
+          <td><p>A argentine peso format.</p></td>
+        </tr>
+        <tr>
+          <td><code>URUGUAYAN_PESO</code></td>
+          <td>
+          </td>
+          <td><p>A uruguayan peso format.</p></td>
+        </tr>
+        <tr>
+          <td><code>SINGAPORE_DOLLAR</code></td>
+          <td>
+          </td>
+          <td><p>A singapore dollar format.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.ObjectTypes" class="doc doc-heading">
+        <code>ObjectTypes</code>
+
+
+<a href="#nopy.enums.ObjectTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different object types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>DATABASE</code></td>
+          <td>
+          </td>
+          <td><p>A database object.</p></td>
+        </tr>
+        <tr>
+          <td><code>PAGE</code></td>
+          <td>
+          </td>
+          <td><p>A page object.</p></td>
+        </tr>
+        <tr>
+          <td><code>BLOCK</code></td>
+          <td>
+          </td>
+          <td><p>A block object.</p></td>
+        </tr>
+        <tr>
+          <td><code>COMMENT</code></td>
+          <td>
+          </td>
+          <td><p>A comment object.</p></td>
+        </tr>
+        <tr>
+          <td><code>USER</code></td>
+          <td>
+          </td>
+          <td><p>A user object.</p></td>
+        </tr>
+        <tr>
+          <td><code>UNSUPPORTED</code></td>
+          <td>
+          </td>
+          <td><p>An unsupported object.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.ParentTypes" class="doc doc-heading">
+        <code>ParentTypes</code>
+
+
+<a href="#nopy.enums.ParentTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different parent types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>DATABASE</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="nopy.enums.ParentTypes" href="#nopy.enums.ParentTypes">ParentTypes</a></code>
+          </td>
+          <td><p>A database parent.</p></td>
+        </tr>
+        <tr>
+          <td><code>PAGE</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="nopy.enums.ParentTypes" href="#nopy.enums.ParentTypes">ParentTypes</a></code>
+          </td>
+          <td><p>A page parent.</p></td>
+        </tr>
+        <tr>
+          <td><code>BLOCK</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="nopy.enums.ParentTypes" href="#nopy.enums.ParentTypes">ParentTypes</a></code>
+          </td>
+          <td><p>A block parent.</p></td>
+        </tr>
+        <tr>
+          <td><code>WORKSPACE</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="nopy.enums.ParentTypes" href="#nopy.enums.ParentTypes">ParentTypes</a></code>
+          </td>
+          <td><p>A workspace parent.</p></td>
+        </tr>
+        <tr>
+          <td><code>UNSUPPORTED</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="nopy.enums.ParentTypes" href="#nopy.enums.ParentTypes">ParentTypes</a></code>
+          </td>
+          <td><p>An unsupported parent.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.PropTypes" class="doc doc-heading">
+        <code>PropTypes</code>
+
+
+<a href="#nopy.enums.PropTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different prop types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>UNSUPPORTED</code></td>
+          <td>
+          </td>
+          <td><p>An unsupported property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>CHECKBOX</code></td>
+          <td>
+          </td>
+          <td><p>A checkbox property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>CREATED_BY</code></td>
+          <td>
+          </td>
+          <td><p>A created by property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>CREATED_TIME</code></td>
+          <td>
+          </td>
+          <td><p>A created time property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>DATE</code></td>
+          <td>
+          </td>
+          <td><p>A date property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>EMAIL</code></td>
+          <td>
+          </td>
+          <td><p>A email property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>FILES</code></td>
+          <td>
+          </td>
+          <td><p>A files property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>FORMULA</code></td>
+          <td>
+          </td>
+          <td><p>A formula property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>LAST_EDITED_BY</code></td>
+          <td>
+          </td>
+          <td><p>A last edited by property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>LAST_EDITED_TIME</code></td>
+          <td>
+          </td>
+          <td><p>A last edited time property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>MULTI_SELECT</code></td>
+          <td>
+          </td>
+          <td><p>A multi select property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>NUMBER</code></td>
+          <td>
+          </td>
+          <td><p>A number property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>PEOPLE</code></td>
+          <td>
+          </td>
+          <td><p>A people property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>PHONE_NUMBER</code></td>
+          <td>
+          </td>
+          <td><p>A phone number property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>RELATION</code></td>
+          <td>
+          </td>
+          <td><p>A relation property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>ROLLUP</code></td>
+          <td>
+          </td>
+          <td><p>A rollup property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>RICH_TEXT</code></td>
+          <td>
+          </td>
+          <td><p>A rich text property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>SELECT</code></td>
+          <td>
+          </td>
+          <td><p>A select property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>STATUS</code></td>
+          <td>
+          </td>
+          <td><p>A status property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>TITLE</code></td>
+          <td>
+          </td>
+          <td><p>A title property type.</p></td>
+        </tr>
+        <tr>
+          <td><code>URL</code></td>
+          <td>
+          </td>
+          <td><p>A url property type.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.RichTextTypes" class="doc doc-heading">
+        <code>RichTextTypes</code>
+
+
+<a href="#nopy.enums.RichTextTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different rich text types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>UNSUPPORTED</code></td>
+          <td>
+          </td>
+          <td><p>An unsupported rich text type.</p></td>
+        </tr>
+        <tr>
+          <td><code>TEXT</code></td>
+          <td>
+          </td>
+          <td><p>A 'text' rich text.</p></td>
+        </tr>
+        <tr>
+          <td><code>MENTION</code></td>
+          <td>
+          </td>
+          <td><p>A 'mention' rich text.</p></td>
+        </tr>
+        <tr>
+          <td><code>EQUATION</code></td>
+          <td>
+          </td>
+          <td><p>An 'equation' rich text.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.RollupFunctions" class="doc doc-heading">
+        <code>RollupFunctions</code>
+
+
+<a href="#nopy.enums.RollupFunctions" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>All the rollup functions.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>COUNT</code></td>
+          <td>
+          </td>
+          <td><p>A 'count' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>COUNT_VALUES</code></td>
+          <td>
+          </td>
+          <td><p>A 'count values' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>EMPTY</code></td>
+          <td>
+          </td>
+          <td><p>A 'empty' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>NOT_EMPTY</code></td>
+          <td>
+          </td>
+          <td><p>A 'not empty' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>UNIQUE</code></td>
+          <td>
+          </td>
+          <td><p>A 'unique' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>SHOW_UNIQUE</code></td>
+          <td>
+          </td>
+          <td><p>A 'show unique' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERCENT_EMPTY</code></td>
+          <td>
+          </td>
+          <td><p>A 'percent empty' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERCENT_NOT_EMPTY</code></td>
+          <td>
+          </td>
+          <td><p>A 'percent not empty' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>SUM</code></td>
+          <td>
+          </td>
+          <td><p>A 'sum' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>AVERAGE</code></td>
+          <td>
+          </td>
+          <td><p>A 'average' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>MEDIAN</code></td>
+          <td>
+          </td>
+          <td><p>A 'median' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>MIN</code></td>
+          <td>
+          </td>
+          <td><p>A 'min' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>MAX</code></td>
+          <td>
+          </td>
+          <td><p>A 'max' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>RANGE</code></td>
+          <td>
+          </td>
+          <td><p>A 'range' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>EARLIEST_DATE</code></td>
+          <td>
+          </td>
+          <td><p>A 'earliest date' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>LATEST_DATE</code></td>
+          <td>
+          </td>
+          <td><p>A 'latest date' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>DATE_RANGE</code></td>
+          <td>
+          </td>
+          <td><p>A 'date range' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>CHECKED</code></td>
+          <td>
+          </td>
+          <td><p>A 'checked' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>UNCHECKED</code></td>
+          <td>
+          </td>
+          <td><p>A 'unchecked' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERCENT_CHECKED</code></td>
+          <td>
+          </td>
+          <td><p>A 'percent checked' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERCENT_UNCHECKED</code></td>
+          <td>
+          </td>
+          <td><p>A 'percent unchecked' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>COUNT_PER_GROUP</code></td>
+          <td>
+          </td>
+          <td><p>A 'count per group' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERCENT_PER_GROUP</code></td>
+          <td>
+          </td>
+          <td><p>A 'percent per group' function.</p></td>
+        </tr>
+        <tr>
+          <td><code>SHOW_ORIGINAL</code></td>
+          <td>
+          </td>
+          <td><p>A 'show original' function.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="nopy.enums.UserTypes" class="doc doc-heading">
+        <code>UserTypes</code>
+
+
+<a href="#nopy.enums.UserTypes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+  
+      <p>The different user types.</p>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>UNSPPORTED</code></td>
+          <td>
+          </td>
+          <td><p>An unsupported user type.</p></td>
+        </tr>
+        <tr>
+          <td><code>PERSON</code></td>
+          <td>
+          </td>
+          <td><p>A 'person' type user.</p></td>
+        </tr>
+        <tr>
+          <td><code>BOT</code></td>
+          <td>
+          </td>
+          <td><p>A 'bot' type user.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../client/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Client" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Client
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../notion_objects/database/" class="md-footer__link md-footer__link--next" aria-label="Next: Database" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Database
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "navigation.top", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      
+    
+    
+  </body>
+</html>
