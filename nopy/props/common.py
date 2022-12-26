@@ -8,6 +8,8 @@ from typing import Optional
 from typing import Type
 from zoneinfo import ZoneInfo
 
+from dateutil.parser import parse
+
 from nopy.enums import Colors
 from nopy.enums import FileTypes
 from nopy.enums import MentionTypes
@@ -77,11 +79,11 @@ class Date(BaseProperty):
     @classmethod
     def from_dict(cls: Type[Date], args: dict[str, Any]) -> Date:
 
-        start = datetime.fromisoformat(args["start"])
+        start = parse(args["start"])
         end = None
         time_zone = None
         if end_str := args["end"]:
-            end = datetime.fromisoformat(end_str)
+            end = parse(end_str)
         if tz := args["time_zone"]:
             time_zone = ZoneInfo(tz)
 
@@ -311,9 +313,7 @@ class File(BaseProperty):
 
         # Only files hosted by Notion have expiry dates
         if file_type == FileTypes.FILE:
-            new_args["expiry_time"] = datetime.fromisoformat(
-                file_details["expiry_time"]
-            )
+            new_args["expiry_time"] = parse(file_details["expiry_time"])
 
         return File(**new_args)
 

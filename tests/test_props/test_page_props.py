@@ -1,5 +1,6 @@
-from datetime import datetime
 from typing import Any
+
+from dateutil.parser import parse
 
 import nopy.props.page_props as pgp
 from nopy.enums import Colors
@@ -62,9 +63,7 @@ def test_created_time_fd():
     assert created_time.type == PropTypes.CREATED_TIME
     assert created_time.id == created_time_args["id"]
 
-    assert created_time.created_time == datetime.fromisoformat(
-        created_time_args["created_time"]
-    )
+    assert created_time.created_time == parse(created_time_args["created_time"])
 
 
 def test_date_fd():
@@ -214,7 +213,7 @@ def test_last_edited_time_fd():
     assert last_edited_time.type == PropTypes.LAST_EDITED_TIME
     assert last_edited_time.id == last_edited_time_args["id"]
 
-    assert last_edited_time.last_edited_time == datetime.fromisoformat(
+    assert last_edited_time.last_edited_time == parse(
         last_edited_time_args["last_edited_time"]
     )
 

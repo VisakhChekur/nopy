@@ -1,5 +1,6 @@
-from datetime import datetime
 from typing import Any
+
+from dateutil.parser import parse
 
 from nopy.enums import ObjectTypes
 from nopy.objects.page import Page
@@ -18,8 +19,8 @@ def test_normal_page(normal_page: dict[str, Any]):
     assert page.id == "page-id"
     assert page.type == ObjectTypes.PAGE
 
-    assert page.created_time == datetime.fromisoformat("2022-12-03T04:10:00.000Z")
-    assert page.last_edited_time == datetime.fromisoformat("2022-12-20T03:01:00.000Z")
+    assert page.created_time == parse("2022-12-03T04:10:00.000Z")
+    assert page.last_edited_time == parse("2022-12-20T03:01:00.000Z")
     assert isinstance(page.created_by, User)
     assert isinstance(page.last_edited_by, User)
     assert page.archived is False

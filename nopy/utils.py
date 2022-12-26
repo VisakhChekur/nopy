@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING
 from typing import Any
@@ -8,6 +7,8 @@ from typing import Generator
 from typing import Optional
 from typing import TypeVar
 from typing import Union
+
+from dateutil.parser import parse
 
 # from nopy.constants import DB_PROPS_REVERSE_MAP
 from nopy.objects.user import User
@@ -102,7 +103,7 @@ def base_obj_args(args: dict[str, Any]) -> dict[str, Any]:
     # Getting time
     for key in ("created_time", "last_edited_time"):
         if value := args.get(key, None):
-            new_args[key] = datetime.fromisoformat(value)
+            new_args[key] = parse(value)
 
     return new_args
 

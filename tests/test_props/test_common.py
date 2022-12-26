@@ -1,6 +1,7 @@
-from datetime import datetime
 from typing import Any
 from zoneinfo import ZoneInfo
+
+from dateutil.parser import parse
 
 from nopy.enums import Colors
 from nopy.enums import FileTypes
@@ -50,7 +51,7 @@ def test_date_fd():
     date = Date.from_dict(args)
 
     assert isinstance(date, Date)
-    assert date.start == datetime.fromisoformat("2022-12-18")
+    assert date.start == parse("2022-12-18")
     assert date.end is None
     assert date.time_zone == ZoneInfo("America/Los_Angeles")
 
@@ -187,7 +188,7 @@ def test_file_fd():
 
     assert file.url == "some url"
     assert file.type == FileTypes.FILE
-    assert file.expiry_time == datetime.fromisoformat("2022-12-18T16:11:41.373Z")
+    assert file.expiry_time == parse("2022-12-18T16:11:41.373Z")
 
 
 def test_option_fd():

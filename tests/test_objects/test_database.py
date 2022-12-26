@@ -1,5 +1,6 @@
-from datetime import datetime
 from typing import Any
+
+from dateutil.parser import parse
 
 from nopy.enums import ObjectTypes
 from nopy.objects.database import Database
@@ -15,8 +16,8 @@ def test_full_db(full_db: dict[str, Any]):
     assert db.id == "db-id"
     assert db.type == ObjectTypes.DATABASE
 
-    assert db.created_time == datetime.fromisoformat("2022-12-18T07:28:00.000Z")
-    assert db.last_edited_time == datetime.fromisoformat("2022-12-18T15:11:00.000Z")
+    assert db.created_time == parse("2022-12-18T07:28:00.000Z")
+    assert db.last_edited_time == parse("2022-12-18T15:11:00.000Z")
     assert isinstance(db.created_by, User)
     assert isinstance(db.last_edited_by, User)
     assert db.archived is False

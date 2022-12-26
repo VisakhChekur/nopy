@@ -10,6 +10,8 @@ from typing import Optional
 from typing import Type
 from typing import Union
 
+from dateutil.parser import parse
+
 from nopy.enums import PropTypes
 from nopy.enums import RollupFunctions
 from nopy.errors import UnsupportedByNotion
@@ -108,7 +110,7 @@ class PCreatedTime(ObjectProperty):
     def from_dict(cls: Type[PCreatedTime], args: dict[str, Any]) -> PCreatedTime:
 
         new_args = _get_base_page_args(args)
-        new_args["created_time"] = datetime.fromisoformat(args[cls._type.value])
+        new_args["created_time"] = parse(args[cls._type.value])
 
         return PCreatedTime(**new_args)
 
@@ -300,7 +302,7 @@ class PLastEditedTime(ObjectProperty):
     def from_dict(cls: Type[PLastEditedTime], args: dict[str, Any]) -> PLastEditedTime:
 
         new_args = _get_base_page_args(args)
-        new_args["last_edited_time"] = datetime.fromisoformat(args[cls._type.value])
+        new_args["last_edited_time"] = parse(args[cls._type.value])
 
         return PLastEditedTime(**new_args)
 
