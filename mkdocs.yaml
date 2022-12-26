@@ -1,21 +1,19 @@
 site_name: NoPy
+site_description: An unofficial OOP interface for the Notion API.
 repo_url: https://github.com/VisakhChekur/nopy
 repo_name: VisakhChekur/nopy
 
 nav:
-  - Home: index.md
+  - Home:
+      - Overview: index.md
+      - Usage:
+          - Databases: usage/database.md
+          - Pages: usage/page.md
+          - Properties: usage/properties.md
+      - Supported Features: features.md
   - API Reference:
       - Client: api_reference/client.md
       - Enums: api_reference/enums.md
-      # - Enums:
-      #     - Colors: api_reference/enums/colors.md
-      #     - File Types: api_reference/enums/file_types.md
-      #     - Mention Types: api_reference/enums/mention_types.md
-      #     - Object Types: api_reference/enums/object_type.md
-      #     - Parent Types: api_reference/enums/parent_types.md
-      #     - Property Types: api_reference/enums/prop_types.md
-      #     - Rich Text Types: api_reference/enums/rich_text_types.md
-      #     - User Types: api_reference/enums/user_type.md
       - Notion Objects:
           - Database: api_reference/notion_objects/database.md
           - Page: api_reference/notion_objects/page.md

@@ -2,6 +2,7 @@ import logging
 import os
 from dataclasses import dataclass
 from json import JSONDecodeError
+from pprint import pprint
 from types import TracebackType
 from typing import Any
 from typing import Generator
@@ -203,6 +204,7 @@ class NotionClient:
         self._logger.info(f"Retrieving page {page_id}")
         endpoint = APIEndpoints.PAGE_RETRIEVE.value.format(page_id)
         page_dict = self._make_request(endpoint)
+        pprint(page_dict)
         page = Page.from_dict(page_dict)
         page.set_client(self)
         return page

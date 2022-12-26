@@ -195,6 +195,14 @@ class Database(NotionObject):
     def query(
         self, query: Union[Query, dict[str, Any]], max_pages: int = 0
     ) -> Generator["Page", None, None]:
+        """Query a database.
+
+        Attributes:
+            query: The query to apply on the database.
+
+        Returns:
+            A generator that yields a single page at a time.
+        """
 
         if not self._client:
             raise NoClientFoundError("database")
