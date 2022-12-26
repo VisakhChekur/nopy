@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v3
@@ -31,4 +31,5 @@ jobs:
         python -m poetry install
     - name: Test with pytest
       run: |
+        python -m poetry shell
         pytest
