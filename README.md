@@ -4,7 +4,10 @@ NoPy is an unofficial OOP interface for the [Notion API](https://developers.noti
 
 ## Installation
 
-TODO.
+```py
+
+    pip install notion-nopy
+```
 
 ## Getting Started
 

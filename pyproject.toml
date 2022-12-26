@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "nopy-notion"
+name = "notion-nopy"
 version = "0.1.0"
 license = "MIT"
 description = "An unofficial OOP interface for the Notion API."
