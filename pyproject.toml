@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "nopy"
+name = "nopy-notion"
 version = "0.1.0"
 description = "An unofficial OOP interface for the Notion API."
 authors = ["Visakh Unnikrishnan <visakhcu96@gmail.com>"]
