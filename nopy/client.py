@@ -18,8 +18,6 @@ from nopy.constants import APIEndpoints
 from nopy.errors import APIResponseError
 from nopy.errors import HTTPError
 from nopy.errors import TokenNotFoundError
-from nopy.objects.block import Block
-from nopy.objects.comment import Comment
 from nopy.objects.database import Database
 from nopy.objects.page import Page
 from nopy.objects.user import Bot
@@ -267,32 +265,6 @@ class NotionClient:
         endpoint = APIEndpoints.PAGE_UPDATE.value.format(page_id)
         page_dict = self._make_request(endpoint, "PATCH", page)
         return Page.from_dict(page_dict)
-
-    # ---- Block related endpoints -----
-
-    def retrieve_block(self, block_id: str) -> Block:
-        raise NotImplementedError()
-
-    def update_block(self, block: dict[str, Any]) -> dict[str, Any]:
-        raise NotImplementedError()
-
-    def retrieve_block_children(self, block_id: str) -> list[Block]:
-
-        raise NotImplementedError()
-
-    def append_block_child(self, block: str) -> dict[str, Any]:
-        raise NotImplementedError()
-
-    def delete_block(self, block_id: str) -> dict[str, Any]:
-        raise NotImplementedError()
-
-    # ----- Comment related endpoints -----
-
-    def retrieve_comment(self, comment_id: str) -> Comment:
-        raise NotImplementedError()
-
-    def create_comment(self, comment: dict[str, Any]) -> dict[str, Any]:
-        raise NotImplementedError()
 
     # ----- User related endpoints -----
 
