@@ -24,6 +24,7 @@ class APIEndpoints(Enum):
     BLOCK_UPDATE = "blocks/{}"
     BLOCK_CHILDREN_RETRIEVE = "blocks/{}/children"
     BLOCK_CHILDREN_APPEND = "blocks/{}"
+    BLOCK_DELETE = "blocks/{}"
 
     # Comment related endpoints
     COMMENT = "comment"

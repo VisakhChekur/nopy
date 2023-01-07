@@ -344,3 +344,46 @@ class RollupFunctions(Enum):
     COUNT_PER_GROUP = "count_per_group"
     PERCENT_PER_GROUP = "percent_per_group"
     SHOW_ORIGINAL = "show_original"
+
+
+class BlockTypes(Enum):
+    """All the block types."""
+
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CALLOUT = "callout"
+    QUOTE = "quote"
+    LIST = "list"
+    TO_DO = "to_do"
+    TOGGLE = "toggle"
+    CODE = "code"
+    CHILD_PAGE = "child_page"
+    CHILD_DATABASE = "child_database"
+    MEDIA = "media"
+    EMBED = "embed"
+    BOOKMARK = "bookmark"
+    UNSUPPORTED = "unsupported"
+
+
+class MediaTypes(Enum):
+    """The different media types."""
+
+    IMAGE = "image"
+    VIDEO = "video"
+    FILE = "file"
+    PDF = "pdf"
+
+
+class HeadingLevel(Enum):
+    """The different heading levels."""
+
+    HEADING_1 = "heading_1"
+    HEADING_2 = "heading_2"
+    HEADING_3 = "heading_3"
+
+
+class ListTypes(Enum):
+    """The different list types."""
+
+    BULLETED_LIST_ITEM = "bulleted_list_item"
+    NUMBERED_LIST_ITEM = "numbered_list_item"

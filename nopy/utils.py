@@ -10,6 +10,8 @@ from typing import Union
 
 from dateutil.parser import parse
 
+from nopy.enums import Colors
+
 # from nopy.constants import DB_PROPS_REVERSE_MAP
 from nopy.objects.user import User
 from nopy.props.common import Emoji
@@ -108,6 +110,13 @@ def base_obj_args(args: dict[str, Any]) -> dict[str, Any]:
     return new_args
 
 
+def block_base_args(args: dict[str, Any]) -> dict[str, Any]:
+
+    base_args = base_obj_args(args)
+    base_args["has_children"] = args["has_children"]
+    return base_args
+
+
 def rich_text_list(rich_texts: list[dict[str, Any]]) -> list[RichText]:
     """Parses the list of dictionaries into a list of RichText objects."""
 
@@ -138,6 +147,14 @@ def base_db_prop_args(args: dict[str, Any]):
     return {
         "id": args["id"],
         "name": args["name"],
+    }
+
+
+def rich_text_color_mixin_args(block_details: dict[str, Any]):
+
+    return {
+        "rich_text": rich_text_list(block_details["rich_text"]),
+        "color": Colors[block_details["color"].upper()],
     }
 
 

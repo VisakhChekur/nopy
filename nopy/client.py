@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from dataclasses import dataclass
@@ -18,6 +19,7 @@ from nopy.constants import APIEndpoints
 from nopy.errors import APIResponseError
 from nopy.errors import HTTPError
 from nopy.errors import TokenNotFoundError
+from nopy.objects.blocks import Block
 from nopy.objects.database import Database
 from nopy.objects.page import Page
 from nopy.objects.user import Bot
@@ -266,6 +268,22 @@ class NotionClient:
         page_dict = self._make_request(endpoint, "PATCH", page)
         return Page.from_dict(page_dict)
 
+    # ----- Blocks related endpoints ----
+    def retrieve_block(self, block_id: str) -> Block:
+
+        endpoint = APIEndpoints.BLOCK_RETRIEVE.value.format(block_id)
+        block_dict = self._make_request(endpoint)
+        with open("./trial/block.json", "w+") as f:
+            json.dump(block_dict, f, indent=4)
+        block = Block.from_dict(block_dict)
+        block.set_client(self)
+        return block
+
+    def delete_block(self, block_id: str):
+
+        endpoint = APIEndpoints.BLOCK_DELETE.value.format(block_id)
+        self._make_request(endpoint, "delete")
+
     # ----- User related endpoints -----
 
     def retrieve_user(self, user_id: str) -> User:
@@ -332,6 +350,16 @@ class NotionClient:
         self._client.close()
 
     # ----- Private Methods -----
+
+    def _retrieve_block_children(
+        self, block_id: str, start_cursor: Optional[str] = None
+    ):
+
+        self._logger.info(f" Getting the child blocks of '{block_id}'")
+        query = None if not start_cursor else {"start_cursor": start_cursor}
+        endpoint = APIEndpoints.BLOCK_CHILDREN_RETRIEVE.value.format(block_id)
+
+        return self._make_request(endpoint, query_params=query)
 
     def _query_db_raw(
         self,
